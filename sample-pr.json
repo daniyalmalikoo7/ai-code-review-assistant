@@ -1,0 +1,20 @@
+{
+    "id": 123,
+    "title": "Add user authentication feature",
+    "branch": "feature/auth",
+    "base": "main",
+    "repository": "test-repo",
+    "author": "developer",
+    "changes": [
+      {
+        "filename": "src/auth/login.ts",
+        "status": "added",
+        "content": "function login(username, password) {\n  // Security issue: SQL injection vulnerability\n  const query = \"SELECT * FROM users WHERE username = '\" + username + \"' AND password = '\" + password + \"'\";\n  \n  // Security issue: Hardcoded credentials\n  const apiKey = \"1234567890abcdef\";\n  const secretToken = \"secretpassword123\";\n  \n  // Performance issue: Nested loops\n  for (let i = 0; i < users.length; i++) {\n    for (let j = 0; j < permissions.length; j++) {\n      console.log(users[i], permissions[j]);\n    }\n  }\n  \n  // Performance issue: Chained array methods\n  const result = users\n    .filter(user => user.active)\n    .map(user => user.permissions)\n    .filter(permissions => permissions.includes('admin'))\n    .map(permissions => permissions.join(','));\n  \n  // Code style issue: Console log\n  console.log('User logged in', username);\n  \n  // Maintainability issue: Deep nesting\n  if (user) {\n    if (user.isActive) {\n      if (user.hasPermission) {\n        if (user.groups) {\n          if (user.groups.includes('admin')) {\n            // Admin logic\n          }\n        }\n      }\n    }\n  }\n  \n  return user;\n}"
+      },
+      {
+        "filename": "src/controllers/userController.ts",
+        "status": "modified",
+        "content": "// Architectural issue: Controller with data access\nexport class UserController {\n  getUser(req, res) {\n    // Direct data access in controller\n    const user = new User();\n    const result = user.findOne({ id: req.params.id });\n    res.json(result);\n  }\n  \n  createUser(req, res) {\n    // More direct data access\n    const newUser = new User(req.body);\n    newUser.save();\n    res.status(201).json(newUser);\n  }\n}"
+      }
+    ]
+  }

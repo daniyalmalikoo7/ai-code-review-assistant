@@ -1,0 +1,4539 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+================================================================
+File Summary
+================================================================
+
+Purpose:
+--------
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+File Format:
+------------
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Multiple file entries, each consisting of:
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
+
+Usage Guidelines:
+-----------------
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+Notes:
+------
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+
+Additional Info:
+----------------
+
+================================================================
+Directory Structure
+================================================================
+public/
+  file.svg
+  globe.svg
+  next.svg
+  vercel.svg
+  window.svg
+src/
+  app/
+    api/
+      analyze/
+        route.ts
+      reviews/
+        [id]/
+          route.ts
+        route.ts
+    dashboard/
+      page.tsx
+    reviews/
+      [id]/
+        page.tsx
+      page.tsx
+    settings/
+      page.tsx
+    globals.css
+    layout.tsx
+    page.tsx
+  components/
+    dashboard/
+      AnalysisForm.tsx
+      AnalysisModal.tsx
+      ReviewCard.tsx
+      StatsSummary.tsx
+      StatusBadge.tsx
+    layout/
+      DashboardLayout.tsx
+      Navbar.tsx
+    reviews/
+      CodeBlock.tsx
+      IssueDetail.tsx
+      IssueList.tsx
+      IssueSummary.tsx
+    settings/
+      ApiTokenForm.tsx
+      GithubConfigForm.tsx
+      NotificationSettings.tsx
+      page.tsx
+  lib/
+    api.ts
+  types/
+    review.ts
+    settings.ts
+.gitignore
+eslint.config.mjs
+next.config.ts
+package.json
+postcss.config.mjs
+README.md
+tailwind.config.ts
+tsconfig.json
+
+================================================================
+Files
+================================================================
+
+================
+File: public/file.svg
+================
+<svg fill="none" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"><path d="M14.5 13.5V5.41a1 1 0 0 0-.3-.7L9.8.29A1 1 0 0 0 9.08 0H1.5v13.5A2.5 2.5 0 0 0 4 16h8a2.5 2.5 0 0 0 2.5-2.5m-1.5 0v-7H8v-5H3v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1M9.5 5V2.12L12.38 5zM5.13 5h-.62v1.25h2.12V5zm-.62 3h7.12v1.25H4.5zm.62 3h-.62v1.25h7.12V11z" clip-rule="evenodd" fill="#666" fill-rule="evenodd"/></svg>
+
+================
+File: public/globe.svg
+================
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><g clip-path="url(#a)"><path fill-rule="evenodd" clip-rule="evenodd" d="M10.27 14.1a6.5 6.5 0 0 0 3.67-3.45q-1.24.21-2.7.34-.31 1.83-.97 3.1M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.48-1.52a7 7 0 0 1-.96 0H7.5a4 4 0 0 1-.84-1.32q-.38-.89-.63-2.08a40 40 0 0 0 3.92 0q-.25 1.2-.63 2.08a4 4 0 0 1-.84 1.31zm2.94-4.76q1.66-.15 2.95-.43a7 7 0 0 0 0-2.58q-1.3-.27-2.95-.43a18 18 0 0 1 0 3.44m-1.27-3.54a17 17 0 0 1 0 3.64 39 39 0 0 1-4.3 0 17 17 0 0 1 0-3.64 39 39 0 0 1 4.3 0m1.1-1.17q1.45.13 2.69.34a6.5 6.5 0 0 0-3.67-3.44q.65 1.26.98 3.1M8.48 1.5l.01.02q.41.37.84 1.31.38.89.63 2.08a40 40 0 0 0-3.92 0q.25-1.2.63-2.08a4 4 0 0 1 .85-1.32 7 7 0 0 1 .96 0m-2.75.4a6.5 6.5 0 0 0-3.67 3.44 29 29 0 0 1 2.7-.34q.31-1.83.97-3.1M4.58 6.28q-1.66.16-2.95.43a7 7 0 0 0 0 2.58q1.3.27 2.95.43a18 18 0 0 1 0-3.44m.17 4.71q-1.45-.12-2.69-.34a6.5 6.5 0 0 0 3.67 3.44q-.65-1.27-.98-3.1" fill="#666"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h16v16H0z"/></clipPath></defs></svg>
+
+================
+File: public/next.svg
+================
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 394 80"><path fill="#000" d="M262 0h68.5v12.7h-27.2v66.6h-13.6V12.7H262V0ZM149 0v12.7H94v20.4h44.3v12.6H94v21h55v12.6H80.5V0h68.7zm34.3 0h-17.8l63.8 79.4h17.9l-32-39.7 32-39.6h-17.9l-23 28.6-23-28.6zm18.3 56.7-9-11-27.1 33.7h17.8l18.3-22.7z"/><path fill="#000" d="M81 79.3 17 0H0v79.3h13.6V17l50.2 62.3H81Zm252.6-.4c-1 0-1.8-.4-2.5-1s-1.1-1.6-1.1-2.6.3-1.8 1-2.5 1.6-1 2.6-1 1.8.3 2.5 1a3.4 3.4 0 0 1 .6 4.3 3.7 3.7 0 0 1-3 1.8zm23.2-33.5h6v23.3c0 2.1-.4 4-1.3 5.5a9.1 9.1 0 0 1-3.8 3.5c-1.6.8-3.5 1.3-5.7 1.3-2 0-3.7-.4-5.3-1s-2.8-1.8-3.7-3.2c-.9-1.3-1.4-3-1.4-5h6c.1.8.3 1.6.7 2.2s1 1.2 1.6 1.5c.7.4 1.5.5 2.4.5 1 0 1.8-.2 2.4-.6a4 4 0 0 0 1.6-1.8c.3-.8.5-1.8.5-3V45.5zm30.9 9.1a4.4 4.4 0 0 0-2-3.3 7.5 7.5 0 0 0-4.3-1.1c-1.3 0-2.4.2-3.3.5-.9.4-1.6 1-2 1.6a3.5 3.5 0 0 0-.3 4c.3.5.7.9 1.3 1.2l1.8 1 2 .5 3.2.8c1.3.3 2.5.7 3.7 1.2a13 13 0 0 1 3.2 1.8 8.1 8.1 0 0 1 3 6.5c0 2-.5 3.7-1.5 5.1a10 10 0 0 1-4.4 3.5c-1.8.8-4.1 1.2-6.8 1.2-2.6 0-4.9-.4-6.8-1.2-2-.8-3.4-2-4.5-3.5a10 10 0 0 1-1.7-5.6h6a5 5 0 0 0 3.5 4.6c1 .4 2.2.6 3.4.6 1.3 0 2.5-.2 3.5-.6 1-.4 1.8-1 2.4-1.7a4 4 0 0 0 .8-2.4c0-.9-.2-1.6-.7-2.2a11 11 0 0 0-2.1-1.4l-3.2-1-3.8-1c-2.8-.7-5-1.7-6.6-3.2a7.2 7.2 0 0 1-2.4-5.7 8 8 0 0 1 1.7-5 10 10 0 0 1 4.3-3.5c2-.8 4-1.2 6.4-1.2 2.3 0 4.4.4 6.2 1.2 1.8.8 3.2 2 4.3 3.4 1 1.4 1.5 3 1.5 5h-5.8z"/></svg>
+
+================
+File: public/vercel.svg
+================
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155 1000"><path d="m577.3 0 577.4 1000H0z" fill="#fff"/></svg>
+
+================
+File: public/window.svg
+================
+<svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 2.5h13v10a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1zM0 1h16v11.5a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 0 12.5zm3.75 4.5a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5M7 4.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0m1.75.75a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5" fill="#666"/></svg>
+
+================
+File: src/app/api/analyze/route.ts
+================
+// src/app/api/analyze/route.ts
+import { NextResponse } from 'next/server';
+import { AnalysisRequest } from '@/types/review';
+
+/**
+ * API route to trigger a manual code analysis
+ */
+export async function POST(request: Request) {
+  try {
+    // Get backend URL from environment variables
+    // const backendUrl = process.env.BACKEND_URL || 'http://localhost:3001';
+    
+    // Parse request body
+    const body: AnalysisRequest = await request.json();
+    
+    if (!body.repositoryUrl) {
+      return NextResponse.json({ error: 'Repository URL is required' }, { status: 400 });
+    }
+    
+    if (!body.prNumber) {
+      return NextResponse.json({ error: 'PR number is required' }, { status: 400 });
+    }
+    
+    // Forward the request to the backend
+    // In production, we would actually call the backend API
+    // For demo purposes, simulate a successful response
+    /*
+    const response = await fetch(`${backendUrl}/api/code-analyzer/analyze-pr`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      return NextResponse.json(
+        { error: errorData.error || 'Failed to initiate analysis' }, 
+        { status: response.status }
+      );
+    }
+    
+    const data = await response.json();
+    return NextResponse.json(data);
+    */
+    
+    // Simulate a successful response
+    return NextResponse.json({ 
+      id: Math.floor(Math.random() * 1000),
+      status: 'pending',
+      message: 'Analysis initiated successfully'
+    });
+    
+  } catch (error) {
+    console.error('Error in analyze API route:', error);
+    return NextResponse.json(
+      { error: 'An unexpected error occurred' }, 
+      { status: 500 }
+    );
+  }
+}
+
+/**
+ * API route to get the status of an analysis
+ */
+export async function GET(request: Request) {
+  try {
+    // Get the analysis ID from the URL
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
+    
+    if (!id) {
+      return NextResponse.json({ error: 'Analysis ID is required' }, { status: 400 });
+    }
+    
+    // Get backend URL from environment variables
+    // const backendUrl = process.env.BACKEND_URL || 'http://localhost:3001';
+    
+    // Forward the request to the backend
+    // In production, we would actually call the backend API
+    // For demo purposes, simulate a successful response
+    /*
+    const response = await fetch(`${backendUrl}/api/code-analyzer/analysis/${id}`);
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      return NextResponse.json(
+        { error: errorData.error || 'Failed to get analysis status' }, 
+        { status: response.status }
+      );
+    }
+    
+    const data = await response.json();
+    return NextResponse.json(data);
+    */
+    
+    // Simulate a successful response
+    const statuses = ['pending', 'completed', 'failed'];
+    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
+    
+    return NextResponse.json({ 
+      id,
+      status: randomStatus,
+      progress: randomStatus === 'pending' ? Math.floor(Math.random() * 100) : 100,
+      completedAt: randomStatus === 'completed' ? new Date().toISOString() : null
+    });
+    
+  } catch (error) {
+    console.error('Error in analyze status API route:', error);
+    return NextResponse.json(
+      { error: 'An unexpected error occurred' }, 
+      { status: 500 }
+    );
+  }
+}
+
+================
+File: src/app/api/reviews/[id]/route.ts
+================
+// src/app/api/reviews/[id]/route.ts
+import { NextResponse } from 'next/server';
+import { DetailedReview, IssueSeverity, IssueCategory } from '@/types/review';
+
+/**
+ * API route to get a specific review by ID
+ */
+export async function GET(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const id = params.id;
+    
+    // Get backend URL from environment variables
+    // const backendUrl = process.env.BACKEND_URL || 'http://localhost:3001';
+    
+    // Forward the request to the backend
+    // In production, we would actually call the backend API
+    // For demo purposes, simulate a response with mock data
+    /*
+    const response = await fetch(`${backendUrl}/api/code-analyzer/reviews/${id}`);
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      return NextResponse.json(
+        { error: errorData.error || 'Failed to fetch review' }, 
+        { status: response.status }
+      );
+    }
+    
+    const data = await response.json();
+    return NextResponse.json(data);
+    */
+    
+    // Generate mock data
+    const mockReview: DetailedReview = {
+      id,
+      prId: 123,
+      prTitle: 'Add user authentication feature',
+      repository: 'org/repo',
+      branch: 'feature/auth',
+      author: 'johndoe',
+      status: 'completed',
+      createdAt: '2023-06-01T12:00:00Z',
+      completedAt: '2023-06-01T12:05:30Z',
+      overallScore: 75,
+      issueStats: {
+        critical: 2,
+        warning: 5,
+        suggestion: 3,
+        total: 10
+      },
+      topIssues: [
+        {
+          severity: IssueSeverity.Critical,
+          category: IssueCategory.Security,
+          title: 'Hardcoded API Key',
+          file: 'src/auth/login.ts',
+          line: 7
+        },
+        {
+          severity: IssueSeverity.Critical,
+          category: IssueCategory.Security,
+          title: 'Potential SQL Injection',
+          file: 'src/auth/login.ts',
+          line: 3
+        },
+        {
+          severity: IssueSeverity.Warning,
+          category: IssueCategory.Performance,
+          title: 'Nested Loop Detected',
+          file: 'src/auth/login.ts',
+          line: 10
+        }
+      ],
+      fileReports: [
+        {
+          filename: 'src/auth/login.ts',
+          issues: {
+            critical: 2,
+            warning: 3,
+            suggestion: 2,
+            total: 7
+          },
+          comments: [
+            {
+              file: 'src/auth/login.ts',
+              line: 7,
+              message: '🚨 **Critical: Hardcoded API Key**\n\nFound potential hardcoded secret in the code\n\n```\napiKey = "1234567890abcdef"\n```\n\n**Why it matters**: Security issues can lead to vulnerabilities that may be exploited by attackers.\n\n**Recommendation**: Use environment variables or a secure secrets manager instead of hardcoding secrets',
+              severity: IssueSeverity.Critical,
+              category: IssueCategory.Security,
+              suggestionId: 'security-hardcoded-1740620827476-enmanndax'
+            },
+            {
+              file: 'src/auth/login.ts',
+              line: 3,
+              message: '🚨 **Critical: Potential SQL Injection**\n\nString interpolation in SQL queries can lead to SQL injection attacks\n\n```\nconst query = "SELECT * FROM users WHERE username = \'" + username + "\' AND password = \'" + password + "\'";\n```\n\n**Why it matters**: Security issues can lead to vulnerabilities that may be exploited by attackers.\n\n**Recommendation**: Use parameterized queries or prepared statements instead of string interpolation',
+              severity: IssueSeverity.Critical,
+              category: IssueCategory.Security,
+              suggestionId: 'security-sql-injection-1740620827476-2nmanxdaz'
+            },
+            {
+              file: 'src/auth/login.ts',
+              line: 10,
+              message: '⚠️ **Warning: Nested Loop Detected**\n\nNested loops can lead to O(n²) time complexity\n\n```\nfor (let i = 0; i < users.length; i++) {\n            for (let j = 0; j < permissions.length; j++)\n```\n\n**Why it matters**: Performance issues can cause your application to run slowly or use excessive resources.\n\n**Recommendation**: Consider alternatives like using hash maps or optimizing the algorithm',
+              severity: IssueSeverity.Warning,
+              category: IssueCategory.Performance,
+              suggestionId: 'performance-nested-loop-1740620827477-6g5ihvfil'
+            },
+            {
+              file: 'src/auth/login.ts',
+              line: 7,
+              message: '💡 **Suggestion: Inconsistent Variable Naming**\n\nVariable names should follow a consistent naming convention\n\n```\nconst apiKey\n```\n\n**Why it matters**: Code style issues affect readability and maintainability of your codebase.\n\n**Recommendation**: Use camelCase for variables and functions, PascalCase for classes and interfaces',
+              severity: IssueSeverity.Suggestion,
+              category: IssueCategory.CodeStyle,
+              suggestionId: 'style-inconsistent-naming-1740620827477-wgdybptaz'
+            },
+            {
+              file: 'src/auth/login.ts',
+              line: 12,
+              message: '💡 **Suggestion: Console Statement**\n\nConsole statements should not be committed to production code\n\n```\nconsole.log(\n```\n\n**Why it matters**: Code style issues affect readability and maintainability of your codebase.\n\n**Recommendation**: Remove console statements or use a proper logging library',
+              severity: IssueSeverity.Suggestion,
+              category: IssueCategory.CodeStyle,
+              suggestionId: 'style-console-statement-1740620827477-qa8sfvjna'
+            },
+            {
+              file: 'src/auth/login.ts',
+              line: 20,
+              message: '⚠️ **Warning: Deep Nesting**\n\nDeeply nested conditionals make code harder to understand\n\n```\nif (user) {\n    if (user.isActive) {\n      if (user.hasPermission) {\n        if (user.groups) {\n          if (user.groups.includes(\'admin\')) {\n```\n\n**Why it matters**: Maintainability issues make your code harder to understand, modify, or extend.\n\n**Recommendation**: Refactor using early returns, guard clauses, or extract conditionals into readable functions',
+              severity: IssueSeverity.Warning,
+              category: IssueCategory.Maintainability,
+              suggestionId: 'maintainability-deep-nesting-1740620827477-7h6jiwfkm'
+            },
+            {
+              file: 'src/auth/login.ts',
+              line: 2,
+              message: '⚠️ **Warning: Long Function**\n\nFunction is 28 lines long\n\n**Why it matters**: Maintainability issues make your code harder to understand, modify, or extend.\n\n**Recommendation**: Break down long functions into smaller, more focused functions',
+              severity: IssueSeverity.Warning,
+              category: IssueCategory.Maintainability,
+              suggestionId: 'maintainability-long-function-1740620827478-m97d5agcg'
+            }
+          ]
+        },
+        {
+          filename: 'src/controllers/userController.ts',
+          issues: {
+            critical: 0,
+            warning: 2,
+            suggestion: 1,
+            total: 3
+          },
+          comments: [
+            {
+              file: 'src/controllers/userController.ts',
+              line: 4,
+              message: '⚠️ **Warning: Architectural Layer Violation**\n\nDirect data access in controller layer\n\n```\nconst user = new User();\nconst result = user.findOne({ id: req.params.id });\n```\n\n**Why it matters**: Architectural issues can lead to design problems that affect the entire system.\n\n**Recommendation**: Move data access code to the service layer or repository layer',
+              severity: IssueSeverity.Warning,
+              category: IssueCategory.Architecture,
+              suggestionId: 'architecture-layer-violation-1740620827478-b8e6fdhpn'
+            },
+            {
+              file: 'src/controllers/userController.ts',
+              line: 10,
+              message: '⚠️ **Warning: Architectural Layer Violation**\n\nDirect data access in controller layer\n\n```\nconst newUser = new User(req.body);\nnewUser.save();\n```\n\n**Why it matters**: Architectural issues can lead to design problems that affect the entire system.\n\n**Recommendation**: Move data access code to the service layer or repository layer',
+              severity: IssueSeverity.Warning,
+              category: IssueCategory.Architecture,
+              suggestionId: 'architecture-layer-violation-1740620827478-c9f7geiqo'
+            },
+            {
+              file: 'src/controllers/userController.ts',
+              line: 1,
+              message: '💡 **Suggestion: Missing Input Validation**\n\nNo validation for user input from request body\n\n**Why it matters**: Security issues can lead to vulnerabilities that may be exploited by attackers.\n\n**Recommendation**: Add input validation before processing user input',
+              severity: IssueSeverity.Suggestion,
+              category: IssueCategory.Security,
+              suggestionId: 'security-input-validation-1740620827478-d0g8hfjqp'
+            }
+          ]
+        }
+      ],
+      markdownSummary: '# AI Code Review for PR #123\n\n## Summary\n\n- **Overall Score**: 75/100\n- **Total Issues**: 10\n  - 🚨 Critical: 2\n  - ⚠️ Warning: 5\n  - 💡 Suggestion: 3\n- **Analysis Time**: 2023-06-01T12:05:30Z\n- **Duration**: 4500ms\n\n## Top Issues\n\n- 🚨 **Critical**: Hardcoded API Key in `src/auth/login.ts` at line 7\n- 🚨 **Critical**: Potential SQL Injection in `src/auth/login.ts` at line 3\n- ⚠️ **Warning**: Nested Loop Detected in `src/auth/login.ts` at line 10\n\n## Files\n\n### src/auth/login.ts\n\n- Total Issues: 7\n  - 🚨 Critical: 2\n  - ⚠️ Warning: 3\n  - 💡 Suggestion: 2\n\n#### Issues\n\n**Line 2**:\n\n- ⚠️ **Warning: Long Function**\n\n**Line 3**:\n\n- 🚨 **Critical: Potential SQL Injection**\n\n**Line 7**:\n\n- 🚨 **Critical: Hardcoded API Key**\n- 💡 **Suggestion: Inconsistent Variable Naming**\n\n**Line 10**:\n\n- ⚠️ **Warning: Nested Loop Detected**\n\n**Line 12**:\n\n- 💡 **Suggestion: Console Statement**\n\n**Line 20**:\n\n- ⚠️ **Warning: Deep Nesting**\n\n### src/controllers/userController.ts\n\n- Total Issues: 3\n  - 🚨 Critical: 0\n  - ⚠️ Warning: 2\n  - 💡 Suggestion: 1\n\n#### Issues\n\n**Line 1**:\n\n- 💡 **Suggestion: Missing Input Validation**\n\n**Line 4**:\n\n- ⚠️ **Warning: Architectural Layer Violation**\n\n**Line 10**:\n\n- ⚠️ **Warning: Architectural Layer Violation**\n\n---\n*Generated by AI-Powered Code Review Assistant*',
+      analysisTime: '2023-06-01T12:05:30Z',
+      duration: 4500
+    };
+    
+    return NextResponse.json(mockReview);
+    
+  } catch (error) {
+    console.error('Error in review details API route:', error);
+    return NextResponse.json(
+      { error: 'An unexpected error occurred' }, 
+      { status: 500 }
+    );
+  }
+}
+
+================
+File: src/app/api/reviews/route.ts
+================
+// src/app/api/reviews/route.ts
+import { NextResponse } from 'next/server';
+import { ReviewSummary } from '@/types/review';
+
+/**
+ * API route to get all reviews
+ */
+export async function GET() {
+  try {
+    // Get backend URL from environment variables
+    //const backendUrl = process.env.BACKEND_URL || 'http://localhost:3001';
+    
+    // Forward the request to the backend
+    // In production, we would actually call the backend API
+    // For demo purposes, simulate a response with mock data
+    /*
+    const response = await fetch(`${backendUrl}/api/code-analyzer/reviews`);
+    
+    if (!response.ok) {
+      const errorData = await response.json();
+      return NextResponse.json(
+        { error: errorData.error || 'Failed to fetch reviews' }, 
+        { status: response.status }
+      );
+    }
+    
+    const data = await response.json();
+    return NextResponse.json(data);
+    */
+    
+    // Generate mock data
+    const mockReviews: ReviewSummary[] = [
+      {
+        id: '1',
+        prId: 123,
+        prTitle: 'Add user authentication feature',
+        repository: 'org/repo',
+        branch: 'feature/auth',
+        author: 'johndoe',
+        status: 'completed',
+        createdAt: '2023-06-01T12:00:00Z',
+        completedAt: '2023-06-01T12:05:30Z',
+        overallScore: 75,
+        issueStats: {
+          critical: 2,
+          warning: 5,
+          suggestion: 10,
+          total: 17
+        }
+      },
+      {
+        id: '2',
+        prId: 124,
+        prTitle: 'Refactor database queries',
+        repository: 'org/repo',
+        branch: 'feature/db-refactor',
+        author: 'janedoe',
+        status: 'pending',
+        createdAt: '2023-06-02T10:30:00Z',
+        overallScore: 0,
+        issueStats: {
+          critical: 0,
+          warning: 0,
+          suggestion: 0,
+          total: 0
+        }
+      },
+      {
+        id: '3',
+        prId: 125,
+        prTitle: 'Update dependencies and fix security vulnerabilities',
+        repository: 'org/other-repo',
+        branch: 'fix/security',
+        author: 'securityteam',
+        status: 'completed',
+        createdAt: '2023-06-03T09:15:00Z',
+        completedAt: '2023-06-03T09:20:12Z',
+        overallScore: 92,
+        issueStats: {
+          critical: 0,
+          warning: 3,
+          suggestion: 5,
+          total: 8
+        }
+      },
+      {
+        id: '4',
+        prId: 126,
+        prTitle: 'Add new API endpoints for user profiles',
+        repository: 'org/api-service',
+        branch: 'feature/user-profiles',
+        author: 'apiteam',
+        status: 'failed',
+        createdAt: '2023-06-04T14:20:00Z',
+        overallScore: 0,
+        issueStats: {
+          critical: 0,
+          warning: 0,
+          suggestion: 0,
+          total: 0
+        }
+      }
+    ];
+    
+    return NextResponse.json(mockReviews);
+    
+  } catch (error) {
+    console.error('Error in reviews API route:', error);
+    return NextResponse.json(
+      { error: 'An unexpected error occurred' }, 
+      { status: 500 }
+    );
+  }
+}
+
+================
+File: src/app/dashboard/page.tsx
+================
+// src/app/dashboard/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import ReviewCard from '@/components/dashboard/ReviewCard';
+import StatsSummary from '@/components/dashboard/StatsSummary';
+import AnalysisModal from '@/components/dashboard/AnalysisModal';
+import { ReviewSummary } from '@/types/review';
+// import { apiClient } from '@/lib/api';
+
+export default function DashboardPage() {
+  const router = useRouter();
+  const [reviews, setReviews] = useState<ReviewSummary[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // In a real app, we would fetch from the API
+        // const data = await apiClient.getReviews();
+        
+        // For demo purposes, using mock data
+        const mockReviews: ReviewSummary[] = [
+          {
+            id: '1',
+            prId: 123,
+            prTitle: 'Add user authentication feature',
+            repository: 'org/repo',
+            branch: 'feature/auth',
+            author: 'johndoe',
+            status: 'completed',
+            createdAt: '2023-06-01T12:00:00Z',
+            completedAt: '2023-06-01T12:05:30Z',
+            overallScore: 75,
+            issueStats: {
+              critical: 2,
+              warning: 5,
+              suggestion: 10,
+              total: 17
+            }
+          },
+          {
+            id: '2',
+            prId: 124,
+            prTitle: 'Refactor database queries',
+            repository: 'org/repo',
+            branch: 'feature/db-refactor',
+            author: 'janedoe',
+            status: 'pending',
+            createdAt: '2023-06-02T10:30:00Z',
+            overallScore: 0,
+            issueStats: {
+              critical: 0,
+              warning: 0,
+              suggestion: 0,
+              total: 0
+            }
+          },
+          {
+            id: '3',
+            prId: 125,
+            prTitle: 'Update dependencies and fix security vulnerabilities',
+            repository: 'org/other-repo',
+            branch: 'fix/security',
+            author: 'securityteam',
+            status: 'completed',
+            createdAt: '2023-06-03T09:15:00Z',
+            completedAt: '2023-06-03T09:20:12Z',
+            overallScore: 92,
+            issueStats: {
+              critical: 0,
+              warning: 3,
+              suggestion: 5,
+              total: 8
+            }
+          },
+          {
+            id: '4',
+            prId: 126,
+            prTitle: 'Add new API endpoints for user profiles',
+            repository: 'org/api-service',
+            branch: 'feature/user-profiles',
+            author: 'apiteam',
+            status: 'failed',
+            createdAt: '2023-06-04T14:20:00Z',
+            overallScore: 0,
+            issueStats: {
+              critical: 0,
+              warning: 0,
+              suggestion: 0,
+              total: 0
+            }
+          }
+        ];
+        
+        setReviews(mockReviews);
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to fetch reviews:', err);
+        setError('Failed to load reviews. Please try again later.');
+        setLoading(false);
+      }
+    };
+    
+    fetchReviews();
+  }, []);
+  
+  const [showAnalysisModal, setShowAnalysisModal] = useState<boolean>(false);
+  
+  const handleTriggerAnalysis = () => {
+    setShowAnalysisModal(true);
+  };
+  
+  const handleAnalysisSuccess = (id: string | number) => {
+    // Refresh the list of reviews or navigate to the new review
+    router.push(`/reviews/${id}`);
+  };
+
+  return (
+    <DashboardLayout>
+      <header className="bg-white shadow-sm mb-6 -mt-6 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Dashboard</h1>
+          <button
+            type="button"
+            onClick={handleTriggerAnalysis}
+            className="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500"
+          >
+            <svg className="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+            </svg>
+            New Analysis
+          </button>
+        </div>
+      </header>
+      
+      <main>
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+            <p className="mt-4 text-gray-600">Loading reviews...</p>
+          </div>
+        ) : error ? (
+          <div className="rounded-md bg-red-50 p-4 mb-6">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-red-800">{error}</p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="mb-10">
+              <StatsSummary reviews={reviews} />
+            </div>
+            
+            <div className="mb-6">
+              <h2 className="text-lg font-medium leading-6 text-gray-900 mb-2">Recent Reviews</h2>
+              <div className="grid grid-cols-1 gap-6">
+                {reviews.map((review) => (
+                  <ReviewCard key={review.id} review={review} />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+      </main>
+      
+      {/* Analysis Modal */}
+      <AnalysisModal 
+        isOpen={showAnalysisModal} 
+        onClose={() => setShowAnalysisModal(false)}
+        onSuccess={handleAnalysisSuccess}
+      />
+    </DashboardLayout>
+  );
+}
+
+================
+File: src/app/reviews/[id]/page.tsx
+================
+// src/app/reviews/[id]/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import IssueSummary from '@/components/reviews/IssueSummary';
+import IssueList from '@/components/reviews/IssueList';
+import IssueDetail from '@/components/reviews/IssueDetail';
+import { DetailedReview, InlineComment, IssueSeverity, IssueCategory } from '@/types/review';
+
+export default function ReviewDetailPage() {
+  const params = useParams();
+  const reviewId = params.id as string;
+  
+  const [review, setReview] = useState<DetailedReview | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedIssue, setSelectedIssue] = useState<InlineComment | null>(null);
+  
+  useEffect(() => {
+    const fetchReview = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // In a real app, we would fetch from the API
+        // const data = await apiClient.getReviewById(reviewId);
+        
+        // For demo purposes, using mock data
+        const mockReview: DetailedReview = {
+          id: reviewId,
+          prId: 123,
+          prTitle: 'Add user authentication feature',
+          repository: 'org/repo',
+          branch: 'feature/auth',
+          author: 'johndoe',
+          status: 'completed',
+          createdAt: '2023-06-01T12:00:00Z',
+          completedAt: '2023-06-01T12:05:30Z',
+          overallScore: 75,
+          issueStats: {
+            critical: 2,
+            warning: 5,
+            suggestion: 3,
+            total: 10
+          },
+          topIssues: [
+            {
+              severity: IssueSeverity.Critical,
+              category: IssueCategory.Security,
+              title: 'Hardcoded API Key',
+              file: 'src/auth/login.ts',
+              line: 7
+            },
+            {
+              severity: IssueSeverity.Critical,
+              category: IssueCategory.Security,
+              title: 'Potential SQL Injection',
+              file: 'src/auth/login.ts',
+              line: 3
+            },
+            {
+              severity: IssueSeverity.Warning,
+              category: IssueCategory.Performance,
+              title: 'Nested Loop Detected',
+              file: 'src/auth/login.ts',
+              line: 10
+            }
+          ],
+          fileReports: [
+            {
+              filename: 'src/auth/login.ts',
+              issues: {
+                critical: 2,
+                warning: 3,
+                suggestion: 2,
+                total: 7
+              },
+              comments: [
+                {
+                  file: 'src/auth/login.ts',
+                  line: 7,
+                  message: '🚨 **Critical: Hardcoded API Key**\n\nFound potential hardcoded secret in the code\n\n```\napiKey = "1234567890abcdef"\n```\n\n**Why it matters**: Security issues can lead to vulnerabilities that may be exploited by attackers.\n\n**Recommendation**: Use environment variables or a secure secrets manager instead of hardcoding secrets',
+                  severity: IssueSeverity.Critical,
+                  category: IssueCategory.Security,
+                  suggestionId: 'security-hardcoded-1740620827476-enmanndax'
+                },
+                {
+                  file: 'src/auth/login.ts',
+                  line: 3,
+                  message: '🚨 **Critical: Potential SQL Injection**\n\nString interpolation in SQL queries can lead to SQL injection attacks\n\n```\nconst query = "SELECT * FROM users WHERE username = \'" + username + "\' AND password = \'" + password + "\'";\n```\n\n**Why it matters**: Security issues can lead to vulnerabilities that may be exploited by attackers.\n\n**Recommendation**: Use parameterized queries or prepared statements instead of string interpolation',
+                  severity: IssueSeverity.Critical,
+                  category: IssueCategory.Security,
+                  suggestionId: 'security-sql-injection-1740620827476-2nmanxdaz'
+                },
+                {
+                  file: 'src/auth/login.ts',
+                  line: 10,
+                  message: '⚠️ **Warning: Nested Loop Detected**\n\nNested loops can lead to O(n²) time complexity\n\n```\nfor (let i = 0; i < users.length; i++) {\n            for (let j = 0; j < permissions.length; j++)\n```\n\n**Why it matters**: Performance issues can cause your application to run slowly or use excessive resources.\n\n**Recommendation**: Consider alternatives like using hash maps or optimizing the algorithm',
+                  severity: IssueSeverity.Warning,
+                  category: IssueCategory.Performance,
+                  suggestionId: 'performance-nested-loop-1740620827477-6g5ihvfil'
+                },
+                {
+                  file: 'src/auth/login.ts',
+                  line: 7,
+                  message: '💡 **Suggestion: Inconsistent Variable Naming**\n\nVariable names should follow a consistent naming convention\n\n```\nconst apiKey\n```\n\n**Why it matters**: Code style issues affect readability and maintainability of your codebase.\n\n**Recommendation**: Use camelCase for variables and functions, PascalCase for classes and interfaces',
+                  severity: IssueSeverity.Suggestion,
+                  category: IssueCategory.CodeStyle,
+                  suggestionId: 'style-inconsistent-naming-1740620827477-wgdybptaz'
+                },
+                {
+                  file: 'src/auth/login.ts',
+                  line: 12,
+                  message: '💡 **Suggestion: Console Statement**\n\nConsole statements should not be committed to production code\n\n```\nconsole.log(\n```\n\n**Why it matters**: Code style issues affect readability and maintainability of your codebase.\n\n**Recommendation**: Remove console statements or use a proper logging library',
+                  severity: IssueSeverity.Suggestion,
+                  category: IssueCategory.CodeStyle,
+                  suggestionId: 'style-console-statement-1740620827477-qa8sfvjna'
+                },
+                {
+                  file: 'src/auth/login.ts',
+                  line: 20,
+                  message: '⚠️ **Warning: Deep Nesting**\n\nDeeply nested conditionals make code harder to understand\n\n```\nif (user) {\n    if (user.isActive) {\n      if (user.hasPermission) {\n        if (user.groups) {\n          if (user.groups.includes(\'admin\')) {\n```\n\n**Why it matters**: Maintainability issues make your code harder to understand, modify, or extend.\n\n**Recommendation**: Refactor using early returns, guard clauses, or extract conditionals into readable functions',
+                  severity: IssueSeverity.Warning,
+                  category: IssueCategory.Maintainability,
+                  suggestionId: 'maintainability-deep-nesting-1740620827477-7h6jiwfkm'
+                },
+                {
+                  file: 'src/auth/login.ts',
+                  line: 2,
+                  message: '⚠️ **Warning: Long Function**\n\nFunction is 28 lines long\n\n**Why it matters**: Maintainability issues make your code harder to understand, modify, or extend.\n\n**Recommendation**: Break down long functions into smaller, more focused functions',
+                  severity: IssueSeverity.Warning,
+                  category: IssueCategory.Maintainability,
+                  suggestionId: 'maintainability-long-function-1740620827478-m97d5agcg'
+                }
+              ]
+            },
+            {
+              filename: 'src/controllers/userController.ts',
+              issues: {
+                critical: 0,
+                warning: 2,
+                suggestion: 1,
+                total: 3
+              },
+              comments: [
+                {
+                  file: 'src/controllers/userController.ts',
+                  line: 4,
+                  message: '⚠️ **Warning: Architectural Layer Violation**\n\nDirect data access in controller layer\n\n```\nconst user = new User();\nconst result = user.findOne({ id: req.params.id });\n```\n\n**Why it matters**: Architectural issues can lead to design problems that affect the entire system.\n\n**Recommendation**: Move data access code to the service layer or repository layer',
+                  severity: IssueSeverity.Warning,
+                  category: IssueCategory.Architecture,
+                  suggestionId: 'architecture-layer-violation-1740620827478-b8e6fdhpn'
+                },
+                {
+                  file: 'src/controllers/userController.ts',
+                  line: 10,
+                  message: '⚠️ **Warning: Architectural Layer Violation**\n\nDirect data access in controller layer\n\n```\nconst newUser = new User(req.body);\nnewUser.save();\n```\n\n**Why it matters**: Architectural issues can lead to design problems that affect the entire system.\n\n**Recommendation**: Move data access code to the service layer or repository layer',
+                  severity: IssueSeverity.Warning,
+                  category: IssueCategory.Architecture,
+                  suggestionId: 'architecture-layer-violation-1740620827478-c9f7geiqo'
+                },
+                {
+                  file: 'src/controllers/userController.ts',
+                  line: 1,
+                  message: '💡 **Suggestion: Missing Input Validation**\n\nNo validation for user input from request body\n\n**Why it matters**: Security issues can lead to vulnerabilities that may be exploited by attackers.\n\n**Recommendation**: Add input validation before processing user input',
+                  severity: IssueSeverity.Suggestion,
+                  category: IssueCategory.Security,
+                  suggestionId: 'security-input-validation-1740620827478-d0g8hfjqp'
+                }
+              ]
+            }
+          ],
+          markdownSummary: '# AI Code Review for PR #123\n\n## Summary\n\n- **Overall Score**: 75/100\n- **Total Issues**: 10\n  - 🚨 Critical: 2\n  - ⚠️ Warning: 5\n  - 💡 Suggestion: 3\n- **Analysis Time**: 2023-06-01T12:05:30Z\n- **Duration**: 4500ms\n\n## Top Issues\n\n- 🚨 **Critical**: Hardcoded API Key in `src/auth/login.ts` at line 7\n- 🚨 **Critical**: Potential SQL Injection in `src/auth/login.ts` at line 3\n- ⚠️ **Warning**: Nested Loop Detected in `src/auth/login.ts` at line 10\n\n## Files\n\n### src/auth/login.ts\n\n- Total Issues: 7\n  - 🚨 Critical: 2\n  - ⚠️ Warning: 3\n  - 💡 Suggestion: 2\n\n#### Issues\n\n**Line 2**:\n\n- ⚠️ **Warning: Long Function**\n\n**Line 3**:\n\n- 🚨 **Critical: Potential SQL Injection**\n\n**Line 7**:\n\n- 🚨 **Critical: Hardcoded API Key**\n- 💡 **Suggestion: Inconsistent Variable Naming**\n\n**Line 10**:\n\n- ⚠️ **Warning: Nested Loop Detected**\n\n**Line 12**:\n\n- 💡 **Suggestion: Console Statement**\n\n**Line 20**:\n\n- ⚠️ **Warning: Deep Nesting**\n\n### src/controllers/userController.ts\n\n- Total Issues: 3\n  - 🚨 Critical: 0\n  - ⚠️ Warning: 2\n  - 💡 Suggestion: 1\n\n#### Issues\n\n**Line 1**:\n\n- 💡 **Suggestion: Missing Input Validation**\n\n**Line 4**:\n\n- ⚠️ **Warning: Architectural Layer Violation**\n\n**Line 10**:\n\n- ⚠️ **Warning: Architectural Layer Violation**\n\n---\n*Generated by AI-Powered Code Review Assistant*',
+          analysisTime: '2023-06-01T12:05:30Z',
+          duration: 4500
+        };
+        
+        setReview(mockReview);
+        
+        // If there are issues, select the first one by default
+        if (
+          mockReview.fileReports &&
+          mockReview.fileReports.length > 0 &&
+          mockReview.fileReports[0].comments &&
+          mockReview.fileReports[0].comments.length > 0
+        ) {
+          setSelectedIssue(mockReview.fileReports[0].comments[0]);
+        }
+        
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to fetch review:', err);
+        setError('Failed to load review details. Please try again later.');
+        setLoading(false);
+      }
+    };
+    
+    fetchReview();
+  }, [reviewId]);
+  
+  const handleIssueSelect = (issue: InlineComment) => {
+    setSelectedIssue(issue);
+  };
+  
+  // Get all issues from all file reports for issue list
+  const allIssues = review?.fileReports?.flatMap(report => report.comments) || [];
+  
+  // Mock file content for the selected issue
+  const mockFileContent = `// Example file content for ${selectedIssue?.file || ''}
+function login(username, password) {
+  // Security issue: SQL injection vulnerability
+  const query = "SELECT * FROM users WHERE username = '" + username + "' AND password = '" + password + "'";
+  
+  // Security issue: Hardcoded credentials
+  const adminPassword = "admin123";
+  const apiKey = "1234567890abcdef";
+  
+  // Performance issue: Nested loops
+  for (let i = 0; i < users.length; i++) {
+    for (let j = 0; j < permissions.length; j++) {
+      console.log(users[i], permissions[j]);
+    }
+  }
+  
+  // Performance issue: Chained array methods
+  const result = users
+    .filter(user => user.active)
+    .map(user => user.permissions)
+    .filter(permissions => permissions.includes('admin'))
+    .map(permissions => permissions.join(','));
+  
+  // Deep nesting for maintainability issue
+  if (user) {
+    if (user.isActive) {
+      if (user.hasPermission) {
+        if (user.groups) {
+          if (user.groups.includes('admin')) {
+            // Admin logic
+          }
+        }
+      }
+    }
+  }
+  
+  return user;
+}`;
+
+  return (
+    <DashboardLayout>
+      <header className="bg-white shadow-sm mb-6 -mt-6 py-4 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Link 
+              href="/dashboard" 
+              className="mr-2 text-blue-600 hover:text-blue-800"
+            >
+              <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z" clipRule="evenodd" />
+              </svg>
+            </Link>
+            <h1 className="text-xl font-bold tracking-tight text-gray-900">
+              {review ? `Review for PR #${review.prId}` : 'Review Details'}
+            </h1>
+          </div>
+          {review && review.status === 'completed' && (
+            <div className="flex items-center space-x-4">
+              <span className={`text-xl font-bold ${
+                review.overallScore >= 90 ? 'text-green-600' :
+                review.overallScore >= 70 ? 'text-amber-500' :
+                review.overallScore >= 50 ? 'text-orange-500' : 'text-red-600'
+              }`}>
+                {review.overallScore}/100
+              </span>
+            </div>
+          )}
+        </div>
+      </header>
+      
+      <main>
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+            <p className="mt-4 text-gray-600">Loading review...</p>
+          </div>
+        ) : error ? (
+          <div className="rounded-md bg-red-50 p-4 mb-6">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-red-800">{error}</p>
+              </div>
+            </div>
+          </div>
+        ) : review ? (
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-12 mb-6">
+              <IssueSummary review={review} />
+            </div>
+            
+            <div className="lg:col-span-5 space-y-6">
+              <IssueList issues={allIssues} onIssueSelect={handleIssueSelect} />
+            </div>
+            
+            <div className="lg:col-span-7">
+              {selectedIssue ? (
+                <IssueDetail issue={selectedIssue} fileContent={mockFileContent} />
+              ) : (
+                <div className="bg-white shadow overflow-hidden sm:rounded-lg p-6 text-center text-gray-500">
+                  Select an issue from the list to view details
+                </div>
+              )}
+            </div>
+            
+            <div className="lg:col-span-12 mt-6">
+              <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                <div className="px-4 py-5 sm:px-6">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900">
+                    Markdown Summary
+                  </h3>
+                </div>
+                <div className="border-t border-gray-200 px-4 py-5 sm:p-6">
+                  <div className="prose max-w-none">
+                    <pre className="whitespace-pre-wrap text-sm">
+                      {review.markdownSummary}
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : null}
+      </main>
+    </DashboardLayout>
+  );
+}
+
+================
+File: src/app/reviews/page.tsx
+================
+// src/app/reviews/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import Link from 'next/link';
+import { ReviewSummary } from '@/types/review';
+import {  getScoreColor } from '@/lib/api';
+
+export default function ReviewsPage() {
+  const [reviews, setReviews] = useState<ReviewSummary[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState({
+    status: 'all',
+    repository: 'all',
+    author: 'all'
+  });
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // In a real app, we would fetch from the API
+        // const data = await apiClient.getReviews();
+        
+        // For demo purposes, using mock data
+        const mockReviews: ReviewSummary[] = [
+          {
+            id: '1',
+            prId: 123,
+            prTitle: 'Add user authentication feature',
+            repository: 'org/repo',
+            branch: 'feature/auth',
+            author: 'johndoe',
+            status: 'completed',
+            createdAt: '2023-06-01T12:00:00Z',
+            completedAt: '2023-06-01T12:05:30Z',
+            overallScore: 75,
+            issueStats: {
+              critical: 2,
+              warning: 5,
+              suggestion: 10,
+              total: 17
+            }
+          },
+          {
+            id: '2',
+            prId: 124,
+            prTitle: 'Refactor database queries',
+            repository: 'org/repo',
+            branch: 'feature/db-refactor',
+            author: 'janedoe',
+            status: 'pending',
+            createdAt: '2023-06-02T10:30:00Z',
+            overallScore: 0,
+            issueStats: {
+              critical: 0,
+              warning: 0,
+              suggestion: 0,
+              total: 0
+            }
+          },
+          {
+            id: '3',
+            prId: 125,
+            prTitle: 'Update dependencies and fix security vulnerabilities',
+            repository: 'org/other-repo',
+            branch: 'fix/security',
+            author: 'securityteam',
+            status: 'completed',
+            createdAt: '2023-06-03T09:15:00Z',
+            completedAt: '2023-06-03T09:20:12Z',
+            overallScore: 92,
+            issueStats: {
+              critical: 0,
+              warning: 3,
+              suggestion: 5,
+              total: 8
+            }
+          },
+          {
+            id: '4',
+            prId: 126,
+            prTitle: 'Add new API endpoints for user profiles',
+            repository: 'org/api-service',
+            branch: 'feature/user-profiles',
+            author: 'apiteam',
+            status: 'failed',
+            createdAt: '2023-06-04T14:20:00Z',
+            overallScore: 0,
+            issueStats: {
+              critical: 0,
+              warning: 0,
+              suggestion: 0,
+              total: 0
+            }
+          },
+          {
+            id: '5',
+            prId: 127,
+            prTitle: 'Implement notification system',
+            repository: 'org/repo',
+            branch: 'feature/notifications',
+            author: 'johndoe',
+            status: 'completed',
+            createdAt: '2023-06-05T08:45:00Z',
+            completedAt: '2023-06-05T08:50:23Z',
+            overallScore: 85,
+            issueStats: {
+              critical: 0,
+              warning: 2,
+              suggestion: 7,
+              total: 9
+            }
+          }
+        ];
+        
+        setReviews(mockReviews);
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to fetch reviews:', err);
+        setError('Failed to load reviews. Please try again later.');
+        setLoading(false);
+      }
+    };
+    
+    fetchReviews();
+  }, []);
+  
+  // Filter reviews based on current filter settings
+  const filteredReviews = reviews.filter(review => {
+    if (filter.status !== 'all' && review.status !== filter.status) {
+      return false;
+    }
+    if (filter.repository !== 'all' && review.repository !== filter.repository) {
+      return false;
+    }
+    if (filter.author !== 'all' && review.author !== filter.author) {
+      return false;
+    }
+    return true;
+  });
+  
+  // Get unique values for filter dropdowns
+  const repositories = ['all', ...new Set(reviews.map(r => r.repository))];
+  const authors = ['all', ...new Set(reviews.map(r => r.author))];
+  const statuses = ['all', 'pending', 'completed', 'failed'];
+
+  return (
+    <DashboardLayout>
+      <header className="bg-white shadow-sm mb-6 -mt-6 py-6 px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">Reviews</h1>
+        </div>
+      </header>
+      
+      <main>
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+            <p className="mt-4 text-gray-600">Loading reviews...</p>
+          </div>
+        ) : error ? (
+          <div className="rounded-md bg-red-50 p-4 mb-6">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-red-800">{error}</p>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Filters */}
+            <div className="bg-white shadow rounded-lg p-4 mb-6">
+              <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+                <div className="w-full sm:w-auto">
+                  <label htmlFor="status-filter" className="block text-sm font-medium text-gray-700 mb-1">
+                    Status
+                  </label>
+                  <select
+                    id="status-filter"
+                    value={filter.status}
+                    onChange={(e) => setFilter({...filter, status: e.target.value})}
+                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  >
+                    {statuses.map((status) => (
+                      <option key={status} value={status}>
+                        {status === 'all' ? 'All Statuses' : status.charAt(0).toUpperCase() + status.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="w-full sm:w-auto">
+                  <label htmlFor="repository-filter" className="block text-sm font-medium text-gray-700 mb-1">
+                    Repository
+                  </label>
+                  <select
+                    id="repository-filter"
+                    value={filter.repository}
+                    onChange={(e) => setFilter({...filter, repository: e.target.value})}
+                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  >
+                    {repositories.map((repo) => (
+                      <option key={repo} value={repo}>
+                        {repo === 'all' ? 'All Repositories' : repo}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="w-full sm:w-auto">
+                  <label htmlFor="author-filter" className="block text-sm font-medium text-gray-700 mb-1">
+                    Author
+                  </label>
+                  <select
+                    id="author-filter"
+                    value={filter.author}
+                    onChange={(e) => setFilter({...filter, author: e.target.value})}
+                    className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  >
+                    {authors.map((author) => (
+                      <option key={author} value={author}>
+                        {author === 'all' ? 'All Authors' : author}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+            {/* Reviews Table - Desktop view (hidden on mobile) */}
+            <div className="bg-white shadow rounded-lg overflow-hidden hidden md:block">
+              <div className="min-w-full divide-y divide-gray-200">
+                <div className="bg-gray-50">
+                  <div className="grid grid-cols-12 divide-x divide-gray-200">
+                    <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider col-span-1">PR</div>
+                    <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider col-span-4">Title</div>
+                    <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider col-span-2">Repository</div>
+                    <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider col-span-1">Author</div>
+                    <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider col-span-1">Status</div>
+                    <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider col-span-1">Score</div>
+                    <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider col-span-1">Issues</div>
+                    <div className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider col-span-1">Actions</div>
+                  </div>
+                </div>
+                <div className="bg-white divide-y divide-gray-200">
+                  {filteredReviews.length > 0 ? (
+                    filteredReviews.map((review) => (
+                      <div key={review.id} className="grid grid-cols-12 divide-x divide-gray-200 hover:bg-gray-50">
+                        <div className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 col-span-1">
+                          #{review.prId}
+                        </div>
+                        <div className="px-6 py-4 text-sm text-gray-900 col-span-4">
+                          <div className="text-sm font-medium text-gray-900 truncate">
+                            {review.prTitle}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            Branch: {review.branch}
+                          </div>
+                        </div>
+                        <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 col-span-2 truncate">
+                          {review.repository}
+                        </div>
+                        <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 col-span-1">
+                          {review.author}
+                        </div>
+                        <div className="px-6 py-4 whitespace-nowrap col-span-1">
+                          <span className={`inline-flex px-2 text-xs font-semibold rounded-full ${
+                            review.status === 'completed' ? 'bg-green-100 text-green-800' :
+                            review.status === 'pending' ? 'bg-blue-100 text-blue-800' :
+                            'bg-red-100 text-red-800'
+                          }`}>
+                            {review.status.charAt(0).toUpperCase() + review.status.slice(1)}
+                          </span>
+                        </div>
+                        <div className="px-6 py-4 whitespace-nowrap text-sm col-span-1">
+                          {review.status === 'completed' ? (
+                            <span className={`font-bold ${getScoreColor(review.overallScore)}`}>
+                              {review.overallScore}/100
+                            </span>
+                          ) : (
+                            <span className="text-gray-500">-</span>
+                          )}
+                        </div>
+                        <div className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 col-span-1">
+                          {review.status === 'completed' ? (
+                            <div className="flex space-x-2">
+                              <span className="text-red-600">{review.issueStats.critical}</span>
+                              <span className="text-amber-600">{review.issueStats.warning}</span>
+                              <span className="text-blue-600">{review.issueStats.suggestion}</span>
+                            </div>
+                          ) : (
+                            <span>-</span>
+                          )}
+                        </div>
+                        <div className="px-6 py-4 whitespace-nowrap text-sm font-medium col-span-1">
+                          <Link 
+                            href={`/reviews/${review.id}`}
+                            className="text-blue-600 hover:text-blue-900"
+                          >
+                            View
+                          </Link>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="px-6 py-4 text-sm text-gray-500 text-center col-span-12">
+                      No reviews match the selected filters.
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            
+            {/* Reviews Cards - Mobile view (hidden on desktop) */}
+            <div className="md:hidden space-y-4">
+              {filteredReviews.length > 0 ? (
+                filteredReviews.map((review) => (
+                  <div key={review.id} className="bg-white shadow rounded-lg overflow-hidden">
+                    <div className="p-4 border-b border-gray-200">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="text-lg font-medium text-gray-900">PR #{review.prId}</h3>
+                          <p className="text-sm text-gray-500">{review.repository}</p>
+                        </div>
+                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          review.status === 'completed' ? 'bg-green-100 text-green-800' :
+                          review.status === 'pending' ? 'bg-blue-100 text-blue-800' :
+                          'bg-red-100 text-red-800'
+                        }`}>
+                          {review.status.charAt(0).toUpperCase() + review.status.slice(1)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="px-4 py-3">
+                      <h4 className="font-medium text-gray-900 mb-2">{review.prTitle}</h4>
+                      <p className="text-sm text-gray-500 mb-1">Branch: {review.branch}</p>
+                      <p className="text-sm text-gray-500 mb-1">Author: {review.author}</p>
+                      {review.status === 'completed' && (
+                        <>
+                          <div className="flex justify-between mt-3">
+                            <span className="text-sm text-gray-500">Score:</span>
+                            <span className={`font-bold ${getScoreColor(review.overallScore)}`}>
+                              {review.overallScore}/100
+                            </span>
+                          </div>
+                          <div className="flex justify-between mt-1">
+                            <span className="text-sm text-gray-500">Issues:</span>
+                            <div className="flex space-x-2">
+                              <span className="text-red-600">{review.issueStats.critical} Critical</span>
+                              <span className="text-amber-600">{review.issueStats.warning} Warning</span>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <div className="bg-gray-50 px-4 py-3 border-t border-gray-200">
+                      <Link 
+                        href={`/reviews/${review.id}`}
+                        className="text-blue-600 hover:text-blue-900 font-medium"
+                      >
+                        View Details
+                      </Link>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="bg-white shadow rounded-lg p-4 text-sm text-gray-500 text-center">
+                  No reviews match the selected filters.
+                </div>
+              )}
+            </div>
+            
+            {/* Pagination (simplified) */}
+            <div className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 rounded-b-lg">
+              <div className="flex-1 flex justify-between">
+                <button
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                  disabled={true}
+                >
+                  Previous
+                </button>
+                <div className="hidden sm:flex items-center">
+                  <p className="text-sm text-gray-700">
+                    Showing <span className="font-medium">1</span> to <span className="font-medium">{filteredReviews.length}</span> of{' '}
+                    <span className="font-medium">{filteredReviews.length}</span> results
+                  </p>
+                </div>
+                <button
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                  disabled={true}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </main>
+    </DashboardLayout>
+  );
+}
+
+================
+File: src/app/settings/page.tsx
+================
+// src/app/settings/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import GithubConfigForm from '@/components/settings/GithubConfigForm';
+import ApiTokenForm from '@/components/settings/ApiTokenForm';
+import NotificationSettings from '@/components/settings/NotificationSettings';
+import { UserSettings } from '@/types/settings';
+// import { apiClient } from '@/lib/api';
+
+export default function SettingsPage() {
+  const [settings, setSettings] = useState<UserSettings | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [saveStatus, setSaveStatus] = useState<{
+    saving: boolean;
+    success?: boolean;
+    message?: string;
+  }>({ saving: false });
+  
+  // Tabs for different settings sections
+  const [activeTab, setActiveTab] = useState<'github' | 'api' | 'notifications'>('github');
+  
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // In a real app, we would fetch from the API
+        // const data = await apiClient.getSettings();
+        
+        // For demo purposes, using mock data
+        const mockSettings: UserSettings = {
+          github: {
+            personalAccessToken: '',
+            webhookSecret: '',
+            enabled: false,
+            repositories: [],
+            autoReview: true
+          },
+          api: {
+            backendUrl: 'http://localhost:3001',
+            apiKey: ''
+          },
+          notifications: {
+            email: false,
+            emailAddress: '',
+            slack: false,
+            slackWebhook: '',
+            notifyOnCritical: true,
+            notifyOnComplete: true
+          }
+        };
+        
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        setSettings(mockSettings);
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to fetch settings:', err);
+        setError('Failed to load settings. Please try again later.');
+        setLoading(false);
+      }
+    };
+    
+    fetchSettings();
+  }, []);
+  
+  const handleSaveGithubConfig = async (githubConfig: UserSettings['github']) => {
+    if (!settings) return;
+    
+    try {
+      setSaveStatus({ saving: true });
+      
+      // Update settings
+      const updatedSettings = {
+        ...settings,
+        github: githubConfig
+      };
+      
+      // In a real app, we would save to the API
+      // await apiClient.saveSettings(updatedSettings);
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSettings(updatedSettings);
+      setSaveStatus({ saving: false, success: true, message: 'GitHub settings saved successfully!' });
+      
+      // Reset status message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus({ saving: false });
+      }, 3000);
+    } catch (err) {
+      console.error('Failed to save GitHub settings:', err);
+      setSaveStatus({ saving: false, success: false, message: 'Failed to save settings. Please try again.' });
+    }
+  };
+  
+  const handleSaveApiConfig = async (apiConfig: UserSettings['api']) => {
+    if (!settings) return;
+    
+    try {
+      setSaveStatus({ saving: true });
+      
+      // Update settings
+      const updatedSettings = {
+        ...settings,
+        api: apiConfig
+      };
+      
+      // In a real app, we would save to the API
+      // await apiClient.saveSettings(updatedSettings);
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSettings(updatedSettings);
+      setSaveStatus({ saving: false, success: true, message: 'API settings saved successfully!' });
+      
+      // Reset status message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus({ saving: false });
+      }, 3000);
+    } catch (err) {
+      console.error('Failed to save API settings:', err);
+      setSaveStatus({ saving: false, success: false, message: 'Failed to save settings. Please try again.' });
+    }
+  };
+  
+  const handleSaveNotificationSettings = async (notificationSettings: UserSettings['notifications']) => {
+    if (!settings) return;
+    
+    try {
+      setSaveStatus({ saving: true });
+      
+      // Update settings
+      const updatedSettings = {
+        ...settings,
+        notifications: notificationSettings
+      };
+      
+      // In a real app, we would save to the API
+      // await apiClient.saveSettings(updatedSettings);
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSettings(updatedSettings);
+      setSaveStatus({ saving: false, success: true, message: 'Notification settings saved successfully!' });
+      
+      // Reset status message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus({ saving: false });
+      }, 3000);
+    } catch (err) {
+      console.error('Failed to save notification settings:', err);
+      setSaveStatus({ saving: false, success: false, message: 'Failed to save settings. Please try again.' });
+    }
+  };
+
+  return (
+    <DashboardLayout>
+      <header className="bg-white shadow-sm mb-6 -mt-6 py-6 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900">Settings</h1>
+      </header>
+      
+      <main>
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+            <p className="mt-4 text-gray-600">Loading settings...</p>
+          </div>
+        ) : error ? (
+          <div className="rounded-md bg-red-50 p-4 mb-6">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-red-800">{error}</p>
+              </div>
+            </div>
+          </div>
+        ) : settings ? (
+          <>
+            {/* Save Status Message */}
+            {saveStatus.message && (
+              <div className={`mb-6 rounded-md p-4 ${saveStatus.success ? 'bg-green-50' : 'bg-red-50'}`}>
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    {saveStatus.success ? (
+                      <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    ) : (
+                      <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="ml-3">
+                    <p className={`text-sm font-medium ${saveStatus.success ? 'text-green-800' : 'text-red-800'}`}>
+                      {saveStatus.message}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Settings Tabs */}
+            <div className="mb-8 border-b border-gray-200">
+              <nav className="-mb-px flex space-x-8">
+                <button
+                  onClick={() => setActiveTab('github')}
+                  className={`
+                    whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium
+                    ${activeTab === 'github' 
+                      ? 'border-blue-500 text-blue-600' 
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}
+                  `}
+                >
+                  GitHub Integration
+                </button>
+                <button
+                  onClick={() => setActiveTab('api')}
+                  className={`
+                    whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium
+                    ${activeTab === 'api' 
+                      ? 'border-blue-500 text-blue-600' 
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}
+                  `}
+                >
+                  API Configuration
+                </button>
+                <button
+                  onClick={() => setActiveTab('notifications')}
+                  className={`
+                    whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium
+                    ${activeTab === 'notifications' 
+                      ? 'border-blue-500 text-blue-600' 
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}
+                  `}
+                >
+                  Notifications
+                </button>
+              </nav>
+            </div>
+            
+            {/* Settings Forms */}
+            <div>
+              {activeTab === 'github' && (
+                <GithubConfigForm 
+                  initialConfig={settings.github} 
+                  onSave={handleSaveGithubConfig} 
+                />
+              )}
+              
+              {activeTab === 'api' && (
+                <ApiTokenForm 
+                  initialConfig={settings.api} 
+                  onSave={handleSaveApiConfig} 
+                />
+              )}
+              
+              {activeTab === 'notifications' && (
+                <NotificationSettings 
+                  initialSettings={settings.notifications} 
+                  onSave={handleSaveNotificationSettings} 
+                />
+              )}
+            </div>
+          </>
+        ) : null}
+      </main>
+    </DashboardLayout>
+  );
+}
+
+================
+File: src/app/globals.css
+================
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+================
+File: src/app/layout.tsx
+================
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: "Create Next App",
+  description: "Generated by create next app",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html lang="en">
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
+  );
+}
+
+================
+File: src/app/page.tsx
+================
+// src/app/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+// import Image from 'next/image';
+// import { useRouter } from 'next/navigation';
+
+interface Review {
+  id: string;
+  prId: number;
+  prTitle: string;
+  repository: string;
+  score: number;
+}
+
+export default function Home() {
+  // const router = useRouter(); 
+  const [recentReviews, setRecentReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // For demo, we'll just use mock data instead of actual API call
+    const loadReviews = async () => {
+      // In a real app: const response = await fetch('/api/reviews?limit=3');
+      
+      // Mock data
+      const mockReviews = [
+        { id: '1', prId: 123, prTitle: 'Add user authentication', repository: 'org/repo', score: 75 },
+        { id: '2', prId: 124, prTitle: 'Refactor database queries', repository: 'org/repo', score: 92 },
+        { id: '3', prId: 125, prTitle: 'Fix security issues', repository: 'org/other-repo', score: 60 },
+      ];
+      
+      setTimeout(() => {
+        setRecentReviews(mockReviews);
+        setLoading(false);
+      }, 500);
+    };
+    
+    loadReviews();
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-gray-800 text-white">
+        <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-extrabold sm:text-5xl md:text-6xl">
+              AI-Powered Code Review Assistant
+            </h1>
+            <p className="mt-3 max-w-md mx-auto text-base text-gray-300 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+              Automated code quality checks to improve your codebase
+            </p>
+            <div className="mt-10 flex justify-center">
+              <div className="inline-flex rounded-md shadow">
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Go to Dashboard
+                </Link>
+              </div>
+              <div className="ml-3 inline-flex">
+                <Link
+                  href="/settings"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-50"
+                >
+                  Configure Settings
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Recent Code Reviews</h2>
+            {loading ? (
+              <div className="mt-4 bg-white shadow rounded-lg p-6 animate-pulse">
+                <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              </div>
+            ) : (
+              <div className="mt-4 bg-white shadow rounded-lg divide-y divide-gray-200">
+                {recentReviews.map((review) => (
+                  <div key={review.id} className="p-6 hover:bg-gray-50">
+                    <Link href={`/reviews/${review.id}`} className="block">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium text-gray-900">
+                            PR #{review.prId}: {review.prTitle}
+                          </h3>
+                          <p className="text-sm text-gray-500">{review.repository}</p>
+                        </div>
+                        <div className={`text-xl font-bold ${
+                          review.score >= 90 ? 'text-green-600' :
+                          review.score >= 70 ? 'text-amber-500' :
+                          review.score >= 50 ? 'text-orange-500' : 'text-red-600'
+                        }`}>
+                          {review.score}/100
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="mt-6">
+              <Link
+                href="/reviews"
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                View all reviews →
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Quick Actions</h2>
+            <div className="mt-4 bg-white shadow rounded-lg p-6">
+              <div className="space-y-4">
+                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
+                  <h3 className="font-medium text-gray-900">Trigger a Manual Review</h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Analyze a pull request to get actionable feedback
+                  </p>
+                </div>
+                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
+                  <h3 className="font-medium text-gray-900">Configure GitHub Integration</h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Set up automatic PR reviews with GitHub webhooks
+                  </p>
+                </div>
+                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
+                  <h3 className="font-medium text-gray-900">Notification Settings</h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Configure how you receive alerts about code issues
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer className="bg-white mt-12 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-gray-500 text-sm">
+            AI-Powered Code Review Assistant © 2025
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+================
+File: src/components/dashboard/AnalysisForm.tsx
+================
+// src/components/dashboard/AnalysisForm.tsx
+'use client';
+
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+interface AnalysisFormProps {
+  onCancel: () => void;
+  onSuccess?: (id: string | number) => void;
+}
+
+export default function AnalysisForm({ onCancel, onSuccess }: AnalysisFormProps) {
+  const router = useRouter();
+  
+  const [formState, setFormState] = useState({
+    repositoryUrl: '',
+    prNumber: '',
+    branch: ''
+  });
+  
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormState(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+  
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    
+    if (!formState.repositoryUrl) {
+      setError('Repository URL is required');
+      return;
+    }
+    
+    if (!formState.prNumber) {
+      setError('PR number is required');
+      return;
+    }
+    
+    setSubmitting(true);
+    
+    try {
+      // Call the API route
+      const response = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          ...formState,
+          manual: true
+        })
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to initiate analysis');
+      }
+      
+      const data = await response.json();
+      
+      // Call success callback or redirect
+      if (onSuccess) {
+        onSuccess(data.id);
+      } else {
+        router.push('/reviews');
+      }
+      
+    } catch (err) {
+      console.error('Error triggering analysis:', err);
+      setError(err instanceof Error ? err.message : 'An unexpected error occurred');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+  
+  return (
+    <div className="bg-white shadow sm:rounded-lg">
+      <div className="px-4 py-5 sm:p-6">
+        <h3 className="text-lg font-medium leading-6 text-gray-900">New Manual Analysis</h3>
+        <div className="mt-2 max-w-xl text-sm text-gray-500">
+          <p>Specify repository and pull request details to trigger a manual code review.</p>
+        </div>
+        
+        {error && (
+          <div className="mt-4 rounded-md bg-red-50 p-4">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-800">Error</h3>
+                <div className="mt-2 text-sm text-red-700">
+                  <p>{error}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+        
+        <form className="mt-5 space-y-4" onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="repositoryUrl" className="block text-sm font-medium text-gray-700">
+              Repository URL or name
+            </label>
+            <div className="mt-1">
+              <input
+                type="text"
+                name="repositoryUrl"
+                id="repositoryUrl"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="owner/repo"
+                value={formState.repositoryUrl}
+                onChange={handleChange}
+                required
+              />
+            </div>
+            <p className="mt-2 text-sm text-gray-500">
+              Enter the full repository URL or the owner/repo format (e.g., github.com/owner/repo or owner/repo)
+            </p>
+          </div>
+          
+          <div>
+            <label htmlFor="prNumber" className="block text-sm font-medium text-gray-700">
+              Pull Request Number
+            </label>
+            <div className="mt-1">
+              <input
+                type="text"
+                name="prNumber"
+                id="prNumber"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="123"
+                value={formState.prNumber}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+          
+          <div>
+            <label htmlFor="branch" className="block text-sm font-medium text-gray-700">
+              Branch (optional)
+            </label>
+            <div className="mt-1">
+              <input
+                type="text"
+                name="branch"
+                id="branch"
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="feature/branch-name"
+                value={formState.branch}
+                onChange={handleChange}
+              />
+            </div>
+            <p className="mt-2 text-sm text-gray-500">
+              If left blank, the system will detect the branch from the PR
+            </p>
+          </div>
+          
+          <div className="flex justify-end space-x-3 pt-4">
+            <button
+              type="button"
+              onClick={onCancel}
+              className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+            >
+              {submitting ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Starting Analysis...
+                </>
+              ) : (
+                "Start Analysis"
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+================
+File: src/components/dashboard/AnalysisModal.tsx
+================
+// src/components/dashboard/AnalysisModal.tsx
+'use client';
+
+import { Fragment } from 'react';
+import { Dialog } from '@headlessui/react';
+import AnalysisForm from './AnalysisForm';
+
+interface AnalysisModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSuccess?: (id: string | number) => void;
+}
+
+export default function AnalysisModal({ isOpen, onClose, onSuccess }: AnalysisModalProps) {
+  return (
+    <>
+      {/* Using Dialog directly without Transition to avoid type errors */}
+      <Dialog 
+        open={isOpen} 
+        onClose={onClose}
+        className="relative z-10"
+      >
+        {/* Backdrop */}
+        <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
+
+        {/* Full-screen container to center the panel */}
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4">
+            <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-lg bg-white p-6 shadow-xl transition-all">
+              <div className="absolute top-0 right-0 pt-4 pr-4">
+                <button
+                  type="button"
+                  className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                  onClick={onClose}
+                >
+                  <span className="sr-only">Close</span>
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              
+              <AnalysisForm 
+                onCancel={onClose}
+                onSuccess={(id) => {
+                  if (onSuccess) {
+                    onSuccess(id);
+                  }
+                  onClose();
+                }}
+              />
+            </Dialog.Panel>
+          </div>
+        </div>
+      </Dialog>
+    </>
+  );
+}
+
+================
+File: src/components/dashboard/ReviewCard.tsx
+================
+// src/components/dashboard/ReviewCard.tsx
+import React from 'react';
+import Link from 'next/link';
+import { ReviewSummary } from '@/types/review';
+import StatusBadge from './StatusBadge';
+import { getScoreColor } from '@/lib/api';
+
+interface ReviewCardProps {
+  review: ReviewSummary;
+}
+
+export default function ReviewCard({ review }: ReviewCardProps) {
+  const formattedDate = new Date(review.createdAt).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  return (
+    <div className="bg-white shadow overflow-hidden sm:rounded-lg border border-gray-200 hover:border-blue-400 transition-colors">
+      <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
+        <div>
+          <h3 className="text-lg leading-6 font-medium text-gray-900 flex items-center">
+            PR #{review.prId}: {review.prTitle.length > 50 ? review.prTitle.substring(0, 50) + '...' : review.prTitle}
+          </h3>
+          <p className="mt-1 max-w-2xl text-sm text-gray-500">
+            {review.repository} • {formattedDate}
+          </p>
+        </div>
+        <StatusBadge status={review.status} />
+      </div>
+      
+      <div className="border-t border-gray-200">
+        <dl>
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Author</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{review.author}</dd>
+          </div>
+          
+          <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Branch</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{review.branch}</dd>
+          </div>
+          
+          {review.status === 'completed' && (
+            <>
+              <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Overall Score</dt>
+                <dd className={`mt-1 text-sm font-semibold sm:col-span-2 sm:mt-0 ${getScoreColor(review.overallScore)}`}>
+                  {review.overallScore}/100
+                </dd>
+              </div>
+              
+              <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                <dt className="text-sm font-medium text-gray-500">Issues Found</dt>
+                <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                  <div className="flex space-x-3">
+                    <span className="text-red-600 font-medium">{review.issueStats.critical} Critical</span>
+                    <span className="text-amber-600 font-medium">{review.issueStats.warning} Warnings</span>
+                    <span className="text-blue-600 font-medium">{review.issueStats.suggestion} Suggestions</span>
+                  </div>
+                </dd>
+              </div>
+            </>
+          )}
+        </dl>
+      </div>
+      
+      <div className="bg-gray-50 px-4 py-4 sm:px-6 flex justify-end">
+        <Link 
+          href={`/reviews/${review.id}`}
+          className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+        >
+          View Details
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+================
+File: src/components/dashboard/StatsSummary.tsx
+================
+// src/components/dashboard/StatsSummary.tsx
+import React from 'react';
+import { ReviewSummary } from '@/types/review';
+
+interface StatsSummaryProps {
+  reviews: ReviewSummary[];
+}
+
+export default function StatsSummary({ reviews }: StatsSummaryProps) {
+  // Calculate statistics
+  const totalReviews = reviews.length;
+  const completedReviews = reviews.filter(r => r.status === 'completed').length;
+  const pendingReviews = reviews.filter(r => r.status === 'pending').length;
+  const failedReviews = reviews.filter(r => r.status === 'failed').length;
+  
+  // Calculate total issues
+  const totalCritical = reviews.reduce((acc, review) => acc + review.issueStats.critical, 0);
+  const totalWarnings = reviews.reduce((acc, review) => acc + review.issueStats.warning, 0);
+  const totalSuggestions = reviews.reduce((acc, review) => acc + review.issueStats.suggestion, 0);
+  
+  // Calculate average score for completed reviews
+  const completedReviewsList = reviews.filter(r => r.status === 'completed');
+  const averageScore = completedReviewsList.length > 0 
+    ? Math.round(completedReviewsList.reduce((acc, review) => acc + review.overallScore, 0) / completedReviewsList.length) 
+    : 0;
+  
+  const stats = [
+    { name: 'Total Reviews', value: totalReviews, color: 'bg-blue-500' },
+    { name: 'Completed', value: completedReviews, color: 'bg-green-500' },
+    { name: 'In Progress', value: pendingReviews, color: 'bg-yellow-500' },
+    { name: 'Failed', value: failedReviews, color: 'bg-red-500' },
+  ];
+  
+  const issueStats = [
+    { name: 'Critical Issues', value: totalCritical, color: 'bg-red-500' },
+    { name: 'Warnings', value: totalWarnings, color: 'bg-yellow-500' },
+    { name: 'Suggestions', value: totalSuggestions, color: 'bg-blue-500' },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {stats.map((stat) => (
+        <div
+          key={stat.name}
+          className="relative overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:px-6 sm:pt-6"
+        >
+          <dt>
+            <div className={`absolute rounded-md p-3 ${stat.color}`}>
+              <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+              </svg>
+            </div>
+            <p className="ml-16 truncate text-sm font-medium text-gray-500">{stat.name}</p>
+          </dt>
+          <dd className="ml-16 flex items-baseline">
+            <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
+          </dd>
+        </div>
+      ))}
+      
+      {/* Average Score Card */}
+      <div className="relative overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:px-6 sm:pt-6 sm:col-span-2">
+        <dt>
+          <div className="absolute rounded-md p-3 bg-indigo-500">
+            <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+            </svg>
+          </div>
+          <p className="ml-16 truncate text-sm font-medium text-gray-500">Average Score</p>
+        </dt>
+        <dd className="ml-16 flex items-baseline">
+          <p className="text-2xl font-semibold text-gray-900">{averageScore}/100</p>
+        </dd>
+      </div>
+      
+      {issueStats.map((stat) => (
+        <div
+          key={stat.name}
+          className="relative overflow-hidden rounded-lg bg-white px-4 py-5 shadow sm:px-6 sm:pt-6"
+        >
+          <dt>
+            <div className={`absolute rounded-md p-3 ${stat.color}`}>
+              <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+            </div>
+            <p className="ml-16 truncate text-sm font-medium text-gray-500">{stat.name}</p>
+          </dt>
+          <dd className="ml-16 flex items-baseline">
+            <p className="text-2xl font-semibold text-gray-900">{stat.value}</p>
+          </dd>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+================
+File: src/components/dashboard/StatusBadge.tsx
+================
+// src/components/dashboard/StatusBadge.tsx
+import React from 'react';
+
+type StatusType = 'pending' | 'completed' | 'failed';
+
+interface StatusBadgeProps {
+  status: StatusType;
+}
+
+export default function StatusBadge({ status }: StatusBadgeProps) {
+  const getStatusClasses = (status: StatusType): string => {
+    switch (status) {
+      case 'pending':
+        return 'bg-blue-100 text-blue-800 border-blue-200';
+      case 'completed':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'failed':
+        return 'bg-red-100 text-red-800 border-red-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
+
+  const getStatusText = (status: StatusType): string => {
+    switch (status) {
+      case 'pending':
+        return 'In Progress';
+      case 'completed':
+        return 'Completed';
+      case 'failed':
+        return 'Failed';
+      default:
+        return 'Unknown';
+    }
+  };
+
+  return (
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusClasses(status)}`}>
+      {status === 'pending' && (
+        <svg className="mr-1.5 h-2 w-2 text-blue-400 animate-pulse" fill="currentColor" viewBox="0 0 8 8">
+          <circle cx="4" cy="4" r="3" />
+        </svg>
+      )}
+      {status === 'completed' && (
+        <svg className="mr-1.5 h-2 w-2 text-green-500" fill="currentColor" viewBox="0 0 8 8">
+          <circle cx="4" cy="4" r="3" />
+        </svg>
+      )}
+      {status === 'failed' && (
+        <svg className="mr-1.5 h-2 w-2 text-red-500" fill="currentColor" viewBox="0 0 8 8">
+          <circle cx="4" cy="4" r="3" />
+        </svg>
+      )}
+      {getStatusText(status)}
+    </span>
+  );
+}
+
+================
+File: src/components/layout/DashboardLayout.tsx
+================
+// src/components/layout/DashboardLayout.tsx
+import React, { ReactNode } from 'react';
+import Navbar from './Navbar';
+
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
+
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <Navbar />
+      <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        {children}
+      </div>
+    </div>
+  );
+}
+
+================
+File: src/components/layout/Navbar.tsx
+================
+// src/components/layout/Navbar.tsx
+'use client';
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+export default function Navbar() {
+  const pathname = usePathname();
+  
+  const isActive = (path: string) => {
+    return pathname === path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white';
+  };
+  
+  return (
+    <nav className="bg-gray-800">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <span className="text-white text-xl font-bold">Code Review AI</span>
+            </div>
+            <div className="hidden md:block">
+              <div className="ml-10 flex items-baseline space-x-4">
+                <Link 
+                  href="/dashboard" 
+                  className={`${isActive('/dashboard')} rounded-md px-3 py-2 text-sm font-medium`}
+                >
+                  Dashboard
+                </Link>
+                <Link 
+                  href="/reviews" 
+                  className={`${isActive('/reviews')} rounded-md px-3 py-2 text-sm font-medium`}
+                >
+                  Reviews
+                </Link>
+                <Link 
+                  href="/settings" 
+                  className={`${isActive('/settings')} rounded-md px-3 py-2 text-sm font-medium`}
+                >
+                  Settings
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="hidden md:block">
+            <div className="ml-4 flex items-center md:ml-6">
+              <button
+                type="button"
+                className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              >
+                <span className="absolute -inset-1.5"></span>
+                <span className="sr-only">View notifications</span>
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                </svg>
+              </button>
+              
+              <div className="relative ml-3">
+                <div>
+                  <button
+                    type="button"
+                    className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                    id="user-menu-button"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  >
+                    <span className="absolute -inset-1.5"></span>
+                    <span className="sr-only">Open user menu</span>
+                    <div className="h-8 w-8 rounded-full bg-gray-500 flex items-center justify-center text-white">
+                      U
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="-mr-2 flex md:hidden">
+            {/* Mobile menu button */}
+            <button
+              type="button"
+              className="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              aria-controls="mobile-menu"
+              aria-expanded="false"
+            >
+              <span className="absolute -inset-0.5"></span>
+              <span className="sr-only">Open main menu</span>
+              <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile menu, show/hide based on menu state */}
+      <div className="md:hidden" id="mobile-menu">
+        <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+          <Link 
+            href="/dashboard" 
+            className={`${isActive('/dashboard')} block rounded-md px-3 py-2 text-base font-medium`}
+          >
+            Dashboard
+          </Link>
+          <Link 
+            href="/reviews" 
+            className={`${isActive('/reviews')} block rounded-md px-3 py-2 text-base font-medium`}
+          >
+            Reviews
+          </Link>
+          <Link 
+            href="/settings" 
+            className={`${isActive('/settings')} block rounded-md px-3 py-2 text-base font-medium`}
+          >
+            Settings
+          </Link>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+================
+File: src/components/reviews/CodeBlock.tsx
+================
+// src/components/reviews/CodeBlock.tsx
+import React from 'react';
+
+interface CodeBlockProps {
+  code: string;
+  language?: string;
+  highlight?: number[];
+  filename?: string;
+}
+
+export default function CodeBlock({ code, /* language = 'plaintext', */ highlight = [], filename }: CodeBlockProps) {
+  // Split code into lines for rendering and highlighting
+  const lines = code.split('\n');
+  
+  return (
+    <div className="overflow-hidden rounded-lg bg-gray-900 shadow">
+      {filename && (
+        <div className="bg-gray-800 px-4 py-2 text-xs text-gray-300 border-b border-gray-700">
+          {filename}
+        </div>
+      )}
+      <div className="overflow-x-auto">
+        <pre className="font-mono text-xs leading-5 p-0 m-0">
+          <div className="p-4 text-white space-y-0">
+            {lines.map((line, index) => (
+              <div 
+                key={index} 
+                className={`${highlight.includes(index + 1) ? 'bg-yellow-900 -mx-4 px-4' : ''} whitespace-pre`}
+                data-line-number={index + 1}
+              >
+                <span className="inline-block w-8 text-right pr-2 select-none text-gray-500">
+                  {index + 1}
+                </span>
+                <span>{line || ' '}</span>
+              </div>
+            ))}
+          </div>
+        </pre>
+      </div>
+    </div>
+  );
+}
+
+================
+File: src/components/reviews/IssueDetail.tsx
+================
+// src/components/reviews/IssueDetail.tsx
+import React from 'react';
+import { InlineComment } from '@/types/review';
+import { getSeverityColor, getSeverityEmoji } from '@/lib/api';
+import CodeBlock from './CodeBlock';
+
+interface IssueDetailProps {
+  issue: InlineComment;
+  fileContent?: string;
+}
+
+export default function IssueDetail({ issue, fileContent }: IssueDetailProps) {
+  // Extract details from the issue message
+  const messageLines = issue.message.split('\n');
+  const title = messageLines[0].replace(/🚨|⚠️|💡|\*\*/g, '').trim();
+  
+  // Try to find the description, snippet, and remediation
+  let description = '';
+  let snippet = '';
+  let remediation = '';
+  
+  messageLines.forEach((line, index) => {
+    if (index > 0) {
+      if (line.includes('```') && !snippet) {
+        // Start of code snippet
+        let snippetContent = '';
+        for (let i = index + 1; i < messageLines.length; i++) {
+          if (messageLines[i].includes('```')) {
+            break;
+          }
+          snippetContent += messageLines[i] + '\n';
+        }
+        snippet = snippetContent.trim();
+      } else if (line.includes('**Why it matters**:')) {
+        description = line.replace('**Why it matters**:', '').trim();
+      } else if (line.includes('**Recommendation**:')) {
+        remediation = line.replace('**Recommendation**:', '').trim();
+      } else if (!description && !line.includes('```') && line.trim() !== '') {
+        description = line.trim();
+      }
+    }
+  });
+
+  return (
+    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div className="px-4 py-5 sm:px-6">
+        <div className="flex items-center">
+          <span className="text-2xl mr-3" aria-hidden="true">
+            {getSeverityEmoji(issue.severity)}
+          </span>
+          <h3 className="text-lg leading-6 font-medium text-gray-900">
+            {title}
+          </h3>
+        </div>
+        <div className="mt-2 flex gap-2">
+          <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getSeverityColor(issue.severity)}`}>
+            {issue.severity}
+          </span>
+          <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+            {issue.category}
+          </span>
+        </div>
+      </div>
+      
+      <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <div className="mb-6">
+          <h4 className="text-sm font-medium text-gray-500">Location</h4>
+          <p className="mt-1 text-sm text-gray-900">
+            {issue.file} (Line {issue.line})
+          </p>
+        </div>
+        
+        {description && (
+          <div className="mb-6">
+            <h4 className="text-sm font-medium text-gray-500">Description</h4>
+            <p className="mt-1 text-sm text-gray-900">{description}</p>
+          </div>
+        )}
+        
+        {remediation && (
+          <div className="mb-6">
+            <h4 className="text-sm font-medium text-gray-500">Recommendation</h4>
+            <p className="mt-1 text-sm text-gray-900">{remediation}</p>
+          </div>
+        )}
+        
+        {snippet && (
+          <div className="mb-6">
+            <h4 className="text-sm font-medium text-gray-500 mb-2">Code Snippet</h4>
+            <CodeBlock code={snippet} highlight={[]} />
+          </div>
+        )}
+        
+        {fileContent && (
+          <div>
+            <h4 className="text-sm font-medium text-gray-500 mb-2">File Content</h4>
+            <CodeBlock 
+              code={fileContent} 
+              filename={issue.file}
+              highlight={[issue.line]} 
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+================
+File: src/components/reviews/IssueList.tsx
+================
+// src/components/reviews/IssueList.tsx
+import React, { useState } from 'react';
+import { InlineComment, IssueCategory, IssueSeverity } from '@/types/review';
+import { getSeverityEmoji, getSeverityColor } from '@/lib/api';
+
+interface IssueListProps {
+  issues: InlineComment[];
+  onIssueSelect: (issue: InlineComment) => void;
+}
+
+export default function IssueList({ issues, onIssueSelect }: IssueListProps) {
+  const [filter, setFilter] = useState({
+    severity: 'all',
+    category: 'all',
+    file: 'all'
+  });
+  
+  // Get unique files for filtering
+  const files = ['all', ...new Set(issues.map(issue => issue.file))];
+  
+  // Apply filters
+  const filteredIssues = issues.filter(issue => {
+    if (filter.severity !== 'all' && issue.severity !== filter.severity) {
+      return false;
+    }
+    if (filter.category !== 'all' && issue.category !== filter.category) {
+      return false;
+    }
+    if (filter.file !== 'all' && issue.file !== filter.file) {
+      return false;
+    }
+    return true;
+  });
+  
+  // Group issues by file
+  const issuesByFile: Record<string, InlineComment[]> = {};
+  filteredIssues.forEach(issue => {
+    if (!issuesByFile[issue.file]) {
+      issuesByFile[issue.file] = [];
+    }
+    issuesByFile[issue.file].push(issue);
+  });
+  
+  return (
+    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div className="px-4 py-5 sm:px-6 flex justify-between items-center">
+        <h3 className="text-lg leading-6 font-medium text-gray-900">
+          Issues ({filteredIssues.length})
+        </h3>
+        
+        <div className="flex space-x-2">
+          <select
+            value={filter.severity}
+            onChange={(e) => setFilter({...filter, severity: e.target.value})}
+            className="rounded-md border-gray-300 py-1 pl-3 pr-10 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="all">All Severities</option>
+            {Object.values(IssueSeverity).map(severity => (
+              <option key={severity} value={severity}>{severity}</option>
+            ))}
+          </select>
+          
+          <select
+            value={filter.category}
+            onChange={(e) => setFilter({...filter, category: e.target.value})}
+            className="rounded-md border-gray-300 py-1 pl-3 pr-10 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="all">All Categories</option>
+            {Object.values(IssueCategory).map(category => (
+              <option key={category} value={category}>{category}</option>
+            ))}
+          </select>
+          
+          <select
+            value={filter.file}
+            onChange={(e) => setFilter({...filter, file: e.target.value})}
+            className="rounded-md border-gray-300 py-1 pl-3 pr-10 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          >
+            <option value="all">All Files</option>
+            {files.filter(file => file !== 'all').map(file => (
+              <option key={file} value={file}>{file}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+      
+      <div className="border-t border-gray-200">
+        {Object.entries(issuesByFile).map(([file, fileIssues]) => (
+          <div key={file} className="border-b border-gray-200 last:border-b-0">
+            <div className="bg-gray-50 px-4 py-3">
+              <h4 className="text-sm font-medium text-gray-700 truncate">{file}</h4>
+            </div>
+            
+            <ul className="divide-y divide-gray-200">
+              {fileIssues.map((issue) => (
+                <li 
+                  key={issue.suggestionId}
+                  onClick={() => onIssueSelect(issue)}
+                  className="px-4 py-4 hover:bg-gray-50 cursor-pointer"
+                >
+                  <div className="flex items-start">
+                    <div className="mr-4 flex-shrink-0">
+                      <span className="text-2xl" aria-hidden="true">
+                        {getSeverityEmoji(issue.severity)}
+                      </span>
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="mb-1 flex items-center">
+                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getSeverityColor(issue.severity)}`}>
+                          {issue.severity}
+                        </span>
+                        <span className="ml-2 inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800">
+                          {issue.category}
+                        </span>
+                        <span className="ml-3 text-sm text-gray-500">
+                          Line {issue.line}
+                        </span>
+                      </div>
+                      <div className="text-sm font-medium text-gray-900 truncate">
+                        {issue.message.split('\n')[0].replace(/🚨|⚠️|💡|\*\*/g, '').trim()}
+                      </div>
+                    </div>
+                    <div className="ml-5 flex-shrink-0">
+                      <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        
+        {filteredIssues.length === 0 && (
+          <div className="text-center py-6 text-gray-500">
+            No issues match the selected filters.
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+================
+File: src/components/reviews/IssueSummary.tsx
+================
+// src/components/reviews/IssueSummary.tsx
+import React from 'react';
+import { DetailedReview } from '@/types/review';
+import { getScoreColor } from '@/lib/api';
+
+interface IssueSummaryProps {
+  review: DetailedReview;
+}
+
+export default function IssueSummary({ review }: IssueSummaryProps) {
+  return (
+    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+      <div className="px-4 py-5 sm:px-6">
+        <h3 className="text-lg leading-6 font-medium text-gray-900">
+          Review Summary
+        </h3>
+        <p className="mt-1 max-w-2xl text-sm text-gray-500">
+          Overall assessment of PR #{review.prId}
+        </p>
+      </div>
+      
+      <div className="border-t border-gray-200">
+        <dl>
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Pull Request</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">#{review.prId}: {review.prTitle}</dd>
+          </div>
+          
+          <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Repository</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{review.repository}</dd>
+          </div>
+          
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Branch</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{review.branch}</dd>
+          </div>
+          
+          <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Author</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">{review.author}</dd>
+          </div>
+          
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Analysis Date</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {new Date(review.analysisTime).toLocaleString()}
+            </dd>
+          </div>
+          
+          <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Analysis Duration</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              {review.duration < 1000 
+                ? `${review.duration}ms` 
+                : `${(review.duration / 1000).toFixed(2)}s`}
+            </dd>
+          </div>
+          
+          <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Overall Score</dt>
+            <dd className={`mt-1 text-sm font-bold sm:col-span-2 sm:mt-0 ${getScoreColor(review.overallScore)}`}>
+              {review.overallScore}/100
+            </dd>
+          </div>
+          
+          <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt className="text-sm font-medium text-gray-500">Issue Summary</dt>
+            <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+              <div className="flex space-x-6">
+                <div>
+                  <span className="block font-medium text-red-600">{review.issueStats.critical}</span>
+                  <span className="text-gray-500">Critical</span>
+                </div>
+                <div>
+                  <span className="block font-medium text-amber-600">{review.issueStats.warning}</span>
+                  <span className="text-gray-500">Warnings</span>
+                </div>
+                <div>
+                  <span className="block font-medium text-blue-600">{review.issueStats.suggestion}</span>
+                  <span className="text-gray-500">Suggestions</span>
+                </div>
+                <div>
+                  <span className="block font-medium">{review.issueStats.total}</span>
+                  <span className="text-gray-500">Total Issues</span>
+                </div>
+              </div>
+            </dd>
+          </div>
+          
+          {review.topIssues.length > 0 && (
+            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+              <dt className="text-sm font-medium text-gray-500">Top Issues</dt>
+              <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                <ul className="divide-y divide-gray-200">
+                  {review.topIssues.map((issue, index) => (
+                    <li key={index} className="py-2">
+                      <div className="flex items-start">
+                        {issue.severity === 'Critical' && (
+                          <span className="text-red-600 mr-2">🚨</span>
+                        )}
+                        {issue.severity === 'Warning' && (
+                          <span className="text-amber-600 mr-2">⚠️</span>
+                        )}
+                        {issue.severity === 'Suggestion' && (
+                          <span className="text-blue-600 mr-2">💡</span>
+                        )}
+                        <div>
+                          <p className="font-medium">{issue.title}</p>
+                          <p className="text-gray-500">
+                            {issue.file}{issue.line ? `:${issue.line}` : ''}
+                          </p>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+          )}
+        </dl>
+      </div>
+    </div>
+  );
+}
+
+================
+File: src/components/settings/ApiTokenForm.tsx
+================
+// src/components/settings/ApiTokenForm.tsx
+'use client';
+
+import React, { useState } from 'react';
+import { ApiConfig } from '@/types/settings';
+
+interface ApiTokenFormProps {
+  initialConfig: ApiConfig;
+  onSave: (config: ApiConfig) => void;
+}
+
+export default function ApiTokenForm({ initialConfig, onSave }: ApiTokenFormProps) {
+  const [config, setConfig] = useState<ApiConfig>(initialConfig);
+  const [tokenVisible, setTokenVisible] = useState<boolean>(false);
+  const [testingConnection, setTestingConnection] = useState<boolean>(false);
+  const [connectionStatus, setConnectionStatus] = useState<{success: boolean; message: string} | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setConfig({
+      ...config,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave(config);
+  };
+
+  const testConnection = async () => {
+    setTestingConnection(true);
+    try {
+      // In a real app, we would make an actual API call to test the connection
+      // const response = await fetch(`${config.backendUrl}/api/health`, {
+      //   headers: config.apiKey ? { 'Authorization': `Bearer ${config.apiKey}` } : {}
+      // });
+      // if (response.ok) {
+      //   setConnectionStatus({ success: true, message: 'Connection successful! Backend is reachable.' });
+      // } else {
+      //   setConnectionStatus({ success: false, message: `Error: ${response.status} ${response.statusText}` });
+      // }
+
+      // For demo, simulate a successful connection after a short delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      setConnectionStatus({ success: true, message: 'Connection successful! Backend is reachable.' });
+    } catch (error) {
+      setConnectionStatus({ success: false, message: `Error: Could not connect to backend. ${error}` });
+    } finally {
+      setTestingConnection(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+        <div className="md:grid md:grid-cols-3 md:gap-6">
+          <div className="md:col-span-1">
+            <h3 className="text-lg font-medium leading-6 text-gray-900">API Configuration</h3>
+            <p className="mt-1 text-sm text-gray-500">
+              Configure the connection to the backend API service.
+            </p>
+          </div>
+          <div className="mt-5 md:mt-0 md:col-span-2">
+            <div className="grid grid-cols-6 gap-6">
+              <div className="col-span-6 sm:col-span-4">
+                <label htmlFor="backendUrl" className="block text-sm font-medium text-gray-700">
+                  Backend URL
+                </label>
+                <input
+                  type="url"
+                  name="backendUrl"
+                  id="backendUrl"
+                  value={config.backendUrl}
+                  onChange={handleChange}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  placeholder="http://localhost:3001"
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  The URL of the backend API server.
+                </p>
+              </div>
+              
+              <div className="col-span-6 sm:col-span-4">
+                <label htmlFor="apiKey" className="block text-sm font-medium text-gray-700">
+                  API Key
+                </label>
+                <div className="mt-1 relative rounded-md shadow-sm">
+                  <input
+                    type={tokenVisible ? "text" : "password"}
+                    name="apiKey"
+                    id="apiKey"
+                    value={config.apiKey || ''}
+                    onChange={handleChange}
+                    className="block w-full rounded-md border-gray-300 pr-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    placeholder="Enter API key if required"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setTokenVisible(!tokenVisible)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500"
+                  >
+                    {tokenVisible ? (
+                      <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M3.28 2.22a.75.75 0 00-1.06 1.06l14.5 14.5a.75.75 0 101.06-1.06l-1.745-1.745a10.029 10.029 0 003.3-4.38 1.651 1.651 0 000-1.185A10.004 10.004 0 009.999 3a9.956 9.956 0 00-4.744 1.194L3.28 2.22zM7.752 6.69l1.092 1.092a2.5 2.5 0 013.374 3.373l1.091 1.092a4 4 0 00-5.557-5.557z" clipRule="evenodd" />
+                        <path d="M10.748 13.93l2.523 2.523a9.987 9.987 0 01-3.27.547c-4.258 0-7.894-2.66-9.337-6.41a1.651 1.651 0 010-1.186A10.007 10.007 0 012.839 6.02L6.07 9.252a4 4 0 004.678 4.678z" />
+                      </svg>
+                    ) : (
+                      <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                <p className="mt-1 text-sm text-gray-500">
+                  Enter an API key if the backend requires authentication.
+                </p>
+              </div>
+              
+              <div className="col-span-6">
+                <button
+                  type="button"
+                  onClick={testConnection}
+                  disabled={testingConnection || !config.backendUrl}
+                  className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                >
+                  {testingConnection ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Testing Connection...
+                    </>
+                  ) : (
+                    "Test Connection"
+                  )}
+                </button>
+                
+                {connectionStatus && (
+                  <div className={`mt-2 p-2 text-sm rounded ${connectionStatus.success ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>
+                    {connectionStatus.success ? '✓ ' : '✗ '}{connectionStatus.message}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  );
+}
+
+================
+File: src/components/settings/GithubConfigForm.tsx
+================
+// src/components/settings/GithubConfigForm.tsx
+'use client';
+
+import React, { useState } from 'react';
+import { GithubConfig } from '@/types/settings';
+import { apiClient } from '@/lib/api';
+
+interface GithubConfigFormProps {
+  initialConfig: GithubConfig;
+  onSave: (config: GithubConfig) => void;
+}
+
+export default function GithubConfigForm({ initialConfig, onSave }: GithubConfigFormProps) {
+  const [config, setConfig] = useState<GithubConfig>(initialConfig);
+  const [newRepo, setNewRepo] = useState<string>('');
+  const [validating, setValidating] = useState<boolean>(false);
+  const [validationResult, setValidationResult] = useState<{ valid: boolean; username?: string } | null>(null);
+  const [tokenVisible, setTokenVisible] = useState<boolean>(false);
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setConfig({
+      ...config,
+      [name]: type === 'checkbox' ? checked : value
+    });
+  };
+  
+  const handleAddRepository = () => {
+    if (newRepo && !config.repositories.includes(newRepo)) {
+      setConfig({
+        ...config,
+        repositories: [...config.repositories, newRepo]
+      });
+      setNewRepo('');
+    }
+  };
+  
+  const handleRemoveRepository = (repo: string) => {
+    setConfig({
+      ...config,
+      repositories: config.repositories.filter(r => r !== repo)
+    });
+  };
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave(config);
+  };
+  
+  const validateToken = async () => {
+    if (!config.personalAccessToken) return;
+    
+    setValidating(true);
+    try {
+      const result = await apiClient.validateGithubToken(config.personalAccessToken);
+      setValidationResult(result);
+    } catch {
+      setValidationResult({ valid: false });
+    } finally {
+      setValidating(false);
+    }
+  };
+  
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+        <div className="md:grid md:grid-cols-3 md:gap-6">
+          <div className="md:col-span-1">
+            <h3 className="text-lg font-medium leading-6 text-gray-900">GitHub Integration</h3>
+            <p className="mt-1 text-sm text-gray-500">
+              Configure GitHub integration to automatically analyze pull requests.
+            </p>
+          </div>
+          <div className="mt-5 md:mt-0 md:col-span-2">
+            <div className="grid grid-cols-6 gap-6">
+              <div className="col-span-6 sm:col-span-4">
+                <div className="flex items-start mb-2">
+                  <div className="flex h-5 items-center">
+                    <input
+                      id="enabled"
+                      name="enabled"
+                      type="checkbox"
+                      checked={config.enabled}
+                      onChange={handleChange}
+                      className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="enabled" className="font-medium text-gray-700">Enable GitHub Integration</label>
+                    <p className="text-gray-500">When enabled, the system will analyze all pull requests in the selected repositories.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="col-span-6 sm:col-span-4">
+                <label htmlFor="personalAccessToken" className="block text-sm font-medium text-gray-700">
+                  Personal Access Token
+                </label>
+                <div className="mt-1 relative rounded-md shadow-sm">
+                  <input
+                    type={tokenVisible ? "text" : "password"}
+                    name="personalAccessToken"
+                    id="personalAccessToken"
+                    value={config.personalAccessToken || ''}
+                    onChange={handleChange}
+                    className="block w-full rounded-md border-gray-300 pr-10 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setTokenVisible(!tokenVisible)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-500"
+                  >
+                    {tokenVisible ? (
+                      <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M3.28 2.22a.75.75 0 00-1.06 1.06l14.5 14.5a.75.75 0 101.06-1.06l-1.745-1.745a10.029 10.029 0 003.3-4.38 1.651 1.651 0 000-1.185A10.004 10.004 0 009.999 3a9.956 9.956 0 00-4.744 1.194L3.28 2.22zM7.752 6.69l1.092 1.092a2.5 2.5 0 013.374 3.373l1.091 1.092a4 4 0 00-5.557-5.557z" clipRule="evenodd" />
+                        <path d="M10.748 13.93l2.523 2.523a9.987 9.987 0 01-3.27.547c-4.258 0-7.894-2.66-9.337-6.41a1.651 1.651 0 010-1.186A10.007 10.007 0 012.839 6.02L6.07 9.252a4 4 0 004.678 4.678z" />
+                      </svg>
+                    ) : (
+                      <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                        <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+                <p className="mt-1 text-sm text-gray-500">
+                  Add a GitHub Personal Access Token with repo and user scopes to allow the app to access your repositories.
+                </p>
+                
+                <div className="mt-2">
+                  <button
+                    type="button"
+                    onClick={validateToken}
+                    disabled={!config.personalAccessToken || validating}
+                    className="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                  >
+                    {validating ? 'Validating...' : 'Validate Token'}
+                  </button>
+                </div>
+                
+                {validationResult && (
+                  <div className={`mt-2 text-sm ${validationResult.valid ? 'text-green-600' : 'text-red-600'}`}>
+                    {validationResult.valid 
+                      ? `✓ Token is valid (authenticated as ${validationResult.username})` 
+                      : '✗ Invalid token. Please check your token and try again.'}
+                  </div>
+                )}
+              </div>
+              
+              <div className="col-span-6 sm:col-span-4">
+                <div className="flex items-start mb-2">
+                  <div className="flex h-5 items-center">
+                    <input
+                      id="autoReview"
+                      name="autoReview"
+                      type="checkbox"
+                      checked={config.autoReview}
+                      onChange={handleChange}
+                      className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="autoReview" className="font-medium text-gray-700">Automatic Review</label>
+                    <p className="text-gray-500">Automatically review pull requests when they are opened or updated.</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="col-span-6 sm:col-span-4">
+                <label htmlFor="webhookSecret" className="block text-sm font-medium text-gray-700">
+                  Webhook Secret
+                </label>
+                <div className="mt-1">
+                  <input
+                    type="text"
+                    name="webhookSecret"
+                    id="webhookSecret"
+                    value={config.webhookSecret || ''}
+                    onChange={handleChange}
+                    className="block w-full rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
+                <p className="mt-1 text-sm text-gray-500">
+                  Enter the webhook secret you configured in GitHub, if using webhooks for integration.
+                </p>
+              </div>
+              
+              <div className="col-span-6">
+                <label htmlFor="repositories" className="block text-sm font-medium text-gray-700">
+                  Repositories
+                </label>
+                <div className="mt-1">
+                  <div className="flex">
+                    <input
+                      type="text"
+                      placeholder="owner/repo"
+                      value={newRepo}
+                      onChange={(e) => setNewRepo(e.target.value)}
+                      className="block w-full rounded-md rounded-r-none border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddRepository}
+                      disabled={!newRepo}
+                      className="inline-flex items-center rounded-md rounded-l-none border border-l-0 border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+                
+                {config.repositories.length > 0 ? (
+                  <div className="mt-2 bg-gray-50 p-3 rounded-md">
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Monitored Repositories</h4>
+                    <div className="space-y-2">
+                      {config.repositories.map((repo) => (
+                        <div key={repo} className="flex justify-between items-center bg-white p-2 rounded border border-gray-200">
+                          <span className="text-sm">{repo}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveRepository(repo)}
+                            className="text-red-600 hover:text-red-800"
+                          >
+                            <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                            </svg>
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <p className="mt-2 text-sm text-gray-500">
+                    No repositories added yet. Add repositories in the format &quot;owner/repo&quot;.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  );
+}
+
+================
+File: src/components/settings/NotificationSettings.tsx
+================
+// src/components/settings/NotificationSettings.tsx
+'use client';
+
+import React, { useState } from 'react';
+import { NotificationSettings as NotificationConfig } from '@/types/settings';
+
+interface NotificationSettingsProps {
+  initialSettings: NotificationConfig;
+  onSave: (settings: NotificationConfig) => void;
+}
+
+export default function NotificationSettings({ initialSettings, onSave }: NotificationSettingsProps) {
+  const [settings, setSettings] = useState<NotificationConfig>(initialSettings);
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setSettings({
+      ...settings,
+      [name]: type === 'checkbox' ? checked : value
+    });
+  };
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSave(settings);
+  };
+  
+  const testEmail = async () => {
+    if (!settings.email || !settings.emailAddress) return;
+    
+    // In a real app, we would call the API to send a test email
+    alert(`A test notification would be sent to ${settings.emailAddress}`);
+  };
+  
+  const testSlack = async () => {
+    if (!settings.slack || !settings.slackWebhook) return;
+    
+    // In a real app, we would call the API to send a test Slack message
+    alert(`A test notification would be sent to the Slack webhook`);
+  };
+  
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="bg-white shadow px-4 py-5 sm:rounded-lg sm:p-6">
+        <div className="md:grid md:grid-cols-3 md:gap-6">
+          <div className="md:col-span-1">
+            <h3 className="text-lg font-medium leading-6 text-gray-900">Notification Settings</h3>
+            <p className="mt-1 text-sm text-gray-500">
+              Configure how you want to be notified about code review results.
+            </p>
+          </div>
+          <div className="mt-5 md:mt-0 md:col-span-2">
+            <div className="grid grid-cols-6 gap-6">
+              <div className="col-span-6">
+                <fieldset>
+                  <legend className="text-base font-medium text-gray-900">Email Notifications</legend>
+                  <div className="mt-4 space-y-4">
+                    <div className="flex items-start">
+                      <div className="flex h-5 items-center">
+                        <input
+                          id="email"
+                          name="email"
+                          type="checkbox"
+                          checked={settings.email}
+                          onChange={handleChange}
+                          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                      </div>
+                      <div className="ml-3 text-sm">
+                        <label htmlFor="email" className="font-medium text-gray-700">Enable Email Notifications</label>
+                        <p className="text-gray-500">Receive review summaries and alerts via email.</p>
+                      </div>
+                    </div>
+                    
+                    {settings.email && (
+                      <div className="ml-5 col-span-6 sm:col-span-4">
+                        <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700">
+                          Email Address
+                        </label>
+                        <div className="mt-1 flex rounded-md shadow-sm">
+                          <input
+                            type="email"
+                            name="emailAddress"
+                            id="emailAddress"
+                            value={settings.emailAddress || ''}
+                            onChange={handleChange}
+                            className="block w-full flex-1 rounded-none rounded-l-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            placeholder="you@example.com"
+                          />
+                          <button
+                            type="button"
+                            onClick={testEmail}
+                            disabled={!settings.emailAddress}
+                            className="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                          >
+                            Test
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </fieldset>
+              </div>
+              
+              <div className="col-span-6">
+                <fieldset>
+                  <legend className="text-base font-medium text-gray-900">Slack Notifications</legend>
+                  <div className="mt-4 space-y-4">
+                    <div className="flex items-start">
+                      <div className="flex h-5 items-center">
+                        <input
+                          id="slack"
+                          name="slack"
+                          type="checkbox"
+                          checked={settings.slack}
+                          onChange={handleChange}
+                          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                      </div>
+                      <div className="ml-3 text-sm">
+                        <label htmlFor="slack" className="font-medium text-gray-700">Enable Slack Notifications</label>
+                        <p className="text-gray-500">Receive review summaries and alerts via Slack.</p>
+                      </div>
+                    </div>
+                    
+                    {settings.slack && (
+                      <div className="ml-5 col-span-6 sm:col-span-4">
+                        <label htmlFor="slackWebhook" className="block text-sm font-medium text-gray-700">
+                          Slack Webhook URL
+                        </label>
+                        <div className="mt-1 flex rounded-md shadow-sm">
+                          <input
+                            type="text"
+                            name="slackWebhook"
+                            id="slackWebhook"
+                            value={settings.slackWebhook || ''}
+                            onChange={handleChange}
+                            className="block w-full flex-1 rounded-none rounded-l-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                            placeholder="https://hooks.slack.com/services/..."
+                          />
+                          <button
+                            type="button"
+                            onClick={testSlack}
+                            disabled={!settings.slackWebhook}
+                            className="inline-flex items-center rounded-r-md border border-l-0 border-gray-300 bg-gray-50 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                          >
+                            Test
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </fieldset>
+              </div>
+              
+              <div className="col-span-6">
+                <fieldset>
+                  <legend className="text-base font-medium text-gray-900">Notification Preferences</legend>
+                  <div className="mt-4 space-y-4">
+                    <div className="flex items-start">
+                      <div className="flex h-5 items-center">
+                        <input
+                          id="notifyOnCritical"
+                          name="notifyOnCritical"
+                          type="checkbox"
+                          checked={settings.notifyOnCritical}
+                          onChange={handleChange}
+                          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                      </div>
+                      <div className="ml-3 text-sm">
+                        <label htmlFor="notifyOnCritical" className="font-medium text-gray-700">Notify on Critical Issues</label>
+                        <p className="text-gray-500">Receive notifications when critical issues are found in code reviews.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <div className="flex h-5 items-center">
+                        <input
+                          id="notifyOnComplete"
+                          name="notifyOnComplete"
+                          type="checkbox"
+                          checked={settings.notifyOnComplete}
+                          onChange={handleChange}
+                          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        />
+                      </div>
+                      <div className="ml-3 text-sm">
+                        <label htmlFor="notifyOnComplete" className="font-medium text-gray-700">Notify on Review Completion</label>
+                        <p className="text-gray-500">Receive notifications when a code review is completed.</p>
+                      </div>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  );
+}
+
+================
+File: src/components/settings/page.tsx
+================
+// src/app/settings/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import DashboardLayout from '@/components/layout/DashboardLayout';
+import GithubConfigForm from '@/components/settings/GithubConfigForm';
+import ApiTokenForm from '@/components/settings/ApiTokenForm';
+import NotificationSettings from '@/components/settings/NotificationSettings';
+import { UserSettings } from '@/types/settings';
+// import { apiClient } from '@/lib/api';
+
+export default function SettingsPage() {
+  const [settings, setSettings] = useState<UserSettings | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [saveStatus, setSaveStatus] = useState<{
+    saving: boolean;
+    success?: boolean;
+    message?: string;
+  }>({ saving: false });
+  
+  // Tabs for different settings sections
+  const [activeTab, setActiveTab] = useState<'github' | 'api' | 'notifications'>('github');
+  
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // In a real app, we would fetch from the API
+        // const data = await apiClient.getSettings();
+        
+        // For demo purposes, using mock data
+        const mockSettings: UserSettings = {
+          github: {
+            personalAccessToken: '',
+            webhookSecret: '',
+            enabled: false,
+            repositories: [],
+            autoReview: true
+          },
+          api: {
+            backendUrl: 'http://localhost:3001',
+            apiKey: ''
+          },
+          notifications: {
+            email: false,
+            emailAddress: '',
+            slack: false,
+            slackWebhook: '',
+            notifyOnCritical: true,
+            notifyOnComplete: true
+          }
+        };
+        
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        setSettings(mockSettings);
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to fetch settings:', err);
+        setError('Failed to load settings. Please try again later.');
+        setLoading(false);
+      }
+    };
+    
+    fetchSettings();
+  }, []);
+  
+  const handleSaveGithubConfig = async (githubConfig: UserSettings['github']) => {
+    if (!settings) return;
+    
+    try {
+      setSaveStatus({ saving: true });
+      
+      // Update settings
+      const updatedSettings = {
+        ...settings,
+        github: githubConfig
+      };
+      
+      // In a real app, we would save to the API
+      // await apiClient.saveSettings(updatedSettings);
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSettings(updatedSettings);
+      setSaveStatus({ saving: false, success: true, message: 'GitHub settings saved successfully!' });
+      
+      // Reset status message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus({ saving: false });
+      }, 3000);
+    } catch (err) {
+      console.error('Failed to save GitHub settings:', err);
+      setSaveStatus({ saving: false, success: false, message: 'Failed to save settings. Please try again.' });
+    }
+  };
+  
+  const handleSaveApiConfig = async (apiConfig: UserSettings['api']) => {
+    if (!settings) return;
+    
+    try {
+      setSaveStatus({ saving: true });
+      
+      // Update settings
+      const updatedSettings = {
+        ...settings,
+        api: apiConfig
+      };
+      
+      // In a real app, we would save to the API
+      // await apiClient.saveSettings(updatedSettings);
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSettings(updatedSettings);
+      setSaveStatus({ saving: false, success: true, message: 'API settings saved successfully!' });
+      
+      // Reset status message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus({ saving: false });
+      }, 3000);
+    } catch (err) {
+      console.error('Failed to save API settings:', err);
+      setSaveStatus({ saving: false, success: false, message: 'Failed to save settings. Please try again.' });
+    }
+  };
+  
+  const handleSaveNotificationSettings = async (notificationSettings: UserSettings['notifications']) => {
+    if (!settings) return;
+    
+    try {
+      setSaveStatus({ saving: true });
+      
+      // Update settings
+      const updatedSettings = {
+        ...settings,
+        notifications: notificationSettings
+      };
+      
+      // In a real app, we would save to the API
+      // await apiClient.saveSettings(updatedSettings);
+      
+      // Simulate network delay
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSettings(updatedSettings);
+      setSaveStatus({ saving: false, success: true, message: 'Notification settings saved successfully!' });
+      
+      // Reset status message after 3 seconds
+      setTimeout(() => {
+        setSaveStatus({ saving: false });
+      }, 3000);
+    } catch (err) {
+      console.error('Failed to save notification settings:', err);
+      setSaveStatus({ saving: false, success: false, message: 'Failed to save settings. Please try again.' });
+    }
+  };
+
+  return (
+    <DashboardLayout>
+      <header className="bg-white shadow-sm mb-6 -mt-6 py-6 px-4 sm:px-6 lg:px-8">
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900">Settings</h1>
+      </header>
+      
+      <main>
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+            <p className="mt-4 text-gray-600">Loading settings...</p>
+          </div>
+        ) : error ? (
+          <div className="rounded-md bg-red-50 p-4 mb-6">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-red-800">{error}</p>
+              </div>
+            </div>
+          </div>
+        ) : settings ? (
+          <>
+            {/* Save Status Message */}
+            {saveStatus.message && (
+              <div className={`mb-6 rounded-md p-4 ${saveStatus.success ? 'bg-green-50' : 'bg-red-50'}`}>
+                <div className="flex">
+                  <div className="flex-shrink-0">
+                    {saveStatus.success ? (
+                      <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                      </svg>
+                    ) : (
+                      <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
+                      </svg>
+                    )}
+                  </div>
+                  <div className="ml-3">
+                    <p className={`text-sm font-medium ${saveStatus.success ? 'text-green-800' : 'text-red-800'}`}>
+                      {saveStatus.message}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {/* Settings Tabs */}
+            <div className="mb-8 border-b border-gray-200">
+              <nav className="-mb-px flex space-x-8">
+                <button
+                  onClick={() => setActiveTab('github')}
+                  className={`
+                    whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium
+                    ${activeTab === 'github' 
+                      ? 'border-blue-500 text-blue-600' 
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}
+                  `}
+                >
+                  GitHub Integration
+                </button>
+                <button
+                  onClick={() => setActiveTab('api')}
+                  className={`
+                    whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium
+                    ${activeTab === 'api' 
+                      ? 'border-blue-500 text-blue-600' 
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}
+                  `}
+                >
+                  API Configuration
+                </button>
+                <button
+                  onClick={() => setActiveTab('notifications')}
+                  className={`
+                    whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium
+                    ${activeTab === 'notifications' 
+                      ? 'border-blue-500 text-blue-600' 
+                      : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}
+                  `}
+                >
+                  Notifications
+                </button>
+              </nav>
+            </div>
+            
+            {/* Settings Forms */}
+            <div>
+              {activeTab === 'github' && (
+                <GithubConfigForm 
+                  initialConfig={settings.github} 
+                  onSave={handleSaveGithubConfig} 
+                />
+              )}
+              
+              {activeTab === 'api' && (
+                <ApiTokenForm 
+                  initialConfig={settings.api} 
+                  onSave={handleSaveApiConfig} 
+                />
+              )}
+              
+              {activeTab === 'notifications' && (
+                <NotificationSettings 
+                  initialSettings={settings.notifications} 
+                  onSave={handleSaveNotificationSettings} 
+                />
+              )}
+            </div>
+          </>
+        ) : null}
+      </main>
+    </DashboardLayout>
+  );
+}
+
+================
+File: src/lib/api.ts
+================
+// src/lib/api.ts
+import { ReviewSummary, DetailedReview, AnalysisRequest } from '@/types/review';
+import { UserSettings } from '@/types/settings';
+
+// Default backend URL - in production this would be read from environment variables
+const DEFAULT_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+
+/**
+ * API client for communicating with the backend
+ */
+export const apiClient = {
+  // Get all reviews
+  async getReviews(): Promise<ReviewSummary[]> {
+    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/code-analyzer/reviews`);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch reviews: ${response.statusText}`);
+    }
+    
+    return response.json();
+  },
+  
+  // Get a specific review by ID
+  async getReviewById(id: string | number): Promise<DetailedReview> {
+    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/code-analyzer/reviews/${id}`);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch review ${id}: ${response.statusText}`);
+    }
+    
+    return response.json();
+  },
+  
+  // Trigger a manual code analysis
+  async analyzeCode(request: AnalysisRequest): Promise<{ id: string | number }> {
+    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/code-analyzer/analyze-pr`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(request)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to initiate analysis: ${response.statusText}`);
+    }
+    
+    return response.json();
+  },
+  
+  // Save user settings
+  async saveSettings(settings: UserSettings): Promise<{ success: boolean }> {
+    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/settings`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(settings)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to save settings: ${response.statusText}`);
+    }
+    
+    return response.json();
+  },
+  
+  // Get user settings
+  async getSettings(): Promise<UserSettings> {
+    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/settings`);
+    
+    if (!response.ok) {
+      throw new Error(`Failed to fetch settings: ${response.statusText}`);
+    }
+    
+    return response.json();
+  },
+  
+  // Validate GitHub token
+  async validateGithubToken(token: string): Promise<{ valid: boolean, username?: string }> {
+    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/github/validate-token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ token })
+    });
+    
+    if (!response.ok) {
+      return { valid: false };
+    }
+    
+    return response.json();
+  }
+};
+
+/**
+ * Helper function to get the severity emoji for an issue
+ */
+export function getSeverityEmoji(severity: string): string {
+  switch (severity) {
+    case 'Critical':
+      return '🚨';
+    case 'Warning':
+      return '⚠️';
+    case 'Suggestion':
+      return '💡';
+    default:
+      return '';
+  }
+}
+
+/**
+ * Helper function to get the color for a severity level
+ */
+export function getSeverityColor(severity: string): string {
+  switch (severity) {
+    case 'Critical':
+      return 'text-red-600 bg-red-100 border-red-200';
+    case 'Warning':
+      return 'text-amber-600 bg-amber-100 border-amber-200';
+    case 'Suggestion':
+      return 'text-blue-600 bg-blue-100 border-blue-200';
+    default:
+      return 'text-gray-600 bg-gray-100 border-gray-200';
+  }
+}
+
+/**
+ * Helper function to get the color for a score
+ */
+export function getScoreColor(score: number): string {
+  if (score >= 90) return 'text-green-600';
+  if (score >= 70) return 'text-amber-500';
+  if (score >= 50) return 'text-orange-500';
+  return 'text-red-600';
+}
+
+================
+File: src/types/review.ts
+================
+// src/types/review.ts
+
+export enum IssueSeverity {
+  Critical = 'Critical',
+  Warning = 'Warning',
+  Suggestion = 'Suggestion'
+}
+
+export enum IssueCategory {
+  Security = 'Security',
+  Performance = 'Performance',
+  CodeStyle = 'CodeStyle',
+  Maintainability = 'Maintainability',
+  Architecture = 'Architecture'
+}
+
+export interface CodeIssue {
+  id: string;
+  title: string;
+  description: string;
+  category: IssueCategory;
+  severity: IssueSeverity;
+  location: {
+    file: string;
+    line?: number;
+    column?: number;
+  };
+  snippet?: string;
+  remediation?: string;
+}
+
+export interface InlineComment {
+  file: string;
+  line: number;
+  message: string;
+  severity: IssueSeverity;
+  category: IssueCategory;
+  suggestionId: string;
+}
+
+export interface FileReport {
+  filename: string;
+  issues: {
+    critical: number;
+    warning: number;
+    suggestion: number;
+    total: number;
+  };
+  comments: InlineComment[];
+}
+
+export interface ReviewSummary {
+  id: string | number;
+  prId: string | number;
+  prTitle: string;
+  repository: string;
+  branch: string;
+  author: string;
+  status: 'pending' | 'completed' | 'failed';
+  createdAt: string;
+  completedAt?: string;
+  overallScore: number;
+  issueStats: {
+    critical: number;
+    warning: number;
+    suggestion: number;
+    total: number;
+  };
+}
+
+export interface DetailedReview extends ReviewSummary {
+  fileReports: FileReport[];
+  topIssues: {
+    severity: IssueSeverity;
+    category: IssueCategory;
+    title: string;
+    file: string;
+    line?: number;
+  }[];
+  markdownSummary: string;
+  analysisTime: string;
+  duration: number;
+}
+
+export interface AnalysisRequest {
+  repositoryUrl: string;
+  prNumber: string | number;
+  branch?: string;
+  manual?: boolean;
+}
+
+================
+File: src/types/settings.ts
+================
+// src/types/settings.ts
+
+export interface GithubConfig {
+    personalAccessToken?: string;
+    webhookSecret?: string;
+    enabled: boolean;
+    repositories: string[];
+    autoReview: boolean;
+  }
+  
+  export interface ApiConfig {
+    backendUrl: string;
+    apiKey?: string;
+  }
+  
+  export interface NotificationSettings {
+    email: boolean;
+    emailAddress?: string;
+    slack: boolean;
+    slackWebhook?: string;
+    notifyOnCritical: boolean;
+    notifyOnComplete: boolean;
+  }
+  
+  export interface UserSettings {
+    github: GithubConfig;
+    api: ApiConfig;
+    notifications: NotificationSettings;
+  }
+
+================
+File: .gitignore
+================
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+================
+File: eslint.config.mjs
+================
+import { dirname } from "path";
+import { fileURLToPath } from "url";
+import { FlatCompat } from "@eslint/eslintrc";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+});
+
+const eslintConfig = [
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+];
+
+export default eslintConfig;
+
+================
+File: next.config.ts
+================
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+};
+
+export default nextConfig;
+
+================
+File: package.json
+================
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@headlessui/react": "^2.2.0",
+    "next": "15.1.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.7",
+    "postcss": "^8",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5"
+  }
+}
+
+================
+File: postcss.config.mjs
+================
+/** @type {import('postcss-load-config').Config} */
+const config = {
+  plugins: {
+    tailwindcss: {},
+  },
+};
+
+export default config;
+
+================
+File: README.md
+================
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+================
+File: tailwind.config.ts
+================
+import type { Config } from "tailwindcss";
+
+export default {
+  content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+      },
+    },
+  },
+  plugins: [],
+} satisfies Config;
+
+================
+File: tsconfig.json
+================
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}
+
+
+
+================================================================
+End of Codebase
+================================================================

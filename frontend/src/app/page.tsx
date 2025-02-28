@@ -1,100 +1,157 @@
-import Image from "next/image";
+// src/app/page.tsx
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+// import Image from 'next/image';
+// import { useRouter } from 'next/navigation';
+
+interface Review {
+  id: string;
+  prId: number;
+  prTitle: string;
+  repository: string;
+  score: number;
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  // const router = useRouter(); 
+  const [recentReviews, setRecentReviews] = useState<Review[]>([]);
+  const [loading, setLoading] = useState(true);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  useEffect(() => {
+    // For demo, we'll just use mock data instead of actual API call
+    const loadReviews = async () => {
+      // In a real app: const response = await fetch('/api/reviews?limit=3');
+      
+      // Mock data
+      const mockReviews = [
+        { id: '1', prId: 123, prTitle: 'Add user authentication', repository: 'org/repo', score: 75 },
+        { id: '2', prId: 124, prTitle: 'Refactor database queries', repository: 'org/repo', score: 92 },
+        { id: '3', prId: 125, prTitle: 'Fix security issues', repository: 'org/other-repo', score: 60 },
+      ];
+      
+      setTimeout(() => {
+        setRecentReviews(mockReviews);
+        setLoading(false);
+      }, 500);
+    };
+    
+    loadReviews();
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-gray-800 text-white">
+        <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-extrabold sm:text-5xl md:text-6xl">
+              AI-Powered Code Review Assistant
+            </h1>
+            <p className="mt-3 max-w-md mx-auto text-base text-gray-300 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+              Automated code quality checks to improve your codebase
+            </p>
+            <div className="mt-10 flex justify-center">
+              <div className="inline-flex rounded-md shadow">
+                <Link
+                  href="/dashboard"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                >
+                  Go to Dashboard
+                </Link>
+              </div>
+              <div className="ml-3 inline-flex">
+                <Link
+                  href="/settings"
+                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-50"
+                >
+                  Configure Settings
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Recent Code Reviews</h2>
+            {loading ? (
+              <div className="mt-4 bg-white shadow rounded-lg p-6 animate-pulse">
+                <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+              </div>
+            ) : (
+              <div className="mt-4 bg-white shadow rounded-lg divide-y divide-gray-200">
+                {recentReviews.map((review) => (
+                  <div key={review.id} className="p-6 hover:bg-gray-50">
+                    <Link href={`/reviews/${review.id}`} className="block">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h3 className="text-lg font-medium text-gray-900">
+                            PR #{review.prId}: {review.prTitle}
+                          </h3>
+                          <p className="text-sm text-gray-500">{review.repository}</p>
+                        </div>
+                        <div className={`text-xl font-bold ${
+                          review.score >= 90 ? 'text-green-600' :
+                          review.score >= 70 ? 'text-amber-500' :
+                          review.score >= 50 ? 'text-orange-500' : 'text-red-600'
+                        }`}>
+                          {review.score}/100
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div className="mt-6">
+              <Link
+                href="/reviews"
+                className="text-blue-600 hover:text-blue-800 font-medium"
+              >
+                View all reviews →
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Quick Actions</h2>
+            <div className="mt-4 bg-white shadow rounded-lg p-6">
+              <div className="space-y-4">
+                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
+                  <h3 className="font-medium text-gray-900">Trigger a Manual Review</h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Analyze a pull request to get actionable feedback
+                  </p>
+                </div>
+                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
+                  <h3 className="font-medium text-gray-900">Configure GitHub Integration</h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Set up automatic PR reviews with GitHub webhooks
+                  </p>
+                </div>
+                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
+                  <h3 className="font-medium text-gray-900">Notification Settings</h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Configure how you receive alerts about code issues
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      <footer className="bg-white mt-12 border-t border-gray-200">
+        <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-gray-500 text-sm">
+            AI-Powered Code Review Assistant © 2025
+          </p>
+        </div>
       </footer>
     </div>
   );

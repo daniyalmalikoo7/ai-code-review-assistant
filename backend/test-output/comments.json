@@ -1,0 +1,74 @@
+[
+  {
+    "file": "src/auth/login.ts",
+    "line": 7,
+    "message": "🚨 **Critical: Hardcoded API Key**\n\nFound potential hardcoded secret in the code\n\n```\napiKey = \"1234567890abcdef\"\n```\n\n**Why it matters**: Security issues can lead to vulnerabilities that may be exploited by attackers.\n\n**Recommendation**: Use environment variables or a secure secrets manager instead of hardcoding secrets",
+    "severity": "Critical",
+    "category": "Security",
+    "suggestionId": "security-hardcoded-1740620827476-enmanndax"
+  },
+  {
+    "file": "src/auth/login.ts",
+    "line": 10,
+    "message": "⚠️ **Warning: Nested Loop Detected**\n\nNested loops can lead to O(n²) time complexity\n\n```\nfor (let i = 0; i < users.length; i++) {\n            for (let j = 0; j < permissions.length; j++)\n```\n\n**Why it matters**: Performance issues can cause your application to run slowly or use excessive resources.\n\n**Recommendation**: Consider alternatives like using hash maps or optimizing the algorithm",
+    "severity": "Warning",
+    "category": "Performance",
+    "suggestionId": "performance-nested-loop-1740620827477-6g5ihvfil"
+  },
+  {
+    "file": "src/auth/login.ts",
+    "line": 7,
+    "message": "💡 **Suggestion: Inconsistent Variable Naming**\n\nVariable names should follow a consistent naming convention\n\n```\nconst apiKey\n```\n\n**Why it matters**: Code style issues affect readability and maintainability of your codebase.\n\n**Recommendation**: Use camelCase for variables and functions, PascalCase for classes and interfaces",
+    "severity": "Suggestion",
+    "category": "CodeStyle",
+    "suggestionId": "style-inconsistent-naming-1740620827477-wgdybptaz"
+  },
+  {
+    "file": "src/auth/login.ts",
+    "line": 12,
+    "message": "💡 **Suggestion: Console Statement**\n\nConsole statements should not be committed to production code\n\n```\nconsole.log(\n```\n\n**Why it matters**: Code style issues affect readability and maintainability of your codebase.\n\n**Recommendation**: Remove console statements or use a proper logging library",
+    "severity": "Suggestion",
+    "category": "CodeStyle",
+    "suggestionId": "style-console-statement-1740620827477-qa8sfvjna"
+  },
+  {
+    "file": "src/auth/login.ts",
+    "line": 7,
+    "message": "💡 **Suggestion: Magic Number**\n\nMagic numbers make code harder to understand and maintain\n\n```\n2\n```\n\n**Why it matters**: Code style issues affect readability and maintainability of your codebase.\n\n**Recommendation**: Replace magic numbers with named constants",
+    "severity": "Suggestion",
+    "category": "CodeStyle",
+    "suggestionId": "style-magic-number-1740620827477-dhl5stdiy"
+  },
+  {
+    "file": "src/auth/login.ts",
+    "line": 7,
+    "message": "💡 **Suggestion: Magic Number**\n\nMagic numbers make code harder to understand and maintain\n\n```\n3\n```\n\n**Why it matters**: Code style issues affect readability and maintainability of your codebase.\n\n**Recommendation**: Replace magic numbers with named constants",
+    "severity": "Suggestion",
+    "category": "CodeStyle",
+    "suggestionId": "style-magic-number-1740620827477-0r14orenw"
+  },
+  {
+    "file": "src/auth/login.ts",
+    "line": 7,
+    "message": "💡 **Suggestion: Magic Number**\n\nMagic numbers make code harder to understand and maintain\n\n```\n4\n```\n\n**Why it matters**: Code style issues affect readability and maintainability of your codebase.\n\n**Recommendation**: Replace magic numbers with named constants",
+    "severity": "Suggestion",
+    "category": "CodeStyle",
+    "suggestionId": "style-magic-number-1740620827477-99fflq9h6"
+  },
+  {
+    "file": "src/auth/login.ts",
+    "line": 7,
+    "message": "💡 **Suggestion: Magic Number**\n\nMagic numbers make code harder to understand and maintain\n\n```\n5\n```\n\n**Why it matters**: Code style issues affect readability and maintainability of your codebase.\n\n**Recommendation**: Replace magic numbers with named constants",
+    "severity": "Suggestion",
+    "category": "CodeStyle",
+    "suggestionId": "style-magic-number-1740620827477-uxhj51mbw"
+  },
+  {
+    "file": "src/auth/login.ts",
+    "line": 2,
+    "message": "⚠️ **Warning: Long Function**\n\nFunction is 28 lines long\n\n**Why it matters**: Maintainability issues make your code harder to understand, modify, or extend.\n\n**Recommendation**: Break down long functions into smaller, more focused functions",
+    "severity": "Warning",
+    "category": "Maintainability",
+    "suggestionId": "maintainability-long-function-1740620827478-m97d5agcg"
+  }
+]
