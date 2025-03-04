@@ -95,6 +95,7 @@ export const handlePullRequestWebhook = async (req: Request, res: Response): Pro
     } else {
       logger.warn(`No user token found for repository: ${prPayload.repository}`);
       // For demonstration, we'll continue with the default GitHub app token or no token
+      githubToken = process.env.GITHUB_TOKEN || 'mock-token-for-tests';
     }
     
     // Transform GitHub API data to match our expected format
