@@ -7,21 +7,22 @@
     "test": "tests"
   },
   "scripts": {
-  "test": "jest",
-  "test:integration": "ts-node test-integration.ts",
-  "test:unit": "jest --testPathIgnorePatterns=tests/integration",
-  "dev": "ts-node-dev --respawn -r dotenv/config src/index.ts",
-  "build": "tsc",
-  "start": "node dist/index.js",
-  "test:watch": "jest --watch",
-  "test:coverage": "jest --coverage"
-},
+    "test": "jest",
+    "test:integration": "ts-node test-integration.ts",
+    "test:unit": "jest --testPathIgnorePatterns=tests/integration",
+    "dev": "ts-node-dev --respawn -r dotenv/config src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@langchain/anthropic": "^0.3.14",
+    "@langchain/anthropic": "^0.3.15",
+    "@langchain/core": "^0.3.42",
     "@langchain/openai": "^0.4.4",
     "@types/jsonwebtoken": "^9.0.9",
     "cors": "^2.8.5",

@@ -7,6 +7,7 @@ import GithubConfigForm from '@/components/settings/GithubConfigForm';
 import ApiTokenForm from '@/components/settings/ApiTokenForm';
 import NotificationSettings from '@/components/settings/NotificationSettings';
 import { UserSettings } from '@/types/settings';
+import { apiClient } from '@/lib/api';
 // import { apiClient } from '@/lib/api';
 
 export default function SettingsPage() {
@@ -113,7 +114,7 @@ export default function SettingsPage() {
       };
       
       // In a real app, we would save to the API
-      // await apiClient.saveSettings(updatedSettings);
+      await apiClient.saveSettings(updatedSettings);
       
       // Simulate network delay
       await new Promise(resolve => setTimeout(resolve, 1000));

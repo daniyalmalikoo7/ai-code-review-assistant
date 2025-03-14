@@ -60,7 +60,6 @@ backend/
     middleware/
       auth.middleware.ts
       error.middleware.ts
-      error.ts
       githubWebhookValidator.ts
     models/
       user.model.ts
@@ -1065,20 +1064,6 @@ export const notFoundHandler = (req: Request, res: Response) => {
     status: 'error',
     message: 'Route not found'
   });
-};
-
-================
-File: backend/src/middleware/error.ts
-================
-import { Request, Response, NextFunction } from 'express';
-
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({ error: err.message || 'Internal Server Error' });
-};
-
-export const notFoundHandler = (req: Request, res: Response) => {
-  res.status(404).json({ error: 'Not Found' });
 };
 
 ================
@@ -7382,15 +7367,15 @@ File: backend/package.json
     "test": "tests"
   },
   "scripts": {
-    "test": "jest",
-    "test:integration": "ts-node test-integration.ts",
-    "test:unit": "jest --testPathIgnorePatterns=tests/integration",
-    "dev": "ts-node-dev --respawn -r dotenv/config src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
-  },
+  "test": "jest",
+  "test:integration": "ts-node test-integration.ts",
+  "test:unit": "jest --testPathIgnorePatterns=tests/integration",
+  "dev": "ts-node-dev --respawn -r dotenv/config src/index.ts",
+  "build": "tsc",
+  "start": "node dist/index.js",
+  "test:watch": "jest --watch",
+  "test:coverage": "jest --coverage"
+},
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -7750,7 +7735,8 @@ File: backend/tsconfig.json
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "tests"]
@@ -8225,8 +8211,9 @@ File: frontend/src/app/auth/callback/page.tsx
 
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
-export default function AuthCallbackPage() {
+function CallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -8256,6 +8243,21 @@ export default function AuthCallbackPage() {
   );
 }
 
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <h1 className="text-xl font-semibold mb-2">Loading...</h1>
+          <p>Please wait...</p>
+        </div>
+      </div>
+    }>
+      <CallbackContent />
+    </Suspense>
+  );
+}
+
 ================
 File: frontend/src/app/dashboard/page.tsx
 ================
@@ -8269,7 +8271,7 @@ import ReviewCard from '@/components/dashboard/ReviewCard';
 import StatsSummary from '@/components/dashboard/StatsSummary';
 import AnalysisModal from '@/components/dashboard/AnalysisModal';
 import { ReviewSummary } from '@/types/review';
-// import { apiClient } from '@/lib/api';
+import { apiClient } from '@/lib/api';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -8277,100 +8279,121 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  // useEffect(() => {
+  //   const fetchReviews = async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
         
-        // In a real app, we would fetch from the API
-        // const data = await apiClient.getReviews();
+  //       // In a real app, we would fetch from the API
+  //       // const data = await apiClient.getReviews();
         
-        // For demo purposes, using mock data
-        const mockReviews: ReviewSummary[] = [
-          {
-            id: '1',
-            prId: 123,
-            prTitle: 'Add user authentication feature',
-            repository: 'org/repo',
-            branch: 'feature/auth',
-            author: 'johndoe',
-            status: 'completed',
-            createdAt: '2023-06-01T12:00:00Z',
-            completedAt: '2023-06-01T12:05:30Z',
-            overallScore: 75,
-            issueStats: {
-              critical: 2,
-              warning: 5,
-              suggestion: 10,
-              total: 17
-            }
-          },
-          {
-            id: '2',
-            prId: 124,
-            prTitle: 'Refactor database queries',
-            repository: 'org/repo',
-            branch: 'feature/db-refactor',
-            author: 'janedoe',
-            status: 'pending',
-            createdAt: '2023-06-02T10:30:00Z',
-            overallScore: 0,
-            issueStats: {
-              critical: 0,
-              warning: 0,
-              suggestion: 0,
-              total: 0
-            }
-          },
-          {
-            id: '3',
-            prId: 125,
-            prTitle: 'Update dependencies and fix security vulnerabilities',
-            repository: 'org/other-repo',
-            branch: 'fix/security',
-            author: 'securityteam',
-            status: 'completed',
-            createdAt: '2023-06-03T09:15:00Z',
-            completedAt: '2023-06-03T09:20:12Z',
-            overallScore: 92,
-            issueStats: {
-              critical: 0,
-              warning: 3,
-              suggestion: 5,
-              total: 8
-            }
-          },
-          {
-            id: '4',
-            prId: 126,
-            prTitle: 'Add new API endpoints for user profiles',
-            repository: 'org/api-service',
-            branch: 'feature/user-profiles',
-            author: 'apiteam',
-            status: 'failed',
-            createdAt: '2023-06-04T14:20:00Z',
-            overallScore: 0,
-            issueStats: {
-              critical: 0,
-              warning: 0,
-              suggestion: 0,
-              total: 0
-            }
-          }
-        ];
+  //       // For demo purposes, using mock data
+  //       const mockReviews: ReviewSummary[] = [
+  //         {
+  //           id: '1',
+  //           prId: 123,
+  //           prTitle: 'Add user authentication feature',
+  //           repository: 'org/repo',
+  //           branch: 'feature/auth',
+  //           author: 'johndoe',
+  //           status: 'completed',
+  //           createdAt: '2023-06-01T12:00:00Z',
+  //           completedAt: '2023-06-01T12:05:30Z',
+  //           overallScore: 75,
+  //           issueStats: {
+  //             critical: 2,
+  //             warning: 5,
+  //             suggestion: 10,
+  //             total: 17
+  //           }
+  //         },
+  //         {
+  //           id: '2',
+  //           prId: 124,
+  //           prTitle: 'Refactor database queries',
+  //           repository: 'org/repo',
+  //           branch: 'feature/db-refactor',
+  //           author: 'janedoe',
+  //           status: 'pending',
+  //           createdAt: '2023-06-02T10:30:00Z',
+  //           overallScore: 0,
+  //           issueStats: {
+  //             critical: 0,
+  //             warning: 0,
+  //             suggestion: 0,
+  //             total: 0
+  //           }
+  //         },
+  //         {
+  //           id: '3',
+  //           prId: 125,
+  //           prTitle: 'Update dependencies and fix security vulnerabilities',
+  //           repository: 'org/other-repo',
+  //           branch: 'fix/security',
+  //           author: 'securityteam',
+  //           status: 'completed',
+  //           createdAt: '2023-06-03T09:15:00Z',
+  //           completedAt: '2023-06-03T09:20:12Z',
+  //           overallScore: 92,
+  //           issueStats: {
+  //             critical: 0,
+  //             warning: 3,
+  //             suggestion: 5,
+  //             total: 8
+  //           }
+  //         },
+  //         {
+  //           id: '4',
+  //           prId: 126,
+  //           prTitle: 'Add new API endpoints for user profiles',
+  //           repository: 'org/api-service',
+  //           branch: 'feature/user-profiles',
+  //           author: 'apiteam',
+  //           status: 'failed',
+  //           createdAt: '2023-06-04T14:20:00Z',
+  //           overallScore: 0,
+  //           issueStats: {
+  //             critical: 0,
+  //             warning: 0,
+  //             suggestion: 0,
+  //             total: 0
+  //           }
+  //         }
+  //       ];
         
-        setReviews(mockReviews);
-        setLoading(false);
-      } catch (err) {
-        console.error('Failed to fetch reviews:', err);
-        setError('Failed to load reviews. Please try again later.');
-        setLoading(false);
-      }
-    };
+  //       setReviews(mockReviews);
+  //       setLoading(false);
+  //     } catch (err) {
+  //       console.error('Failed to fetch reviews:', err);
+  //       setError('Failed to load reviews. Please try again later.');
+  //       setLoading(false);
+  //     }
+  //   };
     
-    fetchReviews();
-  }, []);
+  //   fetchReviews();
+  // }, []);
+
+  // Update useEffect in dashboard/page.tsx
+useEffect(() => {
+  const fetchReviews = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Use the API client instead of mock data
+      const data = await apiClient.getReviews();
+      setReviews(data);
+      setLoading(false);
+    } catch (err) {
+      console.error('Failed to fetch reviews:', err);
+      setError('Failed to load reviews. Please try again later.');
+      setLoading(false);
+    }
+  };
+  
+  fetchReviews();
+}, []);
   
   const [showAnalysisModal, setShowAnalysisModal] = useState<boolean>(false);
   
@@ -13229,16 +13252,11 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_API_VERSION: process.env.NEXT_PUBLIC_API_VERSION || "v1",
   },
   reactStrictMode: true,
-  swcMinify: true,
+  // Remove swcMinify
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
     ignoreBuildErrors: true,
   },
 };

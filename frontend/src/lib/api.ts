@@ -5,39 +5,81 @@ import { UserSettings } from '@/types/settings';
 // Default backend URL - in production this would be read from environment variables
 const DEFAULT_BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
 
+
 /**
  * API client for communicating with the backend
  */
 export const apiClient = {
   // Get all reviews
   async getReviews(): Promise<ReviewSummary[]> {
-    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/code-analyzer/reviews`);
+    try {
+      const token = localStorage.getItem('auth_token');
+      const headers: HeadersInit = {
+        'Content-Type': 'application/json'
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch(`${DEFAULT_BACKEND_URL}/api/code-analyzer/reviews`, {
+        headers
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch reviews: ${response.statusText}`);
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      // Return empty array as fallback for now
+      return [];
+    }
+  },
+
+    // Get a specific review by ID
+    async getReviewById(id: string | number): Promise<DetailedReview> {
+      try {
+        const token = localStorage.getItem('auth_token');
+        const headers: HeadersInit = {
+          'Content-Type': 'application/json'
+        };
+        
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+        
+        const response = await fetch(`${DEFAULT_BACKEND_URL}/api/code-analyzer/reviews/${id}`, {
+          headers
+        });
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch review ${id}: ${response.statusText}`);
+        }
+        
+        return response.json();
+      } catch (error) {
+        console.error(`Error fetching review ${id}:`, error);
+        throw error;
+      }
+    },
+  
+ // Trigger a manual code analysis
+ async analyzeCode(request: AnalysisRequest): Promise<{ id: string | number }> {
+  try {
+    const token = localStorage.getItem('auth_token');
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json'
+    };
     
-    if (!response.ok) {
-      throw new Error(`Failed to fetch reviews: ${response.statusText}`);
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
     }
     
-    return response.json();
-  },
-  
-  // Get a specific review by ID
-  async getReviewById(id: string | number): Promise<DetailedReview> {
-    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/code-analyzer/reviews/${id}`);
-    
-    if (!response.ok) {
-      throw new Error(`Failed to fetch review ${id}: ${response.statusText}`);
-    }
-    
-    return response.json();
-  },
-  
-  // Trigger a manual code analysis
-  async analyzeCode(request: AnalysisRequest): Promise<{ id: string | number }> {
     const response = await fetch(`${DEFAULT_BACKEND_URL}/api/code-analyzer/analyze-pr`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers,
       body: JSON.stringify(request)
     });
     
@@ -46,51 +88,114 @@ export const apiClient = {
     }
     
     return response.json();
-  },
+  } catch (error) {
+    console.error('Error analyzing code:', error);
+    throw error;
+  }
+},
   
   // Save user settings
   async saveSettings(settings: UserSettings): Promise<{ success: boolean }> {
-    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/settings`, {
-      method: 'POST',
-      headers: {
+    try {
+      const token = localStorage.getItem('auth_token');
+      const headers: HeadersInit = {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(settings)
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Failed to save settings: ${response.statusText}`);
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
+      const response = await fetch(`${DEFAULT_BACKEND_URL}/api/settings`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(settings)
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to save settings: ${response.statusText}`);
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      throw error;
     }
-    
-    return response.json();
   },
   
-  // Get user settings
-  async getSettings(): Promise<UserSettings> {
-    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/settings`);
+ // Get user settings
+ async getSettings(): Promise<UserSettings> {
+  try {
+    const token = localStorage.getItem('auth_token');
+    const headers: HeadersInit = {
+      'Content-Type': 'application/json'
+    };
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    
+    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/settings`, {
+      headers
+    });
     
     if (!response.ok) {
       throw new Error(`Failed to fetch settings: ${response.statusText}`);
     }
     
     return response.json();
-  },
+  } catch (error) {
+    console.error('Error fetching settings:', error);
+    // Return default settings as fallback
+    return {
+      github: {
+        personalAccessToken: '',
+        webhookSecret: '',
+        enabled: false,
+        repositories: [],
+        autoReview: true
+      },
+      api: {
+        backendUrl: DEFAULT_BACKEND_URL,
+        apiKey: ''
+      },
+      notifications: {
+        email: false,
+        emailAddress: '',
+        slack: false,
+        slackWebhook: '',
+        notifyOnCritical: true,
+        notifyOnComplete: true
+      }
+    };
+  }
+},
   
   // Validate GitHub token
   async validateGithubToken(token: string): Promise<{ valid: boolean, username?: string }> {
-    const response = await fetch(`${DEFAULT_BACKEND_URL}/api/github/validate-token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ token })
-    });
-    
-    if (!response.ok) {
+    try {
+      const response = await fetch(`${DEFAULT_BACKEND_URL}/api/auth/validate-github-token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ token })
+      });
+      
+      if (!response.ok) {
+        return { valid: false };
+      }
+      
+      return response.json();
+    } catch (error) {
+      console.error('Error validating GitHub token:', error);
       return { valid: false };
     }
-    
-    return response.json();
+  },
+  
+  // Login with GitHub
+  loginWithGitHub(): void {
+    window.location.href = `${DEFAULT_BACKEND_URL}/api/auth/github`;
   }
 };
 

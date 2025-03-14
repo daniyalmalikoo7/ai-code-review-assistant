@@ -111,26 +111,25 @@ export default function DashboardPage() {
   //   fetchReviews();
   // }, []);
 
-  // Update useEffect in dashboard/page.tsx
-useEffect(() => {
-  const fetchReviews = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      // Use the API client instead of mock data
-      const data = await apiClient.getReviews();
-      setReviews(data);
-      setLoading(false);
-    } catch (err) {
-      console.error('Failed to fetch reviews:', err);
-      setError('Failed to load reviews. Please try again later.');
-      setLoading(false);
-    }
-  };
-  
-  fetchReviews();
-}, []);
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Use the API client instead of mock data
+        const data = await apiClient.getReviews();
+        setReviews(data);
+        setLoading(false);
+      } catch (err) {
+        console.error('Failed to fetch reviews:', err);
+        setError('Failed to load reviews. Please try again later.');
+        setLoading(false);
+      }
+    };
+    
+    fetchReviews();
+  }, []);  
   
   const [showAnalysisModal, setShowAnalysisModal] = useState<boolean>(false);
   
