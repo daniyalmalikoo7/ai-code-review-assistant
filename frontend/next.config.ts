@@ -7,13 +7,16 @@ const nextConfig: NextConfig = {
     NEXT_PUBLIC_API_VERSION: process.env.NEXT_PUBLIC_API_VERSION || "v1",
   },
   reactStrictMode: true,
-  // Remove swcMinify
   eslint: {
     ignoreDuringBuilds: true,
   },
   typescript: {
     ignoreBuildErrors: true,
   },
+  // Add experimental flag for better component resolution
+  experimental: {
+    esmExternals: 'loose'
+  }
 };
 
 export default nextConfig;

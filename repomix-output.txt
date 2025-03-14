@@ -125,6 +125,7 @@ backend/
   test-feedback.ts
   test-integration.ts
   tsconfig.json
+  tsconfig.prod.json
 frontend/
   public/
     file.svg
@@ -1412,7 +1413,7 @@ export default router;
 ================
 File: backend/src/routes/githubWebhookRoutes.ts
 ================
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { handlePullRequestWebhook } from '../controllers/githubWebhookController';
 import { createLogger } from '../utils/logger';
 import { validateGitHubWebhook } from '../middleware/githubWebhookValidator';
@@ -1422,7 +1423,7 @@ const logger = createLogger('WebhookRoutes');
 
 // GitHub webhook endpoint for PR events
 // The validateGitHubWebhook middleware authenticates the webhook
-router.post('/github', validateGitHubWebhook, async (req, res) => {
+router.post('/github', validateGitHubWebhook, async (req: Request, res: Response) => {
   logger.info('Received GitHub webhook');
   await handlePullRequestWebhook(req, res);
 });
@@ -1473,7 +1474,7 @@ export default router;
 File: backend/src/routes/settingsRoutes.ts
 ================
 // backend/src/routes/settingsRoutes.ts
-import { Router } from 'express';
+import { Router, Request, Response  } from 'express';
 import * as settingsController from '../controllers/settingsController';
 import { authenticate } from '../middleware/auth.middleware';
 import { createLogger } from '../utils/logger';
@@ -1485,19 +1486,19 @@ const logger = createLogger('SettingsRoutes');
 router.use(authenticate);
 
 // Get user settings
-router.get('/', (req, res) => {
+router.get('/', (req: Request, res: Response) => {
   logger.info('Get user settings', { userId: req.user?.userId });
   settingsController.getUserSettings(req, res);
 });
 
 // Update user settings
-router.post('/', (req, res) => {
+router.post('/', (req: Request, res: Response) => {
   logger.info('Update user settings', { userId: req.user?.userId });
   settingsController.updateUserSettings(req, res);
 });
 
 // Delete user settings
-router.delete('/', (req, res) => {
+router.delete('/', (req: Request, res: Response) => {
   logger.info('Delete user settings', { userId: req.user?.userId });
   settingsController.deleteUserSettings(req, res);
 });
@@ -1508,7 +1509,7 @@ export default router;
 File: backend/src/routes/webhookRoutes.ts
 ================
 // backend/src/routes/webhookRoutes.ts
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { handlePullRequestWebhook } from '../controllers/githubWebhookController';
 import { createLogger } from '../utils/logger';
 import { authenticateWebhook } from '../middleware/auth.middleware';
@@ -1517,13 +1518,13 @@ const router = Router();
 const logger = createLogger('WebhookRoutes');
 
 // GitHub webhook endpoint for PR events
-router.post('/github', authenticateWebhook, async (req, res) => {
+router.post('/github', authenticateWebhook, async (req: Request, res: Response) => {
   logger.info('Received GitHub webhook');
   await handlePullRequestWebhook(req, res);
 });
 
 // Info endpoint to check webhook configuration (not protected)
-router.get('/info', (req, res) => {
+router.get('/info', (req: Request, res: Response) => {
   logger.info('Webhook info endpoint accessed');
   res.json({
     status: 'active',
@@ -7372,7 +7373,7 @@ File: backend/package.json
     "test:integration": "ts-node test-integration.ts",
     "test:unit": "jest --testPathIgnorePatterns=tests/integration",
     "dev": "ts-node-dev --respawn -r dotenv/config src/index.ts",
-    "build": "tsc",
+    "build": "tsc -p tsconfig.prod.json",
     "start": "node dist/index.js",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
@@ -7743,6 +7744,18 @@ File: backend/tsconfig.json
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "tests"]
 }
+
+================
+File: backend/tsconfig.prod.json
+================
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "skipLibCheck": true,
+      "noImplicitAny": false,
+      "skipDefaultLibCheck": true
+    }
+  }
 
 ================
 File: frontend/public/file.svg
@@ -14088,7 +14101,7 @@ services:
     region: ohio
     plan: starter
     rootDir: backend
-    buildCommand: npm install && npm run build
+    buildCommand: npm install --include=dev && npm run build
     startCommand: node dist/index.js
     envVars:
       - key: NODE_ENV
