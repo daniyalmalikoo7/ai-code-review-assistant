@@ -8,9 +8,9 @@ import healthRoutes from './routes/health.routes';
 import codeAnalyzerRoutes from './routes/codeAnalyzerRoutes';
 import authRoutes from './routes/authRoutes';
 import settingsRoutes from './routes/settingsRoutes';
-import { errorHandler, notFoundHandler } from './middleware/error';
 import webhookRoutes from './routes/webhookRoutes';
 import { authenticate } from './middleware/auth.middleware';
+import { errorHandler, notFoundHandler } from './middleware/error.middleware';
 
 const app = express();
 const logger = createLogger('App');

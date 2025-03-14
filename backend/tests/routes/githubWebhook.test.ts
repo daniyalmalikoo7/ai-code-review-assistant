@@ -2,7 +2,7 @@ import request from 'supertest';
 import express from 'express';
 import crypto from 'crypto';
 import webhookRoutes from '../../src/routes/webhookRoutes';
-import { errorHandler } from '../../src/middleware/error';
+import { errorHandler } from '../../src/middleware/error.middleware';
 
 // Mock environment variables
 process.env.GITHUB_WEBHOOK_SECRET = 'test-webhook-secret';
