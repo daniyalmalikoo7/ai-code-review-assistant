@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { handlePullRequestWebhook } from '../controllers/githubWebhookController';
 import { createLogger } from '../utils/logger';
 import { validateGitHubWebhook } from '../middleware/githubWebhookValidator';
@@ -8,7 +8,7 @@ const logger = createLogger('WebhookRoutes');
 
 // GitHub webhook endpoint for PR events
 // The validateGitHubWebhook middleware authenticates the webhook
-router.post('/github', validateGitHubWebhook, async (req, res) => {
+router.post('/github', validateGitHubWebhook, async (req: Request, res: Response) => {
   logger.info('Received GitHub webhook');
   await handlePullRequestWebhook(req, res);
 });
