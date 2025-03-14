@@ -8,7 +8,7 @@ import ReviewCard from '@/components/dashboard/ReviewCard';
 import StatsSummary from '@/components/dashboard/StatsSummary';
 import AnalysisModal from '@/components/dashboard/AnalysisModal';
 import { ReviewSummary } from '@/types/review';
-// import { apiClient } from '@/lib/api';
+import { apiClient } from '@/lib/api';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -16,100 +16,121 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  // useEffect(() => {
+  //   const fetchReviews = async () => {
+  //     try {
+  //       setLoading(true);
+  //       setError(null);
         
-        // In a real app, we would fetch from the API
-        // const data = await apiClient.getReviews();
+  //       // In a real app, we would fetch from the API
+  //       // const data = await apiClient.getReviews();
         
-        // For demo purposes, using mock data
-        const mockReviews: ReviewSummary[] = [
-          {
-            id: '1',
-            prId: 123,
-            prTitle: 'Add user authentication feature',
-            repository: 'org/repo',
-            branch: 'feature/auth',
-            author: 'johndoe',
-            status: 'completed',
-            createdAt: '2023-06-01T12:00:00Z',
-            completedAt: '2023-06-01T12:05:30Z',
-            overallScore: 75,
-            issueStats: {
-              critical: 2,
-              warning: 5,
-              suggestion: 10,
-              total: 17
-            }
-          },
-          {
-            id: '2',
-            prId: 124,
-            prTitle: 'Refactor database queries',
-            repository: 'org/repo',
-            branch: 'feature/db-refactor',
-            author: 'janedoe',
-            status: 'pending',
-            createdAt: '2023-06-02T10:30:00Z',
-            overallScore: 0,
-            issueStats: {
-              critical: 0,
-              warning: 0,
-              suggestion: 0,
-              total: 0
-            }
-          },
-          {
-            id: '3',
-            prId: 125,
-            prTitle: 'Update dependencies and fix security vulnerabilities',
-            repository: 'org/other-repo',
-            branch: 'fix/security',
-            author: 'securityteam',
-            status: 'completed',
-            createdAt: '2023-06-03T09:15:00Z',
-            completedAt: '2023-06-03T09:20:12Z',
-            overallScore: 92,
-            issueStats: {
-              critical: 0,
-              warning: 3,
-              suggestion: 5,
-              total: 8
-            }
-          },
-          {
-            id: '4',
-            prId: 126,
-            prTitle: 'Add new API endpoints for user profiles',
-            repository: 'org/api-service',
-            branch: 'feature/user-profiles',
-            author: 'apiteam',
-            status: 'failed',
-            createdAt: '2023-06-04T14:20:00Z',
-            overallScore: 0,
-            issueStats: {
-              critical: 0,
-              warning: 0,
-              suggestion: 0,
-              total: 0
-            }
-          }
-        ];
+  //       // For demo purposes, using mock data
+  //       const mockReviews: ReviewSummary[] = [
+  //         {
+  //           id: '1',
+  //           prId: 123,
+  //           prTitle: 'Add user authentication feature',
+  //           repository: 'org/repo',
+  //           branch: 'feature/auth',
+  //           author: 'johndoe',
+  //           status: 'completed',
+  //           createdAt: '2023-06-01T12:00:00Z',
+  //           completedAt: '2023-06-01T12:05:30Z',
+  //           overallScore: 75,
+  //           issueStats: {
+  //             critical: 2,
+  //             warning: 5,
+  //             suggestion: 10,
+  //             total: 17
+  //           }
+  //         },
+  //         {
+  //           id: '2',
+  //           prId: 124,
+  //           prTitle: 'Refactor database queries',
+  //           repository: 'org/repo',
+  //           branch: 'feature/db-refactor',
+  //           author: 'janedoe',
+  //           status: 'pending',
+  //           createdAt: '2023-06-02T10:30:00Z',
+  //           overallScore: 0,
+  //           issueStats: {
+  //             critical: 0,
+  //             warning: 0,
+  //             suggestion: 0,
+  //             total: 0
+  //           }
+  //         },
+  //         {
+  //           id: '3',
+  //           prId: 125,
+  //           prTitle: 'Update dependencies and fix security vulnerabilities',
+  //           repository: 'org/other-repo',
+  //           branch: 'fix/security',
+  //           author: 'securityteam',
+  //           status: 'completed',
+  //           createdAt: '2023-06-03T09:15:00Z',
+  //           completedAt: '2023-06-03T09:20:12Z',
+  //           overallScore: 92,
+  //           issueStats: {
+  //             critical: 0,
+  //             warning: 3,
+  //             suggestion: 5,
+  //             total: 8
+  //           }
+  //         },
+  //         {
+  //           id: '4',
+  //           prId: 126,
+  //           prTitle: 'Add new API endpoints for user profiles',
+  //           repository: 'org/api-service',
+  //           branch: 'feature/user-profiles',
+  //           author: 'apiteam',
+  //           status: 'failed',
+  //           createdAt: '2023-06-04T14:20:00Z',
+  //           overallScore: 0,
+  //           issueStats: {
+  //             critical: 0,
+  //             warning: 0,
+  //             suggestion: 0,
+  //             total: 0
+  //           }
+  //         }
+  //       ];
         
-        setReviews(mockReviews);
-        setLoading(false);
-      } catch (err) {
-        console.error('Failed to fetch reviews:', err);
-        setError('Failed to load reviews. Please try again later.');
-        setLoading(false);
-      }
-    };
+  //       setReviews(mockReviews);
+  //       setLoading(false);
+  //     } catch (err) {
+  //       console.error('Failed to fetch reviews:', err);
+  //       setError('Failed to load reviews. Please try again later.');
+  //       setLoading(false);
+  //     }
+  //   };
     
-    fetchReviews();
-  }, []);
+  //   fetchReviews();
+  // }, []);
+
+  // Update useEffect in dashboard/page.tsx
+useEffect(() => {
+  const fetchReviews = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Use the API client instead of mock data
+      const data = await apiClient.getReviews();
+      setReviews(data);
+      setLoading(false);
+    } catch (err) {
+      console.error('Failed to fetch reviews:', err);
+      setError('Failed to load reviews. Please try again later.');
+      setLoading(false);
+    }
+  };
+  
+  fetchReviews();
+}, []);
   
   const [showAnalysisModal, setShowAnalysisModal] = useState<boolean>(false);
   
