@@ -4,6 +4,8 @@ import { analyzePullRequest, PullRequestPayload } from '../utils/codeAnalyzer';
 import { generateFeedback } from '../utils/feedbackGenerator';
 import { createLogger } from '../utils/logger';
 import { authenticate } from '../middleware/auth.middleware';
+import { reviewStore, StoredReview } from '../models/reviewStore';
+import { v4 as uuidv4 } from 'uuid';
 
 const router = Router();
 const logger = createLogger('CodeAnalyzerRoutes');
@@ -42,7 +44,7 @@ const analyzePRHandler = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-// Handler that includes feedback generation
+// Handler that includes feedback generation and stores the review
 const analyzePRWithFeedbackHandler = async (req: Request, res: Response): Promise<void> => {
   try {
     const prPayload: PullRequestPayload = req.body;
@@ -65,8 +67,35 @@ const analyzePRWithFeedbackHandler = async (req: Request, res: Response): Promis
     
     logger.info(`Feedback generated with score: ${feedback.summaryReport.overallScore}/100`);
     
-    // Return both analysis and feedback
+    // Store the review
+    const id = uuidv4();
+    
+    const review: StoredReview = {
+      id,
+      prId: prPayload.id,
+      prTitle: prPayload.title,
+      repository: prPayload.repository,
+      branch: prPayload.branch,
+      author: prPayload.author,
+      status: 'completed',
+      createdAt: new Date().toISOString(),
+      completedAt: new Date().toISOString(),
+      overallScore: feedback.summaryReport.overallScore,
+      analysis,
+      feedback,
+      issueStats: {
+        critical: analysis.summary.criticalCount,
+        warning: analysis.summary.warningCount,
+        suggestion: analysis.summary.suggestionCount,
+        total: analysis.summary.totalIssues
+      }
+    };
+    
+    reviewStore.addReview(review);
+    
+    // Return both analysis, feedback, and the review ID
     res.status(200).json({
+      id,
       analysis,
       feedback
     });

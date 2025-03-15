@@ -4,6 +4,8 @@ import { createLogger } from '../utils/logger';
 import { analyzePullRequest, PullRequestPayload } from '../utils/codeAnalyzer';
 import { generateFeedback } from '../utils/feedbackGenerator';
 import { userService } from '../services/userService';
+import { reviewStore, StoredReview } from '../models/reviewStore';
+import { v4 as uuidv4 } from 'uuid';
 
 // Define the interfaces we need directly in this file, so we don't need to import them
 interface GitHubService {
@@ -108,6 +110,32 @@ export const handlePullRequestWebhook = async (req: Request, res: Response): Pro
       // Generate feedback
       const feedback = generateFeedback(analysis, `AI Code Review for PR #${prPayload.id}`);
       
+      // Store the review in our system
+      const id = uuidv4();
+      
+      const review: StoredReview = {
+        id,
+        prId: prPayload.id,
+        prTitle: prPayload.title,
+        repository: prPayload.repository,
+        branch: prPayload.branch,
+        author: prPayload.author,
+        status: 'completed',
+        createdAt: new Date().toISOString(),
+        completedAt: new Date().toISOString(),
+        overallScore: feedback.summaryReport.overallScore,
+        analysis,
+        feedback,
+        issueStats: {
+          critical: analysis.summary.criticalCount,
+          warning: analysis.summary.warningCount,
+          suggestion: analysis.summary.suggestionCount,
+          total: analysis.summary.totalIssues
+        }
+      };
+      
+      reviewStore.addReview(review);
+      
       // Submit feedback to GitHub (comments on the PR)
       if (process.env.SUBMIT_FEEDBACK_TO_GITHUB === 'true') {
         try {
@@ -129,6 +157,7 @@ export const handlePullRequestWebhook = async (req: Request, res: Response): Pro
       
       return res.status(200).json({
         status: 'success',
+        id, // Include the review ID in the response
         prId: prPayload.id,
         repository: prPayload.repository,
         issueCount: analysis.summary.totalIssues,

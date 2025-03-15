@@ -9,6 +9,7 @@ import codeAnalyzerRoutes from './routes/codeAnalyzerRoutes';
 import authRoutes from './routes/authRoutes';
 import settingsRoutes from './routes/settingsRoutes';
 import webhookRoutes from './routes/webhookRoutes';
+import reviewRoutes from './routes/reviewRoutes'; // Import the new review routes
 import { authenticate } from './middleware/auth.middleware';
 import { errorHandler, notFoundHandler } from './middleware/error.middleware';
 
@@ -44,6 +45,7 @@ app.use('/api/webhooks', webhookRoutes);
 // Protected routes (require authentication)
 app.use('/api/llm', authenticate, llmRoutes);
 app.use('/api/code-analyzer', authenticate, codeAnalyzerRoutes);
+app.use('/api/code-analyzer/reviews', authenticate, reviewRoutes); // Add the review routes
 app.use('/api/settings', authenticate, settingsRoutes);
 
 // Handle 404s
