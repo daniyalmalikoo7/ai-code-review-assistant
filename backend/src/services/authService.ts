@@ -20,6 +20,9 @@ export interface AuthTokenPayload {
   exp?: number;
 }
 
+  // Add this constant at the top of the file, outside the class
+  const DEV_JWT_SECRET = 'dev-jwt-secret';
+
 /**
  * Authentication service for GitHub OAuth integration
  */
@@ -173,17 +176,35 @@ export class AuthService {
     });
   }
 
-  /**
-   * Verify and decode a JWT token
-   */
-  verifyToken(token: string): AuthTokenPayload {
+  // /**
+  //  * Verify and decode a JWT token
+  //  */
+  // verifyToken(token: string): AuthTokenPayload {
+  //   try {
+  //     return jwt.verify(token, this.jwtSecret) as AuthTokenPayload;
+  //   } catch (error) {
+  //     logger.error("Token verification failed", { error });
+  //     throw new Error("Invalid token");
+  //   }
+  // }
+
+
+
+// Then modify the verifyToken method
+verifyToken(token: string): AuthTokenPayload {
+  try {
+    // Try to verify with the normal secret
+    return jwt.verify(token, this.jwtSecret) as AuthTokenPayload;
+  } catch (error) {
+    // If that fails, try the dev secret (for testing only)
     try {
-      return jwt.verify(token, this.jwtSecret) as AuthTokenPayload;
-    } catch (error) {
-      logger.error("Token verification failed", { error });
-      throw new Error("Invalid token");
+      return jwt.verify(token, DEV_JWT_SECRET) as AuthTokenPayload;
+    } catch (nestedError) {
+      logger.error('Token verification failed', { error: nestedError });
+      throw new Error('Invalid token');
     }
   }
+}
 
   /**
    * Validate a GitHub personal access token

@@ -1,44 +1,28 @@
 // src/app/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-// import Image from 'next/image';
-// import { useRouter } from 'next/navigation';
-
-interface Review {
-  id: string;
-  prId: number;
-  prTitle: string;
-  repository: string;
-  score: number;
-}
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/authContext';
 
 export default function Home() {
-  // const router = useRouter(); 
-  const [recentReviews, setRecentReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
-
+  const { isAuthenticated, loading, login } = useAuth();
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  
   useEffect(() => {
-    // For demo, we'll just use mock data instead of actual API call
-    const loadReviews = async () => {
-      // In a real app: const response = await fetch('/api/reviews?limit=3');
-      
-      // Mock data
-      const mockReviews = [
-        { id: '1', prId: 123, prTitle: 'Add user authentication', repository: 'org/repo', score: 75 },
-        { id: '2', prId: 124, prTitle: 'Refactor database queries', repository: 'org/repo', score: 92 },
-        { id: '3', prId: 125, prTitle: 'Fix security issues', repository: 'org/other-repo', score: 60 },
-      ];
-      
-      setTimeout(() => {
-        setRecentReviews(mockReviews);
-        setLoading(false);
-      }, 500);
-    };
+    // Handle client-side hydration
+    setMounted(true);
     
-    loadReviews();
-  }, []);
+    // Redirect to dashboard if already authenticated
+    if (mounted && isAuthenticated) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, router, mounted]);
+
+  // Until component is mounted, show nothing to avoid hydration errors
+  if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -52,21 +36,48 @@ export default function Home() {
               Automated code quality checks to improve your codebase
             </p>
             <div className="mt-10 flex justify-center">
-              <div className="inline-flex rounded-md shadow">
-                <Link
-                  href="/dashboard"
-                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                >
-                  Go to Dashboard
-                </Link>
-              </div>
+              {loading ? (
+                <div className="inline-flex rounded-md shadow">
+                  <button
+                    disabled
+                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 opacity-70"
+                  >
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Loading...
+                  </button>
+                </div>
+              ) : isAuthenticated ? (
+                <div className="inline-flex rounded-md shadow">
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  >
+                    Go to Dashboard
+                  </Link>
+                </div>
+              ) : (
+                <div className="inline-flex rounded-md shadow">
+                  <button
+                    onClick={login}
+                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  >
+                    Login with GitHub
+                  </button>
+                </div>
+              )}
+              
               <div className="ml-3 inline-flex">
-                <Link
-                  href="/settings"
+                <a
+                  href="https://github.com/your-username/ai-code-review-assistant"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-50"
                 >
-                  Configure Settings
-                </Link>
+                  Learn More
+                </a>
               </div>
             </div>
           </div>
@@ -74,72 +85,41 @@ export default function Home() {
       </header>
 
       <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">Recent Code Reviews</h2>
-            {loading ? (
-              <div className="mt-4 bg-white shadow rounded-lg p-6 animate-pulse">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-              </div>
-            ) : (
-              <div className="mt-4 bg-white shadow rounded-lg divide-y divide-gray-200">
-                {recentReviews.map((review) => (
-                  <div key={review.id} className="p-6 hover:bg-gray-50">
-                    <Link href={`/reviews/${review.id}`} className="block">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-medium text-gray-900">
-                            PR #{review.prId}: {review.prTitle}
-                          </h3>
-                          <p className="text-sm text-gray-500">{review.repository}</p>
-                        </div>
-                        <div className={`text-xl font-bold ${
-                          review.score >= 90 ? 'text-green-600' :
-                          review.score >= 70 ? 'text-amber-500' :
-                          review.score >= 50 ? 'text-orange-500' : 'text-red-600'
-                        }`}>
-                          {review.score}/100
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            )}
-            <div className="mt-6">
-              <Link
-                href="/reviews"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                View all reviews →
-              </Link>
-            </div>
-          </div>
+        <div className="text-center">
+          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            Improve Your Code Quality
+          </h2>
+          <p className="mt-4 text-lg text-gray-500">
+            Our AI-powered code review assistant helps you identify issues in your code before they cause problems.
+          </p>
+        </div>
 
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">Quick Actions</h2>
-            <div className="mt-4 bg-white shadow rounded-lg p-6">
-              <div className="space-y-4">
-                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
-                  <h3 className="font-medium text-gray-900">Trigger a Manual Review</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Analyze a pull request to get actionable feedback
-                  </p>
-                </div>
-                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
-                  <h3 className="font-medium text-gray-900">Configure GitHub Integration</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Set up automatic PR reviews with GitHub webhooks
-                  </p>
-                </div>
-                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
-                  <h3 className="font-medium text-gray-900">Notification Settings</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Configure how you receive alerts about code issues
-                  </p>
-                </div>
+        <div className="mt-16">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg font-medium text-gray-900">Security Analysis</h3>
+                <p className="mt-2 text-sm text-gray-500">
+                  Identify security vulnerabilities, including SQL injection, XSS, and insecure practices.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg font-medium text-gray-900">Performance Optimization</h3>
+                <p className="mt-2 text-sm text-gray-500">
+                  Detect performance bottlenecks and suggest optimizations to make your code faster.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg font-medium text-gray-900">Code Quality</h3>
+                <p className="mt-2 text-sm text-gray-500">
+                  Improve code maintainability with insights on style, architecture, and best practices.
+                </p>
               </div>
             </div>
           </div>
@@ -149,7 +129,7 @@ export default function Home() {
       <footer className="bg-white mt-12 border-t border-gray-200">
         <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
           <p className="text-center text-gray-500 text-sm">
-            AI-Powered Code Review Assistant © 2025
+            AI-Powered Code Review Assistant © {new Date().getFullYear()}
           </p>
         </div>
       </footer>

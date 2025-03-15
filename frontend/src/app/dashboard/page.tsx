@@ -16,110 +16,15 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   
-  // useEffect(() => {
-  //   const fetchReviews = async () => {
-  //     try {
-  //       setLoading(true);
-  //       setError(null);
-        
-  //       // In a real app, we would fetch from the API
-  //       // const data = await apiClient.getReviews();
-        
-  //       // For demo purposes, using mock data
-  //       const mockReviews: ReviewSummary[] = [
-  //         {
-  //           id: '1',
-  //           prId: 123,
-  //           prTitle: 'Add user authentication feature',
-  //           repository: 'org/repo',
-  //           branch: 'feature/auth',
-  //           author: 'johndoe',
-  //           status: 'completed',
-  //           createdAt: '2023-06-01T12:00:00Z',
-  //           completedAt: '2023-06-01T12:05:30Z',
-  //           overallScore: 75,
-  //           issueStats: {
-  //             critical: 2,
-  //             warning: 5,
-  //             suggestion: 10,
-  //             total: 17
-  //           }
-  //         },
-  //         {
-  //           id: '2',
-  //           prId: 124,
-  //           prTitle: 'Refactor database queries',
-  //           repository: 'org/repo',
-  //           branch: 'feature/db-refactor',
-  //           author: 'janedoe',
-  //           status: 'pending',
-  //           createdAt: '2023-06-02T10:30:00Z',
-  //           overallScore: 0,
-  //           issueStats: {
-  //             critical: 0,
-  //             warning: 0,
-  //             suggestion: 0,
-  //             total: 0
-  //           }
-  //         },
-  //         {
-  //           id: '3',
-  //           prId: 125,
-  //           prTitle: 'Update dependencies and fix security vulnerabilities',
-  //           repository: 'org/other-repo',
-  //           branch: 'fix/security',
-  //           author: 'securityteam',
-  //           status: 'completed',
-  //           createdAt: '2023-06-03T09:15:00Z',
-  //           completedAt: '2023-06-03T09:20:12Z',
-  //           overallScore: 92,
-  //           issueStats: {
-  //             critical: 0,
-  //             warning: 3,
-  //             suggestion: 5,
-  //             total: 8
-  //           }
-  //         },
-  //         {
-  //           id: '4',
-  //           prId: 126,
-  //           prTitle: 'Add new API endpoints for user profiles',
-  //           repository: 'org/api-service',
-  //           branch: 'feature/user-profiles',
-  //           author: 'apiteam',
-  //           status: 'failed',
-  //           createdAt: '2023-06-04T14:20:00Z',
-  //           overallScore: 0,
-  //           issueStats: {
-  //             critical: 0,
-  //             warning: 0,
-  //             suggestion: 0,
-  //             total: 0
-  //           }
-  //         }
-  //       ];
-        
-  //       setReviews(mockReviews);
-  //       setLoading(false);
-  //     } catch (err) {
-  //       console.error('Failed to fetch reviews:', err);
-  //       setError('Failed to load reviews. Please try again later.');
-  //       setLoading(false);
-  //     }
-  //   };
-    
-  //   fetchReviews();
-  // }, []);
-
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         setLoading(true);
         setError(null);
         
-        // Use the API client instead of mock data
+        // Fetch from the real API
         const data = await apiClient.getReviews();
-        setReviews(data);
+        setReviews(data as ReviewSummary[]);
         setLoading(false);
       } catch (err) {
         console.error('Failed to fetch reviews:', err);
@@ -129,7 +34,7 @@ export default function DashboardPage() {
     };
     
     fetchReviews();
-  }, []);  
+  }, []);
   
   const [showAnalysisModal, setShowAnalysisModal] = useState<boolean>(false);
   
@@ -187,11 +92,17 @@ export default function DashboardPage() {
             
             <div className="mb-6">
               <h2 className="text-lg font-medium leading-6 text-gray-900 mb-2">Recent Reviews</h2>
-              <div className="grid grid-cols-1 gap-6">
-                {reviews.map((review) => (
-                  <ReviewCard key={review.id} review={review} />
-                ))}
-              </div>
+              {reviews.length > 0 ? (
+                <div className="grid grid-cols-1 gap-6">
+                  {reviews.map((review) => (
+                    <ReviewCard key={review.id} review={review} />
+                  ))}
+                </div>
+              ) : (
+                <div className="bg-white shadow rounded-lg p-6 text-center text-gray-500">
+                  No reviews found. Use the "New Analysis" button to analyze a repository.
+                </div>
+              )}
             </div>
           </>
         )}
