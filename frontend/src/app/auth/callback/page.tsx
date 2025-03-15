@@ -1,12 +1,11 @@
-// src/app/auth/callback/page.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { debugAuth } from '@/lib/authUtils';
 import { useAuth } from '@/lib/authContext';
 
-export default function AuthCallbackPage() {
+function AuthCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { checkAuthStatus } = useAuth();
@@ -79,5 +78,13 @@ export default function AuthCallbackPage() {
         <p className="text-gray-600">Please wait while we complete your authentication process.</p>
       </div>
     </div>
+  );
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <AuthCallbackContent />
+    </Suspense>
   );
 }

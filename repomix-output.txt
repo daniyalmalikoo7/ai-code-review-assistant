@@ -145,6 +145,8 @@ frontend/
       auth/
         callback/
           page.tsx
+        error/
+          page.tsx
       dashboard/
         page.tsx
       reviews/
@@ -157,6 +159,8 @@ frontend/
       layout.tsx
       page.tsx
     components/
+      auth/
+        LoginButton.tsx
       dashboard/
         AnalysisForm.tsx
         AnalysisModal.tsx
@@ -177,6 +181,8 @@ frontend/
         NotificationSettings.tsx
     lib/
       api.ts
+      authContext.tsx
+      authUtils.ts
     tests/
       integration/
         api.integration.test.tsx
@@ -1560,6 +1566,9 @@ export interface AuthTokenPayload {
   exp?: number;
 }
 
+  // Add this constant at the top of the file, outside the class
+  const DEV_JWT_SECRET = 'dev-jwt-secret';
+
 /**
  * Authentication service for GitHub OAuth integration
  */
@@ -1713,17 +1722,35 @@ export class AuthService {
     });
   }
 
-  /**
-   * Verify and decode a JWT token
-   */
-  verifyToken(token: string): AuthTokenPayload {
+  // /**
+  //  * Verify and decode a JWT token
+  //  */
+  // verifyToken(token: string): AuthTokenPayload {
+  //   try {
+  //     return jwt.verify(token, this.jwtSecret) as AuthTokenPayload;
+  //   } catch (error) {
+  //     logger.error("Token verification failed", { error });
+  //     throw new Error("Invalid token");
+  //   }
+  // }
+
+
+
+// Then modify the verifyToken method
+verifyToken(token: string): AuthTokenPayload {
+  try {
+    // Try to verify with the normal secret
+    return jwt.verify(token, this.jwtSecret) as AuthTokenPayload;
+  } catch (error) {
+    // If that fails, try the dev secret (for testing only)
     try {
-      return jwt.verify(token, this.jwtSecret) as AuthTokenPayload;
-    } catch (error) {
-      logger.error("Token verification failed", { error });
-      throw new Error("Invalid token");
+      return jwt.verify(token, DEV_JWT_SECRET) as AuthTokenPayload;
+    } catch (nestedError) {
+      logger.error('Token verification failed', { error: nestedError });
+      throw new Error('Invalid token');
     }
   }
+}
 
   /**
    * Validate a GitHub personal access token
@@ -8359,54 +8386,179 @@ export async function GET() {
 ================
 File: frontend/src/app/auth/callback/page.tsx
 ================
+// src/app/auth/callback/page.tsx
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { debugAuth } from '@/lib/authUtils';
+import { useAuth } from '@/lib/authContext';
 
-function CallbackContent() {
+export default function AuthCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { checkAuthStatus } = useAuth();
+  const [error, setError] = useState<string | null>(null);
+  const [processing, setProcessing] = useState<boolean>(true);
   
   useEffect(() => {
-    // Get token from URL parameters
-    const token = searchParams.get('token');
-    console.log(token)
-    if (token) {
-      // Store the token in localStorage or a secure cookie
-      localStorage.setItem('auth_token', token);
-      
-      // Redirect to dashboard or home page
-      router.push('/dashboard');
-    } else {
-      // Handle error case
-      router.push('/auth/error');
+    async function handleCallback() {
+      try {
+        // Get token from URL parameters
+        const token = searchParams.get('token');
+        console.log('Received token from URL:', token ? 'yes' : 'no');
+        
+        if (token) {
+          // Store the token in localStorage
+          localStorage.setItem('auth_token', token);
+          console.log('Token stored in localStorage');
+          
+          // Debug the token to verify it's valid
+          const isValid = debugAuth();
+          console.log('Token valid:', isValid);
+          
+          // Verify token with backend
+          await checkAuthStatus();
+          
+          // Redirect to dashboard
+          setProcessing(false);
+          router.push('/dashboard');
+        } else {
+          // Handle error case
+          console.error('No token received in callback');
+          setError('Authentication failed - no token received');
+          setProcessing(false);
+        }
+      } catch (err) {
+        console.error('Error in auth callback:', err);
+        setError('Authentication failed - please try again');
+        setProcessing(false);
+      }
     }
-  }, [router, searchParams]);
+    
+    handleCallback();
+  }, [router, searchParams, checkAuthStatus]);
+  
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center bg-white p-8 rounded shadow-md">
+          <svg className="h-12 w-12 text-red-500 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          <h1 className="text-xl font-semibold mb-2 text-red-600">Authentication Error</h1>
+          <p className="text-gray-600 mb-4">{error}</p>
+          <button 
+            onClick={() => router.push('/')}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Return to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
   
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="text-center">
-        <h1 className="text-xl font-semibold mb-2">Authenticating...</h1>
-        <p>Please wait while we complete your authentication.</p>
+        <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+        <h1 className="text-xl font-semibold mt-4 mb-2">Completing Authentication...</h1>
+        <p className="text-gray-600">Please wait while we complete your authentication process.</p>
       </div>
     </div>
   );
 }
 
-export default function AuthCallbackPage() {
+================
+File: frontend/src/app/auth/error/page.tsx
+================
+// src/app/auth/error/page.tsx
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+export default function AuthErrorPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [errorMessage, setErrorMessage] = useState<string>('Authentication failed');
+  const [errorDetails, setErrorDetails] = useState<string>('');
+  
+  useEffect(() => {
+    // Extract error information from query parameters
+    const error = searchParams.get('error');
+    const errorDescription = searchParams.get('error_description');
+    
+    if (error) {
+      switch (error) {
+        case 'access_denied':
+          setErrorMessage('Access Denied');
+          setErrorDetails('You denied access to your GitHub account.');
+          break;
+        case 'oauth_failed':
+          setErrorMessage('OAuth Authentication Failed');
+          setErrorDetails('There was an issue authenticating with GitHub.');
+          break;
+        case 'token_expired':
+          setErrorMessage('Session Expired');
+          setErrorDetails('Your session has expired. Please log in again.');
+          break;
+        case 'invalid_token':
+          setErrorMessage('Invalid Token');
+          setErrorDetails('Your authentication token is invalid.');
+          break;
+        default:
+          setErrorMessage('Authentication Error');
+          setErrorDetails(errorDescription || 'An error occurred during authentication.');
+      }
+    }
+  }, [searchParams]);
+
+  const handleReturnHome = () => {
+    router.push('/');
+  };
+
+  const handleTryAgain = () => {
+    // Clear any stored tokens
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('auth_token');
+    }
+    // Redirect to home page
+    router.push('/');
+  };
+
   return (
-    <Suspense fallback={
-      <div className="flex items-center justify-center min-h-screen">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8">
         <div className="text-center">
-          <h1 className="text-xl font-semibold mb-2">Loading...</h1>
-          <p>Please wait...</p>
+          <div className="inline-flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-6">
+            <svg className="h-8 w-8 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">{errorMessage}</h2>
+          <p className="text-gray-600 mb-6">{errorDetails}</p>
+          
+          <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+            <button
+              onClick={handleReturnHome}
+              className="inline-flex justify-center items-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Return Home
+            </button>
+            
+            <button
+              onClick={handleTryAgain}
+              className="inline-flex justify-center items-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Try Again
+            </button>
+          </div>
         </div>
       </div>
-    }>
-      <CallbackContent />
-    </Suspense>
+    </div>
   );
 }
 
@@ -8439,7 +8591,7 @@ export default function DashboardPage() {
         
         // Fetch from the real API
         const data = await apiClient.getReviews();
-        setReviews(data);
+        setReviews(data as ReviewSummary[]);
         setLoading(false);
       } catch (err) {
         console.error('Failed to fetch reviews:', err);
@@ -9637,9 +9789,11 @@ body {
 ================
 File: frontend/src/app/layout.tsx
 ================
+// src/app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/lib/authContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -9652,8 +9806,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Create Next App",
-  description: "Generated by create next app",
+  title: "AI Code Review Assistant",
+  description: "Automated code quality checks to improve your codebase",
 };
 
 export default function RootLayout({
@@ -9663,10 +9817,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
@@ -9678,44 +9830,28 @@ File: frontend/src/app/page.tsx
 // src/app/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-// import Image from 'next/image';
-// import { useRouter } from 'next/navigation';
-
-interface Review {
-  id: string;
-  prId: number;
-  prTitle: string;
-  repository: string;
-  score: number;
-}
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/authContext';
 
 export default function Home() {
-  // const router = useRouter(); 
-  const [recentReviews, setRecentReviews] = useState<Review[]>([]);
-  const [loading, setLoading] = useState(true);
-
+  const { isAuthenticated, loading, login } = useAuth();
+  const router = useRouter();
+  const [mounted, setMounted] = useState(false);
+  
   useEffect(() => {
-    // For demo, we'll just use mock data instead of actual API call
-    const loadReviews = async () => {
-      // In a real app: const response = await fetch('/api/reviews?limit=3');
-      
-      // Mock data
-      const mockReviews = [
-        { id: '1', prId: 123, prTitle: 'Add user authentication', repository: 'org/repo', score: 75 },
-        { id: '2', prId: 124, prTitle: 'Refactor database queries', repository: 'org/repo', score: 92 },
-        { id: '3', prId: 125, prTitle: 'Fix security issues', repository: 'org/other-repo', score: 60 },
-      ];
-      
-      setTimeout(() => {
-        setRecentReviews(mockReviews);
-        setLoading(false);
-      }, 500);
-    };
+    // Handle client-side hydration
+    setMounted(true);
     
-    loadReviews();
-  }, []);
+    // Redirect to dashboard if already authenticated
+    if (mounted && isAuthenticated) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, router, mounted]);
+
+  // Until component is mounted, show nothing to avoid hydration errors
+  if (!mounted) return null;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -9729,21 +9865,48 @@ export default function Home() {
               Automated code quality checks to improve your codebase
             </p>
             <div className="mt-10 flex justify-center">
-              <div className="inline-flex rounded-md shadow">
-                <Link
-                  href="/dashboard"
-                  className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-                >
-                  Go to Dashboard
-                </Link>
-              </div>
+              {loading ? (
+                <div className="inline-flex rounded-md shadow">
+                  <button
+                    disabled
+                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 opacity-70"
+                  >
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Loading...
+                  </button>
+                </div>
+              ) : isAuthenticated ? (
+                <div className="inline-flex rounded-md shadow">
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  >
+                    Go to Dashboard
+                  </Link>
+                </div>
+              ) : (
+                <div className="inline-flex rounded-md shadow">
+                  <button
+                    onClick={login}
+                    className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+                  >
+                    Login with GitHub
+                  </button>
+                </div>
+              )}
+              
               <div className="ml-3 inline-flex">
-                <Link
-                  href="/settings"
+                <a
+                  href="https://github.com/your-username/ai-code-review-assistant"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-600 bg-white hover:bg-gray-50"
                 >
-                  Configure Settings
-                </Link>
+                  Learn More
+                </a>
               </div>
             </div>
           </div>
@@ -9751,72 +9914,41 @@ export default function Home() {
       </header>
 
       <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">Recent Code Reviews</h2>
-            {loading ? (
-              <div className="mt-4 bg-white shadow rounded-lg p-6 animate-pulse">
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
-                <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-              </div>
-            ) : (
-              <div className="mt-4 bg-white shadow rounded-lg divide-y divide-gray-200">
-                {recentReviews.map((review) => (
-                  <div key={review.id} className="p-6 hover:bg-gray-50">
-                    <Link href={`/reviews/${review.id}`} className="block">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <h3 className="text-lg font-medium text-gray-900">
-                            PR #{review.prId}: {review.prTitle}
-                          </h3>
-                          <p className="text-sm text-gray-500">{review.repository}</p>
-                        </div>
-                        <div className={`text-xl font-bold ${
-                          review.score >= 90 ? 'text-green-600' :
-                          review.score >= 70 ? 'text-amber-500' :
-                          review.score >= 50 ? 'text-orange-500' : 'text-red-600'
-                        }`}>
-                          {review.score}/100
-                        </div>
-                      </div>
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            )}
-            <div className="mt-6">
-              <Link
-                href="/reviews"
-                className="text-blue-600 hover:text-blue-800 font-medium"
-              >
-                View all reviews →
-              </Link>
-            </div>
-          </div>
+        <div className="text-center">
+          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+            Improve Your Code Quality
+          </h2>
+          <p className="mt-4 text-lg text-gray-500">
+            Our AI-powered code review assistant helps you identify issues in your code before they cause problems.
+          </p>
+        </div>
 
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">Quick Actions</h2>
-            <div className="mt-4 bg-white shadow rounded-lg p-6">
-              <div className="space-y-4">
-                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
-                  <h3 className="font-medium text-gray-900">Trigger a Manual Review</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Analyze a pull request to get actionable feedback
-                  </p>
-                </div>
-                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
-                  <h3 className="font-medium text-gray-900">Configure GitHub Integration</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Set up automatic PR reviews with GitHub webhooks
-                  </p>
-                </div>
-                <div className="p-4 border border-gray-200 rounded-md hover:border-blue-500 hover:bg-blue-50 transition-colors cursor-pointer">
-                  <h3 className="font-medium text-gray-900">Notification Settings</h3>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Configure how you receive alerts about code issues
-                  </p>
-                </div>
+        <div className="mt-16">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg font-medium text-gray-900">Security Analysis</h3>
+                <p className="mt-2 text-sm text-gray-500">
+                  Identify security vulnerabilities, including SQL injection, XSS, and insecure practices.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg font-medium text-gray-900">Performance Optimization</h3>
+                <p className="mt-2 text-sm text-gray-500">
+                  Detect performance bottlenecks and suggest optimizations to make your code faster.
+                </p>
+              </div>
+            </div>
+
+            <div className="bg-white overflow-hidden shadow rounded-lg">
+              <div className="px-4 py-5 sm:p-6">
+                <h3 className="text-lg font-medium text-gray-900">Code Quality</h3>
+                <p className="mt-2 text-sm text-gray-500">
+                  Improve code maintainability with insights on style, architecture, and best practices.
+                </p>
               </div>
             </div>
           </div>
@@ -9826,13 +9958,82 @@ export default function Home() {
       <footer className="bg-white mt-12 border-t border-gray-200">
         <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
           <p className="text-center text-gray-500 text-sm">
-            AI-Powered Code Review Assistant © 2025
+            AI-Powered Code Review Assistant © {new Date().getFullYear()}
           </p>
         </div>
       </footer>
     </div>
   );
 }
+
+================
+File: frontend/src/components/auth/LoginButton.tsx
+================
+// src/components/auth/LoginButton.tsx
+'use client';
+
+import React from 'react';
+import { useAuth } from '../../lib/authContext';
+
+interface LoginButtonProps {
+  className?: string;
+  variant?: 'primary' | 'secondary' | 'outline';
+}
+
+const LoginButton: React.FC<LoginButtonProps> = ({ 
+  className = '', 
+  variant = 'primary' 
+}) => {
+  const { isAuthenticated, loading, login, logout } = useAuth();
+
+  const getButtonClasses = () => {
+    const baseClasses = "inline-flex items-center justify-center px-5 py-3 border text-base font-medium rounded-md";
+    
+    switch (variant) {
+      case 'primary':
+        return `${baseClasses} border-transparent text-white bg-blue-600 hover:bg-blue-700 ${className}`;
+      case 'secondary':
+        return `${baseClasses} border-transparent text-blue-600 bg-blue-100 hover:bg-blue-200 ${className}`;
+      case 'outline':
+        return `${baseClasses} border-blue-600 text-blue-600 bg-white hover:bg-gray-50 ${className}`;
+      default:
+        return `${baseClasses} border-transparent text-white bg-blue-600 hover:bg-blue-700 ${className}`;
+    }
+  };
+
+  if (loading) {
+    return (
+      <button 
+        disabled
+        className={getButtonClasses()}
+      >
+        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        Loading...
+      </button>
+    );
+  }
+
+  return isAuthenticated ? (
+    <button 
+      onClick={logout}
+      className={getButtonClasses()}
+    >
+      Logout
+    </button>
+  ) : (
+    <button 
+      onClick={login}
+      className={getButtonClasses()}
+    >
+      Login with GitHub
+    </button>
+  );
+};
+
+export default LoginButton;
 
 ================
 File: frontend/src/components/dashboard/AnalysisForm.tsx
@@ -10375,9 +10576,11 @@ File: frontend/src/components/layout/Navbar.tsx
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/lib/authContext';
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { isAuthenticated, user, loading, login, logout } = useAuth();
   
   const isActive = (path: string) => {
     return pathname === path ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white';
@@ -10389,63 +10592,92 @@ export default function Navbar() {
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center">
             <div className="flex-shrink-0">
-              <span className="text-white text-xl font-bold">Code Review AI</span>
+              <Link href="/" className="text-white text-xl font-bold">Code Review AI</Link>
             </div>
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-4">
-                <Link 
-                  href="/dashboard" 
-                  className={`${isActive('/dashboard')} rounded-md px-3 py-2 text-sm font-medium`}
-                >
-                  Dashboard
-                </Link>
-                <Link 
-                  href="/reviews" 
-                  className={`${isActive('/reviews')} rounded-md px-3 py-2 text-sm font-medium`}
-                >
-                  Reviews
-                </Link>
-                <Link 
-                  href="/settings" 
-                  className={`${isActive('/settings')} rounded-md px-3 py-2 text-sm font-medium`}
-                >
-                  Settings
-                </Link>
+            {/* Only show navigation if user is authenticated */}
+            {isAuthenticated && (
+              <div className="hidden md:block">
+                <div className="ml-10 flex items-baseline space-x-4">
+                  <Link 
+                    href="/dashboard" 
+                    className={`${isActive('/dashboard')} rounded-md px-3 py-2 text-sm font-medium`}
+                  >
+                    Dashboard
+                  </Link>
+                  <Link 
+                    href="/reviews" 
+                    className={`${isActive('/reviews')} rounded-md px-3 py-2 text-sm font-medium`}
+                  >
+                    Reviews
+                  </Link>
+                  <Link 
+                    href="/settings" 
+                    className={`${isActive('/settings')} rounded-md px-3 py-2 text-sm font-medium`}
+                  >
+                    Settings
+                  </Link>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           <div className="hidden md:block">
             <div className="ml-4 flex items-center md:ml-6">
-              <button
-                type="button"
-                className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              >
-                <span className="absolute -inset-1.5"></span>
-                <span className="sr-only">View notifications</span>
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-                </svg>
-              </button>
+              {/* Show notification button only if authenticated */}
+              {isAuthenticated && (
+                <button
+                  type="button"
+                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                >
+                  <span className="absolute -inset-1.5"></span>
+                  <span className="sr-only">View notifications</span>
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                  </svg>
+                </button>
+              )}
               
-              <div className="relative ml-3">
-                <div>
-                  <button
-                    type="button"
-                    className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    id="user-menu-button"
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                  >
-                    <span className="absolute -inset-1.5"></span>
-                    <span className="sr-only">Open user menu</span>
-                    <div className="h-8 w-8 rounded-full bg-gray-500 flex items-center justify-center text-white">
-                      U
+              {/* Login/Logout button or User Profile */}
+              {loading ? (
+                <div className="ml-3 relative">
+                  <div className="h-8 w-8 rounded-full bg-gray-500 animate-pulse"></div>
+                </div>
+              ) : isAuthenticated ? (
+                <div className="relative ml-3 flex items-center">
+                  <div className="relative">
+                    <div className="flex items-center">
+                      <span className="hidden sm:inline-block text-sm text-gray-300 mr-2">
+                        {user?.username}
+                      </span>
+                      <button
+                        onClick={logout}
+                        className="flex max-w-xs items-center rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                        id="user-menu-button"
+                      >
+                        <span className="sr-only">Open user menu</span>
+                        <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white">
+                          {user?.username?.charAt(0)?.toUpperCase() || 'U'}
+                        </div>
+                      </button>
                     </div>
+                  </div>
+                  <button
+                    onClick={logout}
+                    className="ml-3 text-sm text-gray-300 hover:text-white"
+                  >
+                    Logout
                   </button>
                 </div>
-              </div>
+              ) : (
+                <button
+                  onClick={login}
+                  className="ml-3 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-800"
+                >
+                  Login with GitHub
+                </button>
+              )}
             </div>
           </div>
+          
           <div className="-mr-2 flex md:hidden">
             {/* Mobile menu button */}
             <button
@@ -10466,25 +10698,62 @@ export default function Navbar() {
 
       {/* Mobile menu, show/hide based on menu state */}
       <div className="md:hidden" id="mobile-menu">
-        <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-          <Link 
-            href="/dashboard" 
-            className={`${isActive('/dashboard')} block rounded-md px-3 py-2 text-base font-medium`}
-          >
-            Dashboard
-          </Link>
-          <Link 
-            href="/reviews" 
-            className={`${isActive('/reviews')} block rounded-md px-3 py-2 text-base font-medium`}
-          >
-            Reviews
-          </Link>
-          <Link 
-            href="/settings" 
-            className={`${isActive('/settings')} block rounded-md px-3 py-2 text-base font-medium`}
-          >
-            Settings
-          </Link>
+        {isAuthenticated && (
+          <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+            <Link 
+              href="/dashboard" 
+              className={`${isActive('/dashboard')} block rounded-md px-3 py-2 text-base font-medium`}
+            >
+              Dashboard
+            </Link>
+            <Link 
+              href="/reviews" 
+              className={`${isActive('/reviews')} block rounded-md px-3 py-2 text-base font-medium`}
+            >
+              Reviews
+            </Link>
+            <Link 
+              href="/settings" 
+              className={`${isActive('/settings')} block rounded-md px-3 py-2 text-base font-medium`}
+            >
+              Settings
+            </Link>
+          </div>
+        )}
+        
+        {/* Mobile login/logout */}
+        <div className="border-t border-gray-700 pb-3 pt-4">
+          {isAuthenticated ? (
+            <div className="flex items-center px-5">
+              <div className="flex-shrink-0">
+                <div className="h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xl font-semibold">
+                  {user?.username?.charAt(0)?.toUpperCase() || 'U'}
+                </div>
+              </div>
+              <div className="ml-3">
+                <div className="text-base font-medium text-white">{user?.username}</div>
+                <div className="text-sm font-medium text-gray-400">{user?.email}</div>
+              </div>
+              <button
+                onClick={logout}
+                className="ml-auto flex-shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              >
+                <span className="sr-only">Logout</span>
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+                </svg>
+              </button>
+            </div>
+          ) : (
+            <div className="px-5">
+              <button
+                onClick={login}
+                className="w-full flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500"
+              >
+                Login with GitHub
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </nav>
@@ -11565,9 +11834,8 @@ export default function NotificationSettings({ initialSettings, onSave }: Notifi
 ================
 File: frontend/src/lib/api.ts
 ================
-// src/lib/api.ts
-import { ReviewSummary, DetailedReview, AnalysisRequest } from "@/types/review";
-import { UserSettings } from "@/types/settings";
+// src/lib/apiClient.ts
+import { debugAuth } from './authUtils';
 
 // Get backend URL from environment variables or fallback
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
@@ -11579,10 +11847,10 @@ console.log('Using backend URL:', BACKEND_URL);
 export const apiClient = {
   // Helper method to get the auth token
   getAuthToken(): string | null {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem("auth_token");
+    if (typeof window === 'undefined') {
+      return null;
     }
-    return null;
+    return localStorage.getItem("auth_token");
   },
 
   // Helper method to create headers with auth token
@@ -11612,11 +11880,16 @@ export const apiClient = {
         headers: Object.fromEntries([...response.headers.entries()]),
       });
       
-      // Handle 401 unauthorized errors by redirecting to login
+      // Handle 401 unauthorized errors
       if (response.status === 401 && typeof window !== 'undefined') {
         console.error("Authentication required - redirecting to login");
         localStorage.removeItem("auth_token");
-        window.location.href = "/";
+        
+        // If we're not already on the homepage, redirect there
+        if (window.location.pathname !== '/') {
+          window.location.href = "/";
+        }
+        
         throw new Error("Authentication required");
       }
       
@@ -11628,171 +11901,88 @@ export const apiClient = {
     return response.json();
   },
 
-  // Get all reviews
-  async getReviews(): Promise<ReviewSummary[]> {
-    try {
-      console.log('Fetching reviews from:', `${BACKEND_URL}/api/code-analyzer/reviews`);
-      const response = await fetch(`${BACKEND_URL}/api/code-analyzer/reviews`, {
-        headers: this.getHeaders(),
-      });
-
-      return this.handleResponse<ReviewSummary[]>(response);
-    } catch (error) {
-      console.error("Error fetching reviews:", error);
-      // Return empty array as fallback
-      return [];
-    }
+  // API requests with authentication
+  async get<T>(url: string): Promise<T> {
+    // Check auth status before making request
+    debugAuth();
+    
+    const response = await fetch(`${BACKEND_URL}${url}`, {
+      method: 'GET',
+      headers: this.getHeaders(),
+    });
+    
+    return this.handleResponse<T>(response);
+  },
+  
+  async post<T>(url: string, data: any): Promise<T> {
+    // Check auth status before making request
+    debugAuth();
+    
+    const response = await fetch(`${BACKEND_URL}${url}`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(data),
+    });
+    
+    return this.handleResponse<T>(response);
+  },
+  
+  async put<T>(url: string, data: any): Promise<T> {
+    // Check auth status before making request
+    debugAuth();
+    
+    const response = await fetch(`${BACKEND_URL}${url}`, {
+      method: 'PUT',
+      headers: this.getHeaders(),
+      body: JSON.stringify(data),
+    });
+    
+    return this.handleResponse<T>(response);
+  },
+  
+  async delete<T>(url: string): Promise<T> {
+    // Check auth status before making request
+    debugAuth();
+    
+    const response = await fetch(`${BACKEND_URL}${url}`, {
+      method: 'DELETE',
+      headers: this.getHeaders(),
+    });
+    
+    return this.handleResponse<T>(response);
   },
 
-  // Get a specific review by ID
-  async getReviewById(id: string | number): Promise<DetailedReview> {
-    try {
-      console.log('Fetching review details from:', `${BACKEND_URL}/api/code-analyzer/reviews/${id}`);
-      const response = await fetch(
-        `${BACKEND_URL}/api/code-analyzer/reviews/${id}`,
-        {
-          headers: this.getHeaders(),
-        }
-      );
-
-      return this.handleResponse<DetailedReview>(response);
-    } catch (error) {
-      console.error(`Error fetching review ${id}:`, error);
-      throw error;
-    }
+  // Domain-specific methods
+  async getReviews() {
+    return this.get('/api/code-analyzer/reviews');
   },
-
-  // Trigger a manual code analysis
-  async analyzeCode(
-    request: AnalysisRequest
-  ): Promise<{ id: string | number }> {
-    try {
-      console.log('Sending analysis request to:', `${BACKEND_URL}/api/code-analyzer/analyze-pr-with-feedback`);
-      const response = await fetch(
-        `${BACKEND_URL}/api/code-analyzer/analyze-pr-with-feedback`,
-        {
-          method: "POST",
-          headers: this.getHeaders(),
-          body: JSON.stringify(request),
-        }
-      );
-
-      return this.handleResponse<{ id: string | number }>(response);
-    } catch (error) {
-      console.error("Error analyzing code:", error);
-      throw error;
-    }
+  
+  async getReviewById(id: string | number) {
+    return this.get(`/api/code-analyzer/reviews/${id}`);
   },
-
-  // Save user settings
-  async saveSettings(settings: UserSettings): Promise<{ success: boolean }> {
-    try {
-      console.log('Saving settings to:', `${BACKEND_URL}/api/settings`);
-      const response = await fetch(`${BACKEND_URL}/api/settings`, {
-        method: "POST",
-        headers: this.getHeaders(),
-        body: JSON.stringify(settings),
-      });
-
-      return this.handleResponse<{ success: boolean }>(response);
-    } catch (error) {
-      console.error("Error saving settings:", error);
-      throw error;
-    }
+  
+  async analyzeCode(request: any) {
+    return this.post('/api/code-analyzer/analyze-pr-with-feedback', request);
   },
-
-  // Get user settings
-  async getSettings(): Promise<UserSettings> {
-    try {
-      console.log('Fetching settings from:', `${BACKEND_URL}/api/settings`);
-      const response = await fetch(`${BACKEND_URL}/api/settings`, {
-        headers: this.getHeaders(),
-      });
-
-      return this.handleResponse<UserSettings>(response);
-    } catch (error) {
-      console.error("Error fetching settings:", error);
-      // Return default settings as fallback
-      return {
-        github: {
-          personalAccessToken: "",
-          webhookSecret: "",
-          enabled: false,
-          repositories: [],
-          autoReview: true,
-        },
-        api: {
-          backendUrl: BACKEND_URL,
-          apiKey: "",
-        },
-        notifications: {
-          email: false,
-          emailAddress: "",
-          slack: false,
-          slackWebhook: "",
-          notifyOnCritical: true,
-          notifyOnComplete: true,
-        },
-      };
-    }
+  
+  async getSettings() {
+    return this.get('/api/settings');
   },
-
-  // Validate GitHub token
-  async validateGithubToken(
-    token: string
-  ): Promise<{ valid: boolean; username?: string }> {
-    try {
-      console.log('Validating GitHub token at:', `${BACKEND_URL}/api/auth/validate-github-token`);
-      const response = await fetch(
-        `${BACKEND_URL}/api/auth/validate-github-token`,
-        {
-          method: "POST",
-          headers: this.getHeaders(),
-          body: JSON.stringify({ token }),
-        }
-      );
-
-      return this.handleResponse<{ valid: boolean; username?: string }>(response);
-    } catch (error) {
-      console.error("Error validating GitHub token:", error);
-      return { valid: false };
-    }
+  
+  async saveSettings(settings: any) {
+    return this.post('/api/settings', settings);
   },
-
-  // Get the current authenticated user
-  async getCurrentUser(): Promise<{ user: { userId: number; username: string; email: string } }> {
-    try {
-      console.log('Fetching current user from:', `${BACKEND_URL}/api/auth/me`);
-      const response = await fetch(`${BACKEND_URL}/api/auth/me`, {
-        headers: this.getHeaders(),
-      });
-
-      return this.handleResponse(response);
-    } catch (error) {
-      console.error("Error fetching current user:", error);
-      throw error;
-    }
+  
+  async validateGithubToken(token: string) {
+    return this.post('/api/auth/validate-github-token', { token });
   },
-
-  // Login with GitHub
-  loginWithGitHub(): void {
-    const redirectUrl = `${BACKEND_URL}/api/auth/github`;
-    console.log('Redirecting to GitHub auth:', redirectUrl);
-    window.location.href = redirectUrl;
-  },
-
-  // Logout
-  logout(): void {
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem("auth_token");
-      window.location.href = "/";
-    }
+  
+  async getCurrentUser() {
+    return this.get('/api/auth/me');
   }
 };
 
-/**
- * Helper function to get the severity emoji for an issue
- */
+// Helper functions for UI components
 export function getSeverityEmoji(severity: string): string {
   switch (severity) {
     case "Critical":
@@ -11806,9 +11996,6 @@ export function getSeverityEmoji(severity: string): string {
   }
 }
 
-/**
- * Helper function to get the color for a severity level
- */
 export function getSeverityColor(severity: string): string {
   switch (severity) {
     case "Critical":
@@ -11822,15 +12009,312 @@ export function getSeverityColor(severity: string): string {
   }
 }
 
-/**
- * Helper function to get the color for a score
- */
 export function getScoreColor(score: number): string {
   if (score >= 90) return "text-green-600";
   if (score >= 70) return "text-amber-500";
   if (score >= 50) return "text-orange-500";
   return "text-red-600";
 }
+
+================
+File: frontend/src/lib/authContext.tsx
+================
+// src/lib/authContext.tsx
+'use client';
+
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+
+// Define types for our auth context
+interface User {
+  userId: number;
+  username: string;
+  email: string;
+}
+
+interface AuthContextType {
+  isAuthenticated: boolean;
+  user: User | null;
+  loading: boolean;
+  login: () => void;
+  logout: () => void;
+  checkAuthStatus: () => Promise<boolean>;
+}
+
+// Create the auth context
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// Custom hook to use the auth context
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}
+
+// JWT token decoder utility
+function decodeJWT(token: string): any {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error('Error decoding JWT token:', error);
+    return null;
+  }
+}
+
+// Auth provider component
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Backend URL from environment variable
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3001';
+
+  // Function to handle login
+  const login = () => {
+    // Redirect to GitHub auth endpoint on backend
+    const authUrl = `${backendUrl}/api/auth/github`;
+    console.log('Redirecting to:', authUrl);
+    window.location.href = authUrl;
+  };
+
+  // Function to handle logout
+  const logout = () => {
+    localStorage.removeItem('auth_token');
+    setIsAuthenticated(false);
+    setUser(null);
+    router.push('/');
+  };
+
+  // Utility function to check if token is expired
+  const isTokenExpired = (token: string): boolean => {
+    const decodedToken = decodeJWT(token);
+    if (!decodedToken || !decodedToken.exp) return true;
+    
+    const currentTime = Math.floor(Date.now() / 1000);
+    return decodedToken.exp < currentTime;
+  };
+
+  // Function to check auth status
+  const checkAuthStatus = async (): Promise<boolean> => {
+    const token = localStorage.getItem('auth_token');
+    
+    if (!token) {
+      setIsAuthenticated(false);
+      setUser(null);
+      setLoading(false);
+      return false;
+    }
+    
+    // Check if token is expired
+    if (isTokenExpired(token)) {
+      console.log('Token is expired, logging out');
+      logout();
+      return false;
+    }
+    
+    try {
+      // Validate the token with the backend
+      const response = await fetch(`${backendUrl}/api/auth/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.user);
+        setIsAuthenticated(true);
+        setLoading(false);
+        return true;
+      } else {
+        console.error('Failed to validate token with backend');
+        logout();
+        return false;
+      }
+    } catch (error) {
+      console.error('Error checking auth status:', error);
+      setIsAuthenticated(false);
+      setUser(null);
+      setLoading(false);
+      return false;
+    }
+  };
+
+  // Check auth status on initial load
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
+
+  // Protect routes that require authentication
+  useEffect(() => {
+    const protectedRoutes = ['/dashboard', '/reviews', '/settings'];
+    const publicRoutes = ['/', '/auth/callback', '/auth/error'];
+    
+    if (!loading) {
+      const isProtectedRoute = protectedRoutes.some(route => 
+        pathname === route || pathname?.startsWith(`${route}/`)
+      );
+      
+      const isPublicRoute = publicRoutes.some(route => 
+        pathname === route || pathname?.startsWith(`${route}/`)
+      );
+      
+      if (isProtectedRoute && !isAuthenticated) {
+        router.push('/');
+      }
+    }
+  }, [isAuthenticated, loading, pathname, router]);
+
+  const value = {
+    isAuthenticated,
+    user,
+    loading,
+    login,
+    logout,
+    checkAuthStatus
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+================
+File: frontend/src/lib/authUtils.ts
+================
+// src/lib/authUtils.ts
+
+/**
+ * Checks if the user has a valid authentication token
+ * @returns boolean indicating if user is authenticated
+ */
+export function isAuthenticated(): boolean {
+    if (typeof window === 'undefined') return false;
+    
+    const token = localStorage.getItem('auth_token');
+    if (!token) return false;
+    
+    // Check if token is expired
+    try {
+      const payload = parseJwt(token);
+      const currentTime = Date.now() / 1000;
+      
+      if (payload && payload.exp && payload.exp > currentTime) {
+        return true;
+      }
+    } catch (error) {
+      console.error('Error parsing JWT token:', error);
+    }
+    
+    return false;
+  }
+  
+  /**
+   * Parse a JWT token to extract its payload
+   * @param token JWT token string
+   * @returns Decoded token payload or null if invalid
+   */
+  export function parseJwt(token: string): any {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error('Failed to parse JWT token:', error);
+      return null;
+    }
+  }
+  
+  /**
+   * Retrieves the user information from the token
+   * @returns User object from token or null if not authenticated
+   */
+  export function getUser(): any {
+    if (typeof window === 'undefined') return null;
+    
+    const token = localStorage.getItem('auth_token');
+    if (!token) return null;
+    
+    try {
+      const payload = parseJwt(token);
+      if (!payload) return null;
+      
+      return {
+        userId: payload.userId,
+        username: payload.username,
+        email: payload.email
+      };
+    } catch (error) {
+      console.error('Error getting user from token:', error);
+      return null;
+    }
+  }
+  
+  /**
+   * Debug function to help troubleshoot authentication issues
+   * @returns boolean indicating if token is valid
+   */
+  export function debugAuth(): boolean {
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.error('No auth token found in localStorage');
+      return false;
+    }
+    
+    console.log('Token found:', token.substring(0, 10) + '...');
+    
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        console.error('Invalid token format');
+        return false;
+      }
+      
+      const payload = parseJwt(token);
+      if (!payload) {
+        console.error('Could not parse token payload');
+        return false;
+      }
+      
+      const expiry = payload.exp * 1000; // Convert to milliseconds
+      const now = Date.now();
+      
+      if (expiry < now) {
+        console.error('Token expired at', new Date(expiry));
+        return false;
+      }
+      
+      console.log('Token valid until', new Date(expiry));
+      console.log('User info:', {
+        userId: payload.userId,
+        username: payload.username,
+        email: payload.email
+      });
+      
+      return true;
+    } catch (err) {
+      console.error('Error validating token:', err);
+      return false;
+    }
+  }
 
 ================
 File: frontend/src/tests/integration/api.integration.test.tsx
